@@ -82,24 +82,41 @@ public class Solicitud extends Observable {
         this.listaBienes = listaBienes;
     }
 
-    public int cantlistaBienes(ArrayList<Bien> listaBienes) {
+//    public int cantlistaBienes(ArrayList<Bien> listaBienes) {
+//        int cantidad = 0;
+//        ArrayList<Bien> list = listaBienes;
+//
+//        for (int i = 0; i < list.size(); i++) {
+//            cantidad = cantidad + list.get(i).getCantidad();
+//        }
+//        return cantidad;
+//    }
+//    
+//     public float montoTotalBienes(ArrayList<Bien> listaBienes) {
+//        float monto = 0;
+//        ArrayList<Bien> list = listaBienes;
+//
+//        for (int i = 0; i < list.size(); i++) {
+//            monto = monto + (list.get(i).getPrecio()*list.get(i).getCantidad());
+//
+//        }
+//        return monto;
+//    }
+     
+     public void cantidadymonto(ArrayList<Bien> listaBienes) {
         int cantidad = 0;
+        float monto = 0;
         ArrayList<Bien> list = listaBienes;
 
         for (int i = 0; i < list.size(); i++) {
             cantidad = cantidad + list.get(i).getCantidad();
         }
-        return cantidad;
-    }
+        this.setCantiadadBienes(cantidad);
     
-     public float montoTotalBienes(ArrayList<Bien> listaBienes) {
-        float monto = 0;
-        ArrayList<Bien> list = listaBienes;
-
         for (int i = 0; i < list.size(); i++) {
             monto = monto + (list.get(i).getPrecio()*list.get(i).getCantidad());
-
         }
-        return monto;
+        this.setMontoTotal(monto);
     }
+     
 }
