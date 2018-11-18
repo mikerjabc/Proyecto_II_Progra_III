@@ -6,6 +6,7 @@
 package Modelo;
 
 import Logic.Activo;
+import Logic.Funcionario;
 import accesoADatos.ServicioActivo;
 import accesoADatos.ServicioBien;
 import accesoADatos.ServicioFuncionario;
@@ -21,6 +22,12 @@ public class ModeloTransferencia extends Observable {
     public ServicioActivo servicioActivo;
     private ServicioFuncionario servicioFuncionario;
     private ServicioBien servicioBien;
+    private Funcionario funcionario;
+
+    public ModeloTransferencia(Funcionario funcionario) {
+        this.funcionario = funcionario;
+        listaActivos = new ArrayList();
+    }
     
     public void setServicioActivo(ServicioActivo servicioActivo){
         this.servicioActivo = servicioActivo;
@@ -32,10 +39,6 @@ public class ModeloTransferencia extends Observable {
     
     public void setServicioBien(ServicioBien servicioBien) {
         this.servicioBien = servicioBien;
-    }
-    
-    public ModeloTransferencia() {
-        listaActivos = new ArrayList();
     }
 
     public void eliminarActivo(Activo activo) throws Exception {
@@ -103,6 +106,10 @@ public class ModeloTransferencia extends Observable {
         super.notifyObservers(getListaActivo());
     }
 
+    public Funcionario getFuncionario() {
+        return funcionario;
+    }
+    
     public void limpiar() {
         activo = null;
         listaActivos.removeAll(listaActivos);

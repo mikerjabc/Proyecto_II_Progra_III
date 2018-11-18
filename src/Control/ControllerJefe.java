@@ -73,7 +73,8 @@ public class ControllerJefe extends AbstractController implements ItemListener {
         vistaSolicitud.setControlador(this);
         modeloSolicitud = null;
         //modeloSolicitud = new ModeloSolicitud();
-        modeloTrasferencia = new ModeloTransferencia();
+        modeloTrasferencia = new ModeloTransferencia(modelo.getFuncionario());
+        vistaTrasferencia.setModelo(modeloTrasferencia);
         vistaSolicitud.addWindowListener(this);
         vistaTrasferencia.addWindowListener(this);
     }
@@ -95,7 +96,8 @@ public class ControllerJefe extends AbstractController implements ItemListener {
                         break;
                         case MouseEvent.BUTTON1: {//Click izquierdo
                             if (modelo.getTipo().equalsIgnoreCase(modelo.tiposSolicitud[0])) {
-                                modeloSolicitud = new ModeloSolicitud(modelo.funcionarioAsociado());
+                                modeloSolicitud = new ModeloSolicitud(modelo.getFuncionario());
+                                modeloSolicitud.setRegistrador(modelo.funcionarioAsociado());
                                 modeloSolicitud.setServicioFuncionario(ServicioFuncionario.getServicioFuncionario());
                                 vistaSolicitud.setModelo(modeloSolicitud);
                                 vistaSolicitud.cargarDatos(modelo.getSolicitud());
@@ -159,18 +161,23 @@ public class ControllerJefe extends AbstractController implements ItemListener {
             switch (x.toLowerCase()) {
                 case "agregar": {
                     if (modelo.getTipo().equalsIgnoreCase(modelo.tiposSolicitud[0])) {
-                        modelo.AsignarRegistradorASolicitud(vistaSolicitud.jtfNumero.getText(), modeloSolicitud.getFuncionario());
+                        modelo.AsignarRegistradorASolicitud(vistaSolicitud.jtfNumero.getText(), modeloSolicitud.getRegistrador());
                         vistaSolicitud.setVisible(false);
                         vistaSolicitud.mostrarMensaje("Se asigno un registrador a la solicitud");
                         vistaSolicitud.limpiarTodosEspacios();
                         vistaSolicitud.dispose();
-                        
-                    } else {
-                        modelo.AutorizarTransferencia(vistaTrasferencia.jtfNumero.getText(),vistaTrasferencia.jcbEstado.getModel().getSelectedItem().toString());
-                        vistaTrasferencia.mostrarMensaje("Se guardo el cambio en el estado de la trasferencia");
-                        vistaTrasferencia.setVisible(false);
-                        vistaTrasferencia.limpiarTodosEspacios();
-                        vistaTrasferencia.dispose();
+                    } else if (modelo.getTipo().equalsIgnoreCase(modelo.tiposSolicitud[1])) {
+                        String aux = "";
+                        if (vistaTrasferencia.jcbEstado.getModel().getSelectedItem().toString().equals("Rechazada")) {
+                            aux = vistaSolicitud.preguntarDetalle("Al estar la transferencia en estado Rechazada debe ingresar un detalle del rechazo.");
+                        }
+                        if (aux != null || vistaTrasferencia.jcbEstado.getModel().getSelectedItem().toString().equals("Recibida")) {
+                            modelo.AutorizarTransferencia(vistaTrasferencia.jcbEstado.getModel().getSelectedItem().toString(),aux);
+                            vistaTrasferencia.mostrarMensaje("Se guardo el cambio en el estado de la trasferencia");
+                            vistaTrasferencia.setVisible(false);
+                            vistaTrasferencia.limpiarTodosEspacios();
+                            vistaTrasferencia.dispose();
+                        }
                     }
                 }
                 break;
@@ -201,7 +208,7 @@ public class ControllerJefe extends AbstractController implements ItemListener {
                 break;
                 case "buscarregistrador": {
                     try{
-                    modeloSolicitud.buscarFuncionario(vistaSolicitud.jtfRegistrador.getText());
+                    modeloSolicitud.buscarRegistrador(vistaSolicitud.jtfRegistrador.getText());
                     vistaSolicitud.mostrarMensaje("¡Registrador encontrado!");
                     }catch(Exception ex){
                         vistaSolicitud.mostrarMensaje(ex.getMessage());
@@ -223,12 +230,14 @@ public class ControllerJefe extends AbstractController implements ItemListener {
                         vistaSolicitud.setVisible(false);
                         vistaSolicitud.limpiarTodosEspacios();
                         vistaSolicitud.dispose();
+                        modelo.limpiar();
                         
                     } else {
                         vistaSolicitud.mostrarMensaje("No se realizo ningun cambio");
                         vistaTrasferencia.setVisible(false);
                         vistaTrasferencia.limpiarTodosEspacios();
                         vistaTrasferencia.dispose();
+                        modelo.limpiar();
                     }
                 }
                 break;

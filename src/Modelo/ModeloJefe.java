@@ -68,7 +68,7 @@ public class ModeloJefe extends Observable {
                     solicitud = null;
                     throw (new Exception("No se encontro la solicitud"));
                 }
-            }else{
+            }else if(tipo.equalsIgnoreCase(tiposSolicitud[1])){
                 transferencia = servicioTransferencia.buscarTransferencia(Integer.valueOf(numero));
                 solicitud = null;
                 if(!transferencia.getAutorizacion().equals("Recibida")){
@@ -123,6 +123,7 @@ public class ModeloJefe extends Observable {
                 throw (new Exception("Registrador invalido"));
             }
             servicioSolicitud.asignarSolicitud(solicitud, registrador);
+            solicitud = null;
             this.setChanged();
             this.notifyObservers();
         } catch (Exception ex) {
@@ -130,17 +131,19 @@ public class ModeloJefe extends Observable {
         }
     }
     
-    public void AutorizarTransferencia(String numero, String estado) throws Exception {
+    public void AutorizarTransferencia(String estado, String detalle) throws Exception {
         try {
-            if (numero.equals("")) {
-                throw (new Exception("numero invalido"));
+            if (transferencia == null) {
+                throw (new Exception("Transferencia invalida invalido"));
             }
-            if (numero.equals("")) {
-                throw (new Exception("estado invalido"));
+            if (!detalle.equals("")) {
+                String aux = estado + '(' + detalle + ')';
+                transferencia.setAutorizacion(aux);
+            } else {
+                transferencia.setAutorizacion(estado);
             }
-            transferencia = servicioTransferencia.buscarTransferencia(Integer.valueOf(numero));
-            transferencia.setAutorizacion(estado);
             servicioTransferencia.modificarTransferencia(transferencia);
+            transferencia = null;
             this.setChanged();
             this.notifyObservers();
         } catch (Exception ex) {

@@ -456,8 +456,8 @@ public class VistaSolicitud extends javax.swing.JFrame implements Observer {
         jcbTipo.getModel().setSelectedItem(solicitud.getTipo());
         jtfCantidadBienes.setText(String.valueOf(solicitud.getCantiadadBienes()));
         modelo.setListaBienes(solicitud.getListaBienes());
-        if(modelo.getFuncionario().getPuesto().equals("Registrador")){
-            jtfRegistrador.setText(modelo.getFuncionario().getNombre());
+        if(modelo.getRegistrador() != null){
+            jtfRegistrador.setText(modelo.getRegistrador().getNombre());
         }
         ajustatVistaParaFuncionario();
     }
@@ -485,8 +485,8 @@ public class VistaSolicitud extends javax.swing.JFrame implements Observer {
                 while (ite.hasNext()) {
                     model.addRow(ite.next());
                 }
-                if(modelo.getFuncionario() != null){
-                    jtfRegistrador.setText(modelo.getFuncionario().getNombre());
+                if(modelo.getRegistrador()!= null){
+                    jtfRegistrador.setText(modelo.getRegistrador().getNombre());
                 }
             }
         }

@@ -5,21 +5,15 @@
  */
 package Control;
 
-import Modelo.ModeloJefe;
 import Modelo.ModeloSecretaria;
 import Modelo.ModeloSolicitud;
-import Modelo.ModeloTransferencia;
-import Vista.VistaJefe;
 import Vista.VistaSecretaria;
 import Vista.VistaSolicitud;
-import Vista.VistaTransferencia;
 import accesoADatos.GlobalException;
 import accesoADatos.NoDataException;
 import accesoADatos.ServicioFuncionario;
 import accesoADatos.ServicioSolicitud;
-import accesoADatos.ServicioTransferencia;
 import java.awt.event.ActionEvent;
-import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
@@ -149,7 +143,7 @@ public class ControllerSecretaria extends AbstractController{
                     if (vistaSolicitud.jcbEstado.getModel().getSelectedItem().toString().equals("Rechazada")) {
                         aux = vistaSolicitud.preguntarDetalle("Al estar la solicitud en estado Rechazada debe ingresar un detalle del rechazo.");
                     }
-                    if (aux != null) {
+                    if (aux != null || vistaSolicitud.jcbEstado.getModel().getSelectedItem().toString().equals("Recibida")) {
                         modelo.cambiarEstadoSolicitud(vistaSolicitud.jcbEstado.getModel().getSelectedItem().toString(), aux);
                         vistaSolicitud.setVisible(false);
                         vistaSolicitud.mostrarMensaje("Se cambio el estado de la solicitud");

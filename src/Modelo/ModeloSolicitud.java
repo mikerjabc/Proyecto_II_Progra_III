@@ -25,6 +25,7 @@ public class ModeloSolicitud extends Observable {
     public final String[] tiposBien = {"Compra", "Donación", "Producción institucional"};
     public final String[] tiposEstadoSolicitud = {"Recibida", "Por verificar", "Rechazada", "Espera de rotulación", "Procesada"};
     public Funcionario funcionario;
+    public Funcionario registrador;
 
     public ModeloSolicitud(Funcionario funcionario) {
         listaBienes = new ArrayList();
@@ -125,7 +126,7 @@ public class ModeloSolicitud extends Observable {
         }
     }
     
-    public void buscarFuncionario(String id) throws Exception {
+    public void buscarRegistrador(String id) throws Exception {
         try {
             if (id.equals("")) {
                 throw (new Exception("ID invalido"));
@@ -134,7 +135,7 @@ public class ModeloSolicitud extends Observable {
             if (!aux.getPuesto().equals("Registrador")) {
                 throw (new Exception("El funcionario debe ser un registrador"));
             }
-            funcionario = aux;
+            registrador = aux;
             this.notifyObservers();
         } catch (Exception ex) {
             throw (new Exception(ex.getMessage()));
@@ -170,6 +171,14 @@ public class ModeloSolicitud extends Observable {
         return bien;
     }
 
+    public Funcionario getRegistrador() {
+        return registrador;
+    }
+
+    public void setRegistrador(Funcionario registrador) {
+        this.registrador = registrador;
+    }
+    
     @Override
     protected synchronized void setChanged() {
         super.setChanged();
@@ -187,6 +196,7 @@ public class ModeloSolicitud extends Observable {
     
     public void limpiar() {
         bien = null;
+        registrador = null;
         listaBienes.removeAll(listaBienes);
         this.setChanged();
         this.notifyObservers();

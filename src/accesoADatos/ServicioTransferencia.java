@@ -23,7 +23,7 @@ public class ServicioTransferencia extends Servicio {
     private static final String ELIMINARTRANSFERENCIA = "{call eliminarTransferencia(?)}";
     private static final String MODIFICARTRANSFERENCIA = "{call modificarTransferencia(?,?,?,?,?,?)}";
     private static final String LISTARTRANSFERENCIA = "{?=call listarTransferencia}";
-    private static final String CONSULTARTRANSFERENCIA = "{?=call consultarTransferencia(?)}";
+    private static final String CONSULTARTRANSFERENCIA = "{?=call buscarTransferencia(?)}";
     
     private static ServicioTransferencia servicioTransferencia = new ServicioTransferencia();
 
