@@ -82,67 +82,14 @@ public class Solicitud extends Observable {
     public void setListaBienes(ArrayList<Bien> listaBienes) {
         this.listaBienes = listaBienes;
     }
-
-//    public int cantlistaBienes(ArrayList<Bien> listaBienes) {
-//        int cantidad = 0;
-//        ArrayList<Bien> list = listaBienes;
-//
-//        for (int i = 0; i < list.size(); i++) {
-//            cantidad = cantidad + list.get(i).getCantidad();
-//        }
-//        return cantidad;
-//    }
-//    
-//     public float montoTotalBienes(ArrayList<Bien> listaBienes) {
-//        float monto = 0;
-//        ArrayList<Bien> list = listaBienes;
-//
-//        for (int i = 0; i < list.size(); i++) {
-//            monto = monto + (list.get(i).getPrecio()*list.get(i).getCantidad());
-//
-//        }
-//        return monto;
-//    }
-//    public void cantidadymonto(ArrayList<Bien> listaBienes) {
-//        int cantidad = 0;
-//        float monto = 0;
-//        ArrayList<Bien> list = listaBienes;
-//
-//        for (int i = 0; i < list.size(); i++) {
-//            
-//            cantidad = cantidad + list.get(i).getCantidad();
-//            monto = monto + (list.get(i).getPrecio() * list.get(i).getCantidad());
-//            cantidad++;
-//        }
-//        this.setCantiadadBienes(cantidad);
-//        this.setMontoTotal(monto);
-//    }
-
-//     public void cantidadymonto(ArrayList<Bien> listaBienes) {
-//      
-//        ArrayList<Bien> list = listaBienes;
-//cantidadBienes=7;
-//        for (int i = 0; i < list.size(); i++) {
-//            
-//           cantidadBienes= cantidadBienes + list.get(i).getCantidad();
-//            montoTotal = montoTotal + (list.get(i).getPrecio() * list.get(i).getCantidad());
-////            cantidad++;
-//
-//        }
-////        this.setCantiadadBienes(cantidad);
-////        this.setMontoTotal(monto);
-//    }
     
-    public void cantidadymonto(ArrayList<Bien> listaBienes) {
-    Iterator<Bien> it = listaBienes.iterator();
-// mientras al iterador queda proximo juego
-while(it.hasNext()){
-    Bien item=it.next();
-    
-    cantidadBienes= cantidadBienes + item.getCantidad();
-            montoTotal = montoTotal + (item.getPrecio() * item.getCantidad());
-}}
-    
-    
-    
+    public void cantidadymonto() {
+        Iterator<Bien> it = listaBienes.iterator();
+        // mientras al iterador queda proximo juego
+        while (it.hasNext()) {
+            Bien item = it.next();
+            cantidadBienes += item.getCantidad();
+            montoTotal += (item.getPrecio() * item.getCantidad());
+        }
+    }
 }

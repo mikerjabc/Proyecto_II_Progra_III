@@ -381,6 +381,10 @@ public class VistaSolicitud extends javax.swing.JFrame implements Observer {
     }
     
     public void ajustatVistaParaFuncionario() {
+        jtfNumero.setEditable(false);
+        jtfCantidadBienes.setEditable(false);
+        jtfNumero.setEditable(false);
+                
         switch (modelo.getFuncionario().getPuesto().toLowerCase()) {
             case "administrador": {
                 jcbTipo.addItem(modelo.tiposBien[0]);
@@ -389,7 +393,6 @@ public class VistaSolicitud extends javax.swing.JFrame implements Observer {
                 jcbEstado.addItem(modelo.tiposEstadoSolicitud[0]);
                 jcbEstado.setEnabled(false);
                 jtfNumero.setText(String.valueOf(modelo.getNumeroSolicitud()));
-                jtfNumero.setEditable(false);
                 jbBuscarRegistrador.setEnabled(false);
                 jtfRegistrador.setEnabled(false);
             }
@@ -397,7 +400,6 @@ public class VistaSolicitud extends javax.swing.JFrame implements Observer {
             case "secretaria": {
                 jcbEstado.addItem(modelo.tiposEstadoSolicitud[1]);
                 jcbEstado.addItem(modelo.tiposEstadoSolicitud[2]);
-                jtfNumero.setEditable(false);
                 jcbTipo.setEnabled(false);
                 
                 jtfRegistrador.setEditable(false);
@@ -405,8 +407,6 @@ public class VistaSolicitud extends javax.swing.JFrame implements Observer {
                 jbAgregarBien.setEnabled(false);
                 jbLimpiar.setEnabled(false);
                 jtBienes.setEnabled(false);
-                jtfCantidadBienes.setEditable(false);
-                jtfMontoTotal.setEditable(false);
                 jcbTipo.setEnabled(false);
                 jtfFecha.setEditable(false);
             }
@@ -416,9 +416,6 @@ public class VistaSolicitud extends javax.swing.JFrame implements Observer {
                 jbAgregarBien.setEnabled(false);
                 jcbEstado.setEditable(false);
                 jbLimpiar.setEnabled(false);
-                jtfCantidadBienes.setEditable(false);
-                jtfNumero.setEditable(false);
-                jtfMontoTotal.setEditable(false);
                 jcbTipo.setEnabled(false);
                 jcbEstado.setEnabled(false);
                 jtfFecha.setEditable(false);
@@ -431,9 +428,6 @@ public class VistaSolicitud extends javax.swing.JFrame implements Observer {
                 jbAgregarBien.setEnabled(false);
                 jbLimpiar.setEnabled(false);
                 jtfRegistrador.setEditable(false);
-                jtfCantidadBienes.setEditable(false);
-                jtfNumero.setEditable(false);
-                jtfMontoTotal.setEditable(false);
                 jcbTipo.setEnabled(false);
                 jtfFecha.setEditable(false);
             }

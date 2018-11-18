@@ -292,8 +292,8 @@ public class ServicioSolicitud extends Servicio {
                         rs.getString("estado")
                 );
                 laSolicitud.setListaBienes(ServicioBien.getServicioBien().buscarBienPorSolicitud(rs.getInt("numerosolicitud")));
+                laSolicitud.cantidadymonto();
                 coleccion.add(laSolicitud);
-                laSolicitud.cantidadymonto(laSolicitud.getListaBienes());///////
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -345,6 +345,7 @@ public class ServicioSolicitud extends Servicio {
                         rs.getString("estado")
                 );
                 laSolicitud.setListaBienes(ServicioBien.getServicioBien().buscarBienPorSolicitud(rs.getInt("numerosolicitud")));
+                laSolicitud.cantidadymonto();
                 break;
             }
         } catch (SQLException e) {
