@@ -236,7 +236,6 @@ public class ModeloAdministrador extends Observable {
             }
             servicioTransferencia.eliminarTransferencia(Integer.valueOf(numero));
             transferencia = null;
-            this.setChanged();
             this.notifyObservers();
         } catch (Exception ex) {
             throw (new Exception(ex.getMessage()));
@@ -249,7 +248,6 @@ public class ModeloAdministrador extends Observable {
                 throw (new Exception("Debe ingresar un codigo"));
             }
             this.tipo = tipo;
-            this.setChanged();
             this.notifyObservers();
         } catch (Exception ex) {
             throw (new Exception(ex.getMessage()));
@@ -356,6 +354,7 @@ public class ModeloAdministrador extends Observable {
     
     @Override
     public void notifyObservers() {
+        this.setChanged();
         super.notifyObservers(getListaSolicitudes());
     }
 

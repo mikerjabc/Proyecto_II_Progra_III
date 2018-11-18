@@ -238,6 +238,7 @@ public class VistaAdministrador extends javax.swing.JFrame implements Observer {
         jcbBuscar.addItem(modelo.tiposSolicitud[0]);
         jcbBuscar.addItem(modelo.tiposSolicitud[1]);
         jlNombre.setText(modelo.getFuncionario().getNombre());
+        modelo.notifyObservers();
     }
 
     public void setControlador(ControllerAdministrador controlador) {

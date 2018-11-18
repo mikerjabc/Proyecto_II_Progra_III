@@ -215,15 +215,10 @@ public class ModeloRecurHumanos extends Observable {
     public ArrayList<String> getListaNombresDependencias() {
         return listaNombresDependencias;
     }
-
-    @Override
-    protected synchronized void setChanged() {
-        super.setChanged();
-    }
     
     @Override
     public void notifyObservers() {
-        setChanged();
+        this.setChanged();
         super.notifyObservers(getListaFuncionarios());
     }
 

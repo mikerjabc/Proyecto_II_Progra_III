@@ -5,7 +5,6 @@
  */
 package Control;
 
-import Logic.Funcionario;
 import Modelo.ModeloRecurHumanos;
 import Vista.VistaFuncionario;
 import Vista.VistaRecursosHumanos;
@@ -24,10 +23,6 @@ import javax.swing.JComboBox;
 import javax.swing.JMenuItem;
 import javax.swing.JTable;
 
-/**
- *
- * @author Fernando
- */
 public class ControllerRecurHumanos extends AbstractController implements ItemListener{
 
     private ModeloRecurHumanos modelo ;
@@ -212,7 +207,7 @@ public class ControllerRecurHumanos extends AbstractController implements ItemLi
     @Override
     public void itemStateChanged(ItemEvent ie) {
         try {
-            if (ie.getSource().getClass() == JComboBox.class) {
+            if (ie.getSource().getClass() == JComboBox.class && ie.getStateChange() == ItemEvent.SELECTED) {
                 modelo.cambiarDependencia(ie.getItem().toString());
             }
         } catch (Exception ex) {

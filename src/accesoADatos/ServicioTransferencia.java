@@ -171,7 +171,7 @@ public class ServicioTransferencia extends Servicio {
                 laTransferencia = new Transferencia(
                         rs.getInt("numero"),
                         ServicioDependencia.getServicioDependencia().buscarDependencia(rs.getInt("origen")),
-                        ServicioDependencia.getServicioDependencia().buscarDependencia(rs.getInt("origen")),
+                        ServicioDependencia.getServicioDependencia().buscarDependencia(rs.getInt("destino")),
                         rs.getString("ubicacion"),
                         ServicioFuncionario.getServicioFuncionario().consultarFuncionario(rs.getString("funcionario"))
                 );
@@ -224,7 +224,7 @@ public class ServicioTransferencia extends Servicio {
                 laTransferencia = new Transferencia(
                         rs.getInt("numero"),
                         ServicioDependencia.getServicioDependencia().buscarDependencia(rs.getInt("origen")),
-                        ServicioDependencia.getServicioDependencia().buscarDependencia(rs.getInt("origen")),
+                        ServicioDependencia.getServicioDependencia().buscarDependencia(rs.getInt("destino")),
                         rs.getString("ubicacion"),
                         ServicioFuncionario.getServicioFuncionario().consultarFuncionario(rs.getString("funcionario"))
                 );
