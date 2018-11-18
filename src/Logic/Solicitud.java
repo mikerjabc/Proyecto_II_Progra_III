@@ -97,7 +97,7 @@ public class Solicitud extends Observable {
         ArrayList<Bien> list = listaBienes;
 
         for (int i = 0; i < list.size(); i++) {
-            monto = monto + list.get(i).getPrecio();
+            monto = monto + (list.get(i).getPrecio()*list.get(i).getCantidad());
 
         }
         return monto;
