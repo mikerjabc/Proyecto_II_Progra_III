@@ -34,22 +34,16 @@ public class ModeloAdministrador extends Observable {
         tipo = tiposSolicitud[0];
     }
     
-    public void setServicioSolicitud(ServicioSolicitud servicioDependencia) {
-        this.servicioSolicitud = servicioDependencia;
-        this.setChanged();
-        this.notifyObservers();
+    public void setServicioSolicitud(ServicioSolicitud servicioSolicitud) {
+        this.servicioSolicitud = servicioSolicitud;
     }
     
     public void setServicioTransferencia(ServicioTransferencia servicioTransferencia) {
         this.servicioTransferencia = servicioTransferencia;
-        this.setChanged();
-        this.notifyObservers();
     }
     
     public void setServicioFuncionario(ServicioFuncionario servicioFuncionario) {
         this.servicioFuncionario = servicioFuncionario;
-        this.setChanged();
-        this.notifyObservers();
     }
     
     public void buscarSolicitud(String numero) throws Exception {

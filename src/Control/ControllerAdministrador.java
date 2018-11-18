@@ -47,11 +47,11 @@ public class ControllerAdministrador extends AbstractController implements ItemL
     public ControllerAdministrador(ModeloAdministrador modelo, VistaAdministrador vista) {
         this.modelo = modelo;
         this.vista = vista;
-        vista.setModelo(modelo);
-        vista.setControlador(this);
         modelo.setServicioSolicitud(ServicioSolicitud.getServicioSolicitud());
         modelo.setServicioTransferencia(ServicioTransferencia.getServicioTransferencia());
         modelo.setServicioFuncionario(ServicioFuncionario.getServicioFuncionario());
+        vista.setModelo(modelo);
+        vista.setControlador(this);
         ajustarVista();
     }
 
