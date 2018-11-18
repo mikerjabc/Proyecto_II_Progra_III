@@ -4,14 +4,11 @@
  * and open the template in the editor.
  */
 package Logic;
-import java.sql.Date;
+
 import java.util.ArrayList;
 
 import java.util.Observable;
-/**
- *
- * @author Fernando
- */
+
 public class Solicitud extends Observable {
 
     private int numeroSolicitud;
@@ -22,7 +19,7 @@ public class Solicitud extends Observable {
     public float montoTotal;
     private ArrayList<Bien> listaBienes;
 
-    public Solicitud(int numeroSolicitud, String fecha, String tipo, String estado ) {
+    public Solicitud(int numeroSolicitud, String fecha, String tipo, String estado) {
         this.numeroSolicitud = numeroSolicitud;
         this.fecha = fecha;
         this.tipo = tipo;
@@ -83,5 +80,26 @@ public class Solicitud extends Observable {
 
     public void setListaBienes(ArrayList<Bien> listaBienes) {
         this.listaBienes = listaBienes;
+    }
+
+    public int cantlistaBienes(ArrayList<Bien> listaBienes) {
+        int cantidad = 0;
+        ArrayList<Bien> list = listaBienes;
+
+        for (int i = 0; i < list.size(); i++) {
+            cantidad = cantidad + list.get(i).getCantidad();
+        }
+        return cantidad;
+    }
+    
+     public float montoTotalBienes(ArrayList<Bien> listaBienes) {
+        float monto = 0;
+        ArrayList<Bien> list = listaBienes;
+
+        for (int i = 0; i < list.size(); i++) {
+            monto = monto + list.get(i).getPrecio();
+
+        }
+        return monto;
     }
 }
