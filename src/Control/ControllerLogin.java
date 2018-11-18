@@ -32,7 +32,7 @@ import java.awt.event.WindowListener;
 
 public class ControllerLogin implements MouseListener, ActionListener, KeyListener, WindowListener{
 
-    private AbstractController controlador;;
+    private AbstractController controlador;
     private ServicioLogin servicioLogin;
     private Funcionario funcionario;
     private VistaLogin vista;
@@ -100,8 +100,11 @@ public class ControllerLogin implements MouseListener, ActionListener, KeyListen
                 case "administrador": {
                     VistaAdministrador aux = new VistaAdministrador();
                     aux.setNombreUsuario(funcionario.getNombre());
+                    
                     aux.addWindowListener(this);
-                    controlador = new ControllerAdministrador(new ModeloAdministrador(), aux);
+                    ModeloAdministrador modelo  = new ModeloAdministrador();
+                    modelo.setElFuncionario(funcionario);
+                    controlador = new ControllerAdministrador(modelo, aux);
                     this.vista.setVisible(false);
                     controlador.mostrarVista();
                 }

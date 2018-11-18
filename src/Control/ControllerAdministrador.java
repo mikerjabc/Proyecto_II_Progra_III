@@ -212,7 +212,7 @@ public class ControllerAdministrador extends AbstractController{
     private void guardarSolicitud() {
         accesoADatosSolicitud = new ServicioSolicitud();
          try {
-            accesoADatosSolicitud.insertarSolicitud(modelo.getSolicitud());
+            accesoADatosSolicitud.insertarSolicitud(getModelo().getSolicitud());
         } catch (GlobalException ex) {
             Logger.getLogger(ControllerAdministrador.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NoDataException ex) {
@@ -221,9 +221,9 @@ public class ControllerAdministrador extends AbstractController{
         
          accesoADatosBien = new ServicioBien();
          
-         for (int i = 0; i < modelo.getBienes().size(); i++) {
+         for (int i = 0; i < getModelo().getBienes().size(); i++) {
             try {
-                accesoADatosBien.insertarBien(modelo.getBienes().get(i), modelo.getSolicitud().getNumeroSolicitud() );
+                accesoADatosBien.insertarBien(getModelo().getBienes().get(i), getModelo().getSolicitud().getNumeroSolicitud() );
             } catch (GlobalException ex) {
                 Logger.getLogger(ControllerAdministrador.class.getName()).log(Level.SEVERE, null, ex);
             } catch (NoDataException ex) {
@@ -233,7 +233,7 @@ public class ControllerAdministrador extends AbstractController{
          
          
         JOptionPane.showMessageDialog(null," Solicitud Agregada Satisfactoriamente" );
-        modelo.limpiar();
+        getModelo().limpiar();
          try {
             cargar();
         } catch (GlobalException ex) {
@@ -247,11 +247,11 @@ public class ControllerAdministrador extends AbstractController{
 
     private void cargar() throws GlobalException, NoDataException, SQLException {
         accesoADatosSolicitud =  new ServicioSolicitud();
-        System.out.println(accesoADatosSolicitud.listarSolicitudes().toString());
-        modelo.setNumeroNuevoSolicitud( accesoADatosSolicitud.listarSolicitudes());
+        getModelo().setNumeroNuevoSolicitud( accesoADatosSolicitud.listarSolicitudes());
         
         String [] titulo1 = new String []{"#Solicitud", "fecha ","tipo adquisicion", "estado"};
         this.vistaAdmistrador.dtm.setColumnIdentifiers(titulo1);
+        modelo.setTabla();
     }
     
     @Override

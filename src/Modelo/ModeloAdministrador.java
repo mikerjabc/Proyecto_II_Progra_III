@@ -6,16 +6,40 @@
 package Modelo;
 
 import Logic.Bien;
+import Logic.Funcionario;
 import Logic.Solicitud;
 import Vista.VistaAdministrador;
+import accesoADatos.GlobalException;
+import accesoADatos.NoDataException;
+import accesoADatos.ServicioSolicitud;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Observable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author MikerJABC
  */
 public class ModeloAdministrador extends Observable {
+
+    /**
+     * @return the elFuncionario
+     */
+    public Funcionario getElFuncionario() {
+        return elFuncionario;
+    }
+
+    /**
+     * @param elFuncionario the elFuncionario to set
+     */
+    public void setElFuncionario(Funcionario elFuncionario) {
+        this.elFuncionario = elFuncionario;
+    }
+    
+    private Funcionario elFuncionario;
+   
     
     ArrayList<Bien> bienes  = new ArrayList<>();
     VistaAdministrador vistaAdmistrador;
@@ -67,5 +91,34 @@ public class ModeloAdministrador extends Observable {
         setChanged();
         bienes.clear();
      }    
+
+    public void setTabla() throws GlobalException {
+        ArrayList<Solicitud> sol = new ArrayList<>();
+        ServicioSolicitud accServicioSolicitud = new ServicioSolicitud();
+        try {
+            sol = accServicioSolicitud.listarSolicitudes();
+        } catch (NoDataException ex) {
+            Logger.getLogger(ModeloAdministrador.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(ModeloAdministrador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        for (int i = 0; i < sol.size(); i++) {
+            try {
+                if (accServicioSolicitud.buscarFuncionarioAsignadoSolicitud(sol.get(i).getNumeroSolicitud()) != elFuncionario){
+                     sol.remove(i);
+                } 
+            } catch (NoDataException ex) {
+                Logger.getLogger(ModeloAdministrador.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(ModeloAdministrador.class.getName()).log(Level.SEVERE, null, ex);
+            }  
+        }
+        
+        for (int i = 0; i < sol.size(); i++) {
+            this.vistaAdmistrador.dtm.addRow(new Object [] {sol.get(i).getNumeroSolicitud(),sol.get(i).getFecha(),sol.get(i).getTipo(),sol.get(i).getEstado() });
+        }
+     }
+    
     
 }
