@@ -6,168 +6,116 @@
 package Control;
 
 import Modelo.ModeloAdministrador;
-import Vista.VistaBien;
- import Vista.VistaLogin;
+import Modelo.ModeloSolicitud;
+import Modelo.ModeloTransferencia;
 import Vista.VistaAdministrador;
+import Vista.VistaSolicitud;
+import Vista.VistaTransferencia;
 import accesoADatos.GlobalException;
 import accesoADatos.NoDataException;
-import accesoADatos.ServicioBien;
+import accesoADatos.ServicioFuncionario;
 import accesoADatos.ServicioSolicitud;
+import accesoADatos.ServicioTransferencia;
 import java.awt.event.ActionEvent;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
- import javax.swing.JButton;
-import javax.swing.JOptionPane;
+import javax.swing.JButton;
+import javax.swing.JMenuItem;
+import javax.swing.JTable;
 
 /**
  *
  * @author Fernando
  */
-public class ControllerAdministrador extends AbstractController{
+public class ControllerAdministrador extends AbstractController implements ItemListener {
 
-    /**
-     * @return the modelo
-     */
-    public ModeloAdministrador getModelo() {
-        return modelo;
-    }
-
-    /**
-     * @param modelo the modelo to set
-     */
-    public void setModelo(ModeloAdministrador modelo) {
-        this.modelo = modelo;
-    }
-    
-    public VistaAdministrador getVistaAdmistrador() {
-        return vistaAdmistrador;
-    }
-
-    public void setVistaAdmistrador(VistaAdministrador vistaAdmistrador) {
-        this.vistaAdmistrador = vistaAdmistrador;
-    }
-
-    public VistaLogin getVistaLogin() {
-        return vistaLogin;
-    }
-
-    public void setVistaLogin(VistaLogin vistaLogin) {
-        this.vistaLogin = vistaLogin;
-    }
-
-    public VistaAdministrador getVistaSolicitud() {
-        return vistaSolicitud;
-    }
-
-    public void setVistaSolicitud(VistaAdministrador vistaSolicitud) {
-        this.vistaSolicitud = vistaSolicitud;
-    }
-
-    public VistaBien getVistaBien() {
-        return vistaBien;
-    }
-
-    public void setVistaBien(VistaBien vistaBien) {
-        this.vistaBien = vistaBien;
-    }
-
-    public ControllerBien getControlbien() {
-        return controlbien;
-    }
-
-    public void setControlbien(ControllerBien controlbien) {
-        this.controlbien = controlbien;
-    }
-
-    public ControllerLogin getControlLogin() {
-        return controlLogin;
-    }
-
-    public void setControlLogin(ControllerLogin controlLogin) {
-        this.controlLogin = controlLogin;
-    }
-
-    
-    public ControllerSolicitud getControlSolicitud() {
-        return controlSolicitud;
-    }
-
-    
-    public void setControlSolicitud(ControllerSolicitud controlSolicitud) {
-        this.controlSolicitud = controlSolicitud;
-    }
-    
-    
-    public VistaAdministrador vistaAdmistrador;
-    public VistaLogin vistaLogin;
-    public VistaAdministrador vistaSolicitud;
-    public VistaBien vistaBien;
-    
     private ModeloAdministrador modelo;
-    
-    public ControllerBien controlbien;
-    public ControllerLogin controlLogin;
-    public ControllerSolicitud controlSolicitud;
-    public ServicioBien accesoADatosBien;
-    public ServicioSolicitud accesoADatosSolicitud;
-    
-    
-    
-    public ControllerAdministrador(ModeloAdministrador modelo, VistaAdministrador vistaAdmistrador )   {
-        this.vistaAdmistrador = vistaAdmistrador;
+    private VistaAdministrador vista;
+    private VistaSolicitud vistaSolicitud;
+    private VistaTransferencia vistaTrasferencia;
+    private ModeloSolicitud modeloSolicitud;
+    private ModeloTransferencia modeloTrasferencia;
+
+    public ControllerAdministrador(ModeloAdministrador modelo, VistaAdministrador vista) {
         this.modelo = modelo;
-        this.modelo.setVista(this.vistaAdmistrador);
-         this.vistaAdmistrador = vistaAdmistrador;
-         vistaAdmistrador.setControlador(this);
-         
-        try {
-            cargar();
-        } catch (GlobalException ex) {
-            Logger.getLogger(ControllerAdministrador.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NoDataException ex) {
-            Logger.getLogger(ControllerAdministrador.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(ControllerAdministrador.class.getName()).log(Level.SEVERE, null, ex);
-        }
-   }
-    
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        
-        JButton btn = (JButton)e.getSource();
-        
-        if(btn.getText().equalsIgnoreCase("Agregar Bien")) {
-            vistaBien = new VistaBien();
-            accesoADatosBien = new ServicioBien();
-            controlbien = new ControllerBien(vistaBien, accesoADatosBien, this);
-            controlbien.getVistaBien().setVisible(true); 
-        }
-           if(btn.getText().equalsIgnoreCase("Cancelar")) {
-                 this.vistaAdmistrador.getPanelAgregaNuevaSolicitud().setVisible(false);
-                 this.vistaAdmistrador.dtm.setRowCount(0);
-                 String [] titulo1 = new String []{"#Solicitud", "fecha ","tipo adquisicion", "estado"};
-                 this.vistaAdmistrador.dtm.setColumnIdentifiers(titulo1);
-                 this.vistaAdmistrador.getTituloDeTabla().setText("Mis Solicitudes");   
-           }
-            if(btn.getText().equalsIgnoreCase("guardar solicitud")){                 
-                this.vistaAdmistrador.getPanelAgregaNuevaSolicitud().setVisible(false);
-                guardarSolicitud();
-            }
-             if(btn.getText().equalsIgnoreCase("Nueva Solicitud")){
-                     String [] titulo = new String []{"Descripcion", "Modelo", "Serial", "Precio", "Cantidad"};
-                     this.vistaAdmistrador.dtm.setRowCount(0);
-                     this.vistaAdmistrador.dtm.setColumnIdentifiers(titulo);
-                     this.vistaAdmistrador.getPanelAgregaNuevaSolicitud().setVisible(true);
-                     this.vistaAdmistrador.getTituloDeTabla().setText("Bienes de la Solicitud");     
-            }
+        this.vista = vista;
+        vista.setModelo(modelo);
+        vista.setControlador(this);
+        modelo.setServicioSolicitud(ServicioSolicitud.getServicioSolicitud());
+        modelo.setServicioTransferencia(ServicioTransferencia.getServicioTransferencia());
+        modelo.setServicioFuncionario(ServicioFuncionario.getServicioFuncionario());
+        ajustarVista();
     }
 
     @Override
-    public void mouseClicked(MouseEvent e) {
+    public void actionPerformed(ActionEvent ae) {
+        try {
+            if (ae.getSource().getClass() == JButton.class) {
+                JButton button = (JButton) ae.getSource();
+                instrucciones(button.getName());
+            }
+            if (ae.getSource().getClass() == JMenuItem.class) {
+                JMenuItem button = (JMenuItem) ae.getSource();
+                instrucciones(button.getName());
+            }
+        } catch (Exception ex) {
+            vista.mostrarMensaje(ex.getMessage());
+        }
+    }
+
+    public void ajustarVista() {
+        vistaSolicitud = new VistaSolicitud();
+        vistaTrasferencia = new VistaTransferencia();
+        vistaTrasferencia.setControlador(this);
+        vistaSolicitud.setControlador(this);
+        modeloSolicitud = null;
+        //modeloSolicitud = new ModeloSolicitud();
+        modeloTrasferencia = new ModeloTransferencia(modelo.getFuncionario());
+        vistaTrasferencia.setModelo(modeloTrasferencia);
+        vistaSolicitud.addWindowListener(this);
+        vistaTrasferencia.addWindowListener(this);
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent ae) {
+        String numero;
+        try {
+            if (ae.getSource().getClass() == JTable.class) {
+                JTable tabla = (JTable) ae.getSource();
+                numero = tabla.getValueAt(tabla.getSelectedRow(), 0).toString();
+                tabla.changeSelection(tabla.getSelectedRow(), 0, false, true);
+                modelo.buscarSolicitud(numero);
+                if (ae.getClickCount() == 1) {
+                    switch (ae.getButton()) {
+                        case MouseEvent.BUTTON2: {//Click derecho
+                            //instrucciones("eliminar");
+                        }
+                        break;
+                        case MouseEvent.BUTTON1: {//Click izquierdo
+                            if (modelo.getTipo().equalsIgnoreCase(modelo.tiposSolicitud[0])) {
+                                modeloSolicitud = new ModeloSolicitud(modelo.getFuncionario());
+                                modeloSolicitud.setRegistrador(modelo.funcionarioAsociado());
+                                modeloSolicitud.setServicioFuncionario(ServicioFuncionario.getServicioFuncionario());
+                                vistaSolicitud.setModelo(modeloSolicitud);
+                                vistaSolicitud.cargarDatos(modelo.getSolicitud());
+                                vistaSolicitud.setVisible(true);
+                            } else {
+                                vistaTrasferencia.cargarDatos(modelo.getTransferencia());
+                                vistaTrasferencia.setVisible(true);
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+        } catch (GlobalException | NoDataException ex) {
+            vista.mostrarMensaje(ex.getMessage());
+        } catch (Exception ex1) {
+            vista.mostrarMensaje(ex1.getMessage());
+        }
     }
 
     @Override
@@ -186,7 +134,6 @@ public class ControllerAdministrador extends AbstractController{
     public void mouseExited(MouseEvent e) {
     }
 
-
     @Override
     public void keyTyped(KeyEvent e) {
     }
@@ -201,66 +148,136 @@ public class ControllerAdministrador extends AbstractController{
 
     @Override
     public void mostrarVista() {
-        vistaAdmistrador.setVisible(true);
+        vista.setVisible(true);
     }
 
     @Override
     public void ocultarVista() {
-        vistaAdmistrador.setVisible(false);
+        vista.setVisible(false);
     }
 
-    private void guardarSolicitud() {
-        accesoADatosSolicitud = new ServicioSolicitud();
-         try {
-            accesoADatosSolicitud.insertarSolicitud(getModelo().getSolicitud());
-        } catch (GlobalException ex) {
-            Logger.getLogger(ControllerAdministrador.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NoDataException ex) {
-            Logger.getLogger(ControllerAdministrador.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-         accesoADatosBien = new ServicioBien();
-         
-         for (int i = 0; i < getModelo().getBienes().size(); i++) {
-            try {
-                accesoADatosBien.insertarBien(getModelo().getBienes().get(i), getModelo().getSolicitud().getNumeroSolicitud() );
-            } catch (GlobalException ex) {
-                Logger.getLogger(ControllerAdministrador.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (NoDataException ex) {
-                Logger.getLogger(ControllerAdministrador.class.getName()).log(Level.SEVERE, null, ex);
+    public void instrucciones(String x) throws Exception {
+        try {
+            switch (x.toLowerCase()) {
+                case "agregar": {
+                    if (modelo.getTipo().equalsIgnoreCase(modelo.tiposSolicitud[0])) {
+                        modelo.AsignarRegistradorASolicitud(vistaSolicitud.jtfNumero.getText(), modeloSolicitud.getRegistrador());
+                        vistaSolicitud.setVisible(false);
+                        vistaSolicitud.mostrarMensaje("Se asigno un registrador a la solicitud");
+                        vistaSolicitud.limpiarTodosEspacios();
+                        vistaSolicitud.dispose();
+                    } else if (modelo.getTipo().equalsIgnoreCase(modelo.tiposSolicitud[1])) {
+                        String aux = "";
+                        if (vistaTrasferencia.jcbEstado.getModel().getSelectedItem().toString().equals("Rechazada")) {
+                            aux = vistaSolicitud.preguntarDetalle("Al estar la transferencia en estado Rechazada debe ingresar un detalle del rechazo.");
+                        }
+                        if (aux != null || vistaTrasferencia.jcbEstado.getModel().getSelectedItem().toString().equals("Recibida")) {
+                            modelo.AutorizarTransferencia(vistaTrasferencia.jcbEstado.getModel().getSelectedItem().toString(),aux);
+                            vistaTrasferencia.mostrarMensaje("Se guardo el cambio en el estado de la trasferencia");
+                            vistaTrasferencia.setVisible(false);
+                            vistaTrasferencia.limpiarTodosEspacios();
+                            vistaTrasferencia.dispose();
+                        }
+                    }
+                }
+                break;
+                case "buscar": {
+                    modeloTrasferencia.limpiar();
+                    if(modeloSolicitud != null){
+                        modeloSolicitud.limpiar();
+                    }
+                    modelo.limpiar();
+                    if (modelo.getTipo().equalsIgnoreCase(modelo.tiposSolicitud[0])) {
+                        if(modelo.getSolicitud() == null){
+                            modelo.buscarSolicitud(vista.jtIdBuscar.getText());
+                            vista.mostrarMensaje("Se encontro la solicitud");
+                        }else{
+                            modeloSolicitud.buscarBien(vistaSolicitud.jtfIdBuscar.getText());
+                            vistaSolicitud.mostrarMensaje("Se encontro el bien");
+                        }
+                    } else {
+                        if(modelo.getTransferencia()== null){
+                            modelo.buscarSolicitud(vista.jtIdBuscar.getText());
+                            vista.mostrarMensaje("Se encontro la transferencia");
+                        }else{
+                            modeloTrasferencia.buscarActivo(vistaTrasferencia.jtfCodigoBuscar.getText());
+                            vistaTrasferencia.mostrarMensaje("Se encontro el activo");
+                        }
+                    }
+                }
+                break;
+                case "buscarregistrador": {
+                    try{
+                    modeloSolicitud.buscarRegistrador(vistaSolicitud.jtfRegistrador.getText());
+                    vistaSolicitud.mostrarMensaje("¡Registrador encontrado!");
+                    }catch(Exception ex){
+                        vistaSolicitud.mostrarMensaje(ex.getMessage());
+                    }
+                }
+                break;
+                case "limpiar": {
+                    if (modelo.getTipo().equalsIgnoreCase(modelo.tiposSolicitud[0])) {
+                        vistaSolicitud.limpiarTodosEspacios();
+                    } else {
+                        modelo.AutorizarTransferencia(vistaTrasferencia.jtfNumero.getText(), vistaTrasferencia.jtfCodigoBuscar.getText());
+                        vistaTrasferencia.limpiarTodosEspacios();
+                    }
+                }
+                break;
+                case "cancelar": {
+                    if (modelo.getTipo().equalsIgnoreCase(modelo.tiposSolicitud[0])) {
+                        vistaSolicitud.mostrarMensaje("No se realizo ningun cambio");
+                        vistaSolicitud.setVisible(false);
+                        vistaSolicitud.limpiarTodosEspacios();
+                        vistaSolicitud.dispose();
+                        modelo.limpiar();
+                        
+                    } else {
+                        vistaSolicitud.mostrarMensaje("No se realizo ningun cambio");
+                        vistaTrasferencia.setVisible(false);
+                        vistaTrasferencia.limpiarTodosEspacios();
+                        vistaTrasferencia.dispose();
+                        modelo.limpiar();
+                    }
+                }
+                break;
+                case "cambiar": {
+                    vista.dispose();
+                }
+                break;
+                case "salir": {
+                    System.exit(0);
+                }
+                break;
+                default: {
+                }
+                break;
             }
-        }
-         
-         
-        JOptionPane.showMessageDialog(null," Solicitud Agregada Satisfactoriamente" );
-        getModelo().limpiar();
-         try {
-            cargar();
-        } catch (GlobalException ex) {
-            Logger.getLogger(ControllerAdministrador.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NoDataException ex) {
-            Logger.getLogger(ControllerAdministrador.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(ControllerAdministrador.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            throw (new Exception(ex.getMessage()));
         }
     }
 
-    private void cargar() throws GlobalException, NoDataException, SQLException {
-        accesoADatosSolicitud =  new ServicioSolicitud();
-        getModelo().setNumeroNuevoSolicitud( accesoADatosSolicitud.listarSolicitudes());
-        
-        String [] titulo1 = new String []{"#Solicitud", "fecha ","tipo adquisicion", "estado"};
-        this.vistaAdmistrador.dtm.setColumnIdentifiers(titulo1);
-        modelo.setTabla();
+    @Override
+    public void itemStateChanged(ItemEvent ie) {
+        try {
+            if (ie.getStateChange() == ItemEvent.SELECTED) {
+                modelo.cambiarTipo(ie.getItem().toString());
+                vista.cambiarValoresTabla(modelo.getTipo());
+            }
+        } catch (Exception exception) {
+            vista.mostrarMensaje(exception.getMessage());
+        }
     }
     
     @Override
     public void cerrarVista() {
-        //vista.dispose();
+        vista.dispose();
     }
     
     @Override
     public void windowOpened(WindowEvent we) {
+        vista.setEnabled(false);
     }
 
     @Override
@@ -269,6 +286,7 @@ public class ControllerAdministrador extends AbstractController{
 
     @Override
     public void windowClosed(WindowEvent we) {
+        vista.setEnabled(true);
     }
 
     @Override
@@ -290,5 +308,4 @@ public class ControllerAdministrador extends AbstractController{
     public void windowDeactivated(WindowEvent we) {
         
     }
- 
 }

@@ -1,124 +1,266 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Modelo;
 
 import Logic.Bien;
 import Logic.Funcionario;
 import Logic.Solicitud;
-import Vista.VistaAdministrador;
+import Logic.Transferencia;
 import accesoADatos.GlobalException;
 import accesoADatos.NoDataException;
+import accesoADatos.ServicioFuncionario;
 import accesoADatos.ServicioSolicitud;
+import accesoADatos.ServicioTransferencia;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author MikerJABC
- */
 public class ModeloAdministrador extends Observable {
+    private ServicioSolicitud servicioSolicitud;
+    private ServicioTransferencia servicioTransferencia;
+    private ServicioFuncionario servicioFuncionario;
+    public final String[] tiposSolicitud = {"Incorporación","Traslado"};
+    public final String[] tiposBienes = {"Compra","Donación","Producción institucional"};
+    public final Object[] VARIABLESTABLA = {"Número","Fecha","Tipo","Estado","Cantidad de Bienes","Monto Total","Origen","Destino","Ubicación","Funcionario","Autorización"};
+    private String tipo;
+    private Solicitud solicitud;
+    private Transferencia transferencia;
+    private Funcionario funcionario;
 
-    /**
-     * @return the elFuncionario
-     */
-    public Funcionario getElFuncionario() {
-        return elFuncionario;
+    public ModeloAdministrador(Funcionario funcionario) {
+        this.funcionario = funcionario;
+        tipo = tiposSolicitud[0];
+    }
+    
+    public void setServicioSolicitud(ServicioSolicitud servicioDependencia) {
+        this.servicioSolicitud = servicioDependencia;
+        this.setChanged();
+        this.notifyObservers();
+    }
+    
+    public void setServicioTransferencia(ServicioTransferencia servicioTransferencia) {
+        this.servicioTransferencia = servicioTransferencia;
+        this.setChanged();
+        this.notifyObservers();
+    }
+    
+    public void setServicioFuncionario(ServicioFuncionario servicioFuncionario) {
+        this.servicioFuncionario = servicioFuncionario;
+        this.setChanged();
+        this.notifyObservers();
+    }
+    
+    public void buscarSolicitud(String numero) throws Exception {
+        try {
+            if (numero.equals("")) {
+                throw (new Exception("numero invalido"));
+            }
+            if(tipo.equalsIgnoreCase(tiposSolicitud[0])){
+                solicitud = servicioSolicitud.buscarSolicitud(Integer.valueOf(numero));
+                transferencia = null;
+                if(!solicitud.getEstado().equals("Por verificar")){
+                    solicitud = null;
+                    throw (new Exception("No se encontro la solicitud"));
+                }
+            }else if(tipo.equalsIgnoreCase(tiposSolicitud[1])){
+                transferencia = servicioTransferencia.buscarTransferencia(Integer.valueOf(numero));
+                solicitud = null;
+                if(!transferencia.getAutorizacion().equals("Recibida")){
+                    transferencia = null;
+                    throw (new Exception("No se encontro la transferencia"));
+                }
+            }
+            this.setChanged();
+            this.notifyObservers();
+        } catch (Exception ex) {
+            throw (new Exception(ex.getMessage()));
+        }
+    }
+    
+    public Bien buscarBien(String serial) throws Exception {
+        Bien aux = null;
+        try {
+            if (serial.equals("")) {
+                throw (new Exception("ID invalido"));
+            }
+            if(tipo.equalsIgnoreCase(tiposSolicitud[0])){
+                Iterator<Bien> ite = solicitud.getListaBienes().iterator();
+                while (ite.hasNext()) {
+                    Bien d = ite.next();
+                    if (d.getSerial().equalsIgnoreCase(serial)) {
+                        aux = d;
+                        break;
+                    }
+                }
+            }else{
+                Iterator<Bien> ite = transferencia.getListaBienes().iterator();
+                while (ite.hasNext()) {
+                    Bien d = ite.next();
+                    if (d.getSerial().equalsIgnoreCase(serial)) {
+                        aux = d;
+                        break;
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            throw (new Exception(ex.getMessage()));
+        }
+        return aux;
+    }
+    
+    public void AsignarRegistradorASolicitud(String numero, Funcionario registrador) throws Exception {
+        try {
+            if (numero.equals("")) {
+                throw (new Exception("numero invalido"));
+            }
+            if (registrador == null) {
+                throw (new Exception("Registrador invalido"));
+            }
+            servicioSolicitud.asignarSolicitud(solicitud, registrador);
+            solicitud = null;
+            this.setChanged();
+            this.notifyObservers();
+        } catch (Exception ex) {
+            throw (new Exception(ex.getMessage()));
+        }
+    }
+    
+    public void AutorizarTransferencia(String estado, String detalle) throws Exception {
+        try {
+            if (transferencia == null) {
+                throw (new Exception("Transferencia invalida invalido"));
+            }
+            if (!detalle.equals("")) {
+                String aux = estado + '(' + detalle + ')';
+                transferencia.setAutorizacion(aux);
+            } else {
+                transferencia.setAutorizacion(estado);
+            }
+            servicioTransferencia.modificarTransferencia(transferencia);
+            transferencia = null;
+            this.setChanged();
+            this.notifyObservers();
+        } catch (Exception ex) {
+            throw (new Exception(ex.getMessage()));
+        }
+    }
+    
+    public void cambiarTipo(String tipo) throws Exception {
+        try {
+            if (tipo.equals("")) {
+                throw (new Exception("Debe ingresar un codigo"));
+            }
+            this.tipo = tipo;
+            this.setChanged();
+            this.notifyObservers();
+        } catch (Exception ex) {
+            throw (new Exception(ex.getMessage()));
+        }
+    }
+    
+    public ArrayList<Object> getListaSolicitudes() {
+        ArrayList<Object> list = new ArrayList();
+        try {
+            if (tipo.equals(tiposSolicitud[0])) {
+                if (solicitud == null) {
+                    Iterator<Solicitud> ite = servicioSolicitud.listarSolicitudes().iterator();
+                    while (ite.hasNext()) {
+                        Solicitud solicitud = ite.next();
+                        if (solicitud.getEstado().equalsIgnoreCase("por verificar") && servicioSolicitud.buscarFuncionarioAsignadoSolicitud(solicitud.getNumeroSolicitud()) == null) {
+                            Object[] fila = new Object[6];
+                            fila[0] = solicitud.getNumeroSolicitud();
+                            fila[1] = solicitud.getFecha();
+                            fila[2] = solicitud.getTipo();
+                            fila[3] = solicitud.getEstado();
+                            fila[4] = solicitud.getCantiadadBienes();
+                            fila[5] = solicitud.getMontoTotal();
+                            list.add(fila);
+                        }
+                    }
+                } else {
+                    Object[] fila = new Object[6];
+                    fila[0] = solicitud.getNumeroSolicitud();
+                    fila[1] = solicitud.getFecha();
+                    fila[2] = solicitud.getTipo();
+                    fila[3] = solicitud.getEstado();
+                    fila[4] = solicitud.getCantiadadBienes();
+                    fila[5] = solicitud.getMontoTotal();
+                    list.add(fila);
+                }
+            } else if (tipo.equals(tiposSolicitud[1])) {
+                if (transferencia == null) {
+                    Iterator<Transferencia> ite = servicioTransferencia.listarTransferencia().iterator();
+                    while (ite.hasNext()) {
+                        Transferencia transferencia = ite.next();
+                        if (transferencia.getAutorizacion().equalsIgnoreCase("Recibida")) {
+                            Object[] fila = new Object[6];
+                            fila[0] = transferencia.getNumero();
+                            fila[1] = transferencia.getOrigen().getNombre();
+                            fila[2] = transferencia.getDestino().getNombre();
+                            fila[3] = transferencia.getUbicacion();
+                            fila[4] = transferencia.getFuncionario().getNombre();
+                            fila[5] = transferencia.getAutorizacion();
+                            list.add(fila);
+                        }
+                    }
+                } else {
+                    Object[] fila = new Object[6];
+                    fila[0] = transferencia.getNumero();
+                    fila[1] = transferencia.getOrigen().getNombre();
+                    fila[2] = transferencia.getDestino().getNombre();
+                    fila[3] = transferencia.getUbicacion();
+                    fila[4] = transferencia.getFuncionario().getNombre();
+                    fila[5] = transferencia.getAutorizacion();
+                    list.add(fila);
+                }
+            }
+        } catch (GlobalException | NoDataException ex) {
+        } catch (SQLException ex) {
+            Logger.getLogger(ModeloRecurHumanos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
+    
+    public String getTipo() {
+        return tipo;
     }
 
-    /**
-     * @param elFuncionario the elFuncionario to set
-     */
-    public void setElFuncionario(Funcionario elFuncionario) {
-        this.elFuncionario = elFuncionario;
-    }
-    
-    private Funcionario elFuncionario;
-   
-    
-    ArrayList<Bien> bienes  = new ArrayList<>();
-    VistaAdministrador vistaAdmistrador;
-        int total;
-    public void updateTable(Bien bien  ){
-        bienes.add(bien);
-        this.vistaAdmistrador.dtm.addRow(new Object [] {bien.getDescripcion(),bien.getModelo(),bien.getSerial(),bien.getPrecio(),bien.getCantidad()  });
-        
-        if (this.vistaAdmistrador.getCampoMontoTotal().getText().equalsIgnoreCase(""))
-            total = 0;
-        else 
-        total = Integer.parseInt(this.vistaAdmistrador.getCampoMontoTotal().getText());
-        
-        total = (int) (total + bien.getCantidad()*bien.getPrecio());
-        this.vistaAdmistrador.getCampoMontoTotal().setText(""+total);
-    }
- 
-    public void setVista(VistaAdministrador view){
-        this.vistaAdmistrador = view;
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
-    
-    public ArrayList<Bien> getBienes() {
-        return bienes;    
+    public Solicitud getSolicitud() {
+        return solicitud;
     }
- 
-    public void setNumeroNuevoSolicitud(ArrayList<Solicitud> misSolicitudes) {
-         int numeroSolicitudes = misSolicitudes.size()+1;  
-         vistaAdmistrador.getCampoNumeroComprobante().setText(  ""+numeroSolicitudes );
-     }
+
+    public Transferencia getTransferencia() {
+        return transferencia;
+    }
+
+    public Funcionario getFuncionario() {
+        return funcionario;
+    }
     
-    public Solicitud getSolicitud(){
-        Solicitud nuevaSolicitud = new Solicitud( 
-                Integer.parseInt(this.vistaAdmistrador.getCampoNumeroComprobante().getText()) ,
-                this.vistaAdmistrador.getCampoFecha().getText(), 
-                this.vistaAdmistrador.getCampoTipoAdqui().getSelectedItem().toString(), 
-                "por Revisar"
-        );
-        nuevaSolicitud.setListaBienes(bienes);
-        return nuevaSolicitud;
+    public Funcionario funcionarioAsociado() throws Exception {
+        Funcionario aux = null;
+        try{
+            aux = servicioSolicitud.buscarFuncionarioAsignadoSolicitud(solicitud.getNumeroSolicitud());
+        }catch(Exception ex){
+            throw(new Exception(ex.getMessage()));
+        }
+        return aux;
+    }
+    
+    @Override
+    public void notifyObservers() {
+        super.notifyObservers(getListaSolicitudes());
     }
 
     public void limpiar() {
- 
-        this.vistaAdmistrador.getCampoFecha().setText("");
-        this.vistaAdmistrador.getCampoMontoTotal().setText("");
-        this.vistaAdmistrador.dtm.setRowCount(0);
-        notifyObservers();
-        setChanged();
-        bienes.clear();
-     }    
-
-    public void setTabla() throws GlobalException {
-        ArrayList<Solicitud> sol = new ArrayList<>();
-        ServicioSolicitud accServicioSolicitud = new ServicioSolicitud();
-        try {
-            sol = accServicioSolicitud.listarSolicitudes();
-        } catch (NoDataException ex) {
-            Logger.getLogger(ModeloAdministrador.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(ModeloAdministrador.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        for (int i = 0; i < sol.size(); i++) {
-            try {
-                if (accServicioSolicitud.buscarFuncionarioAsignadoSolicitud(sol.get(i).getNumeroSolicitud()) != elFuncionario){
-                     sol.remove(i);
-                } 
-            } catch (NoDataException ex) {
-                Logger.getLogger(ModeloAdministrador.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SQLException ex) {
-                Logger.getLogger(ModeloAdministrador.class.getName()).log(Level.SEVERE, null, ex);
-            }  
-        }
-        
-        for (int i = 0; i < sol.size(); i++) {
-            this.vistaAdmistrador.dtm.addRow(new Object [] {sol.get(i).getNumeroSolicitud(),sol.get(i).getFecha(),sol.get(i).getTipo(),sol.get(i).getEstado() });
-        }
-     }
-    
-    
+        solicitud = null;
+        transferencia = null;
+        this.setChanged();
+        this.notifyObservers();
+    }
 }
