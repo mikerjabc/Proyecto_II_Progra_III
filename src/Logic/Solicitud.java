@@ -6,6 +6,7 @@
 package Logic;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import java.util.Observable;
 
@@ -15,7 +16,7 @@ public class Solicitud extends Observable {
     private String fecha;
     private String tipo;
     private String estado;
-    private int cantiadadBienes;
+    private int cantidadBienes;
     public float montoTotal;
     private ArrayList<Bien> listaBienes;
 
@@ -59,11 +60,11 @@ public class Solicitud extends Observable {
     }
 
     public int getCantiadadBienes() {
-        return cantiadadBienes;
+        return cantidadBienes;
     }
 
     public void setCantiadadBienes(int cantiadadBienes) {
-        this.cantiadadBienes = cantiadadBienes;
+        this.cantidadBienes = cantiadadBienes;
     }
 
     public float getMontoTotal() {
@@ -102,17 +103,46 @@ public class Solicitud extends Observable {
 //        }
 //        return monto;
 //    }
+//    public void cantidadymonto(ArrayList<Bien> listaBienes) {
+//        int cantidad = 0;
+//        float monto = 0;
+//        ArrayList<Bien> list = listaBienes;
+//
+//        for (int i = 0; i < list.size(); i++) {
+//            
+//            cantidad = cantidad + list.get(i).getCantidad();
+//            monto = monto + (list.get(i).getPrecio() * list.get(i).getCantidad());
+//            cantidad++;
+//        }
+//        this.setCantiadadBienes(cantidad);
+//        this.setMontoTotal(monto);
+//    }
+
+//     public void cantidadymonto(ArrayList<Bien> listaBienes) {
+//      
+//        ArrayList<Bien> list = listaBienes;
+//cantidadBienes=7;
+//        for (int i = 0; i < list.size(); i++) {
+//            
+//           cantidadBienes= cantidadBienes + list.get(i).getCantidad();
+//            montoTotal = montoTotal + (list.get(i).getPrecio() * list.get(i).getCantidad());
+////            cantidad++;
+//
+//        }
+////        this.setCantiadadBienes(cantidad);
+////        this.setMontoTotal(monto);
+//    }
+    
     public void cantidadymonto(ArrayList<Bien> listaBienes) {
-        int cantidad = 0;
-        float monto = 0;
-        ArrayList<Bien> list = listaBienes;
-
-        for (int i = 0; i < list.size(); i++) {
-            cantidad = cantidad + list.get(i).getCantidad();
-            monto = monto + (list.get(i).getPrecio() * list.get(i).getCantidad());
-        }
-        this.setCantiadadBienes(cantidad);
-        this.setMontoTotal(monto);
-    }
-
+    Iterator<Bien> it = listaBienes.iterator();
+// mientras al iterador queda proximo juego
+while(it.hasNext()){
+    Bien item=it.next();
+    
+    cantidadBienes= cantidadBienes + item.getCantidad();
+            montoTotal = montoTotal + (item.getPrecio() * item.getCantidad());
+}}
+    
+    
+    
 }

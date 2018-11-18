@@ -5,6 +5,7 @@
  */
 package accesoADatos;
 
+import Logic.Bien;
 import Logic.Funcionario;
 import Logic.Solicitud;
 import java.sql.CallableStatement;
@@ -292,6 +293,7 @@ public class ServicioSolicitud extends Servicio {
                 );
                 laSolicitud.setListaBienes(ServicioBien.getServicioBien().buscarBienPorSolicitud(rs.getInt("numerosolicitud")));
                 coleccion.add(laSolicitud);
+                laSolicitud.cantidadymonto(laSolicitud.getListaBienes());///////
             }
         } catch (SQLException e) {
             e.printStackTrace();
