@@ -25,8 +25,10 @@ public class ModeloSolicitud extends Observable {
     private Bien bien;
     public final String[] tiposBien = {"Compra", "Donación", "Producción institucional"};
     public final String[] tiposEstadoSolicitud = {"Recibida", "Por verificar", "Rechazada", "Espera de rotulación", "Procesada"};
-    public Funcionario funcionario;
-    public Funcionario registrador;
+    private Funcionario funcionario;
+    private Funcionario registrador;
+    private int cantidad;
+    private float monto;
 
     public ModeloSolicitud(Funcionario funcionario) {
         listaBienes = new ArrayList();
@@ -58,6 +60,7 @@ public class ModeloSolicitud extends Observable {
             bien = new Bien(serial, descripcion, modelo, marca, Integer.valueOf(precio), Integer.valueOf(cantidad));
             listaBienes.add(bien);
             bien = null;
+            this.cantidadymonto();
             this.notifyObservers();
         } catch (Exception ex) {
             throw (new Exception(ex.getMessage()));
@@ -67,6 +70,7 @@ public class ModeloSolicitud extends Observable {
     public void eliminarBien(Bien bien) throws Exception {
         try {
             listaBienes.remove(bien);
+            this.cantidadymonto();
             this.setChanged();
             this.notifyObservers();
         } catch (Exception ex) {
@@ -102,6 +106,7 @@ public class ModeloSolicitud extends Observable {
                     break;
                 }
             }
+            this.cantidadymonto();
             this.notifyObservers();
         } catch (Exception ex) {
             throw (new Exception(ex.getMessage()));
@@ -181,6 +186,14 @@ public class ModeloSolicitud extends Observable {
         this.registrador = registrador;
     }
 
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public float getMonto() {
+        return monto;
+    }
+
     @Override
     public void notifyObservers() {
         setChanged();
@@ -207,5 +220,16 @@ public class ModeloSolicitud extends Observable {
             
         }
         return aux + 1;
+    }
+    
+    public void cantidadymonto() {
+        cantidad = 0;
+        monto = 0;
+        Iterator<Bien> it = listaBienes.iterator();
+        while (it.hasNext()) {
+            Bien item = it.next();
+            cantidad += item.getCantidad();
+            monto += (item.getPrecio() * item.getCantidad());
+        }
     }
 }

@@ -84,8 +84,9 @@ public class Solicitud extends Observable {
     }
     
     public void cantidadymonto() {
+        cantidadBienes = 0;
+        montoTotal = 0;
         Iterator<Bien> it = listaBienes.iterator();
-        // mientras al iterador queda proximo juego
         while (it.hasNext()) {
             Bien item = it.next();
             cantidadBienes += item.getCantidad();
