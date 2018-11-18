@@ -219,7 +219,6 @@ public class ControllerJefe extends AbstractController implements ItemListener {
                     if (modelo.getTipo().equalsIgnoreCase(modelo.tiposSolicitud[0])) {
                         vistaSolicitud.limpiarTodosEspacios();
                     } else {
-                        modelo.AutorizarTransferencia(vistaTrasferencia.jtfNumero.getText(), vistaTrasferencia.jtfCodigoBuscar.getText());
                         vistaTrasferencia.limpiarTodosEspacios();
                     }
                 }

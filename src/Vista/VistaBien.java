@@ -4,177 +4,47 @@
  * and open the template in the editor.
  */
 package Vista;
-import Control.ControllerBien;
+
+import Control.AbstractController;
+import Control.ControllerRecurHumanos;
 import Logic.Bien;
-import java.util.Observable;
-import java.util.Observer;
+import Logic.Funcionario;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author Fernando
  */
-public class VistaBien extends javax.swing.JFrame implements Observer {
+public class VistaBien extends javax.swing.JFrame {
 
-    
-    public javax.swing.JTextField getCampoDescripcion() {
-        return campoDescripcion;
-    }
-
-   
-    public void setCampoNombre(javax.swing.JTextField campoNombre) {
-        this.campoDescripcion = campoNombre;
-    }
-
- 
-    public javax.swing.JButton getBtnCancelar() {
-        return btnCancelar;
-    }
-
-    
-    public void setBtnCancelar(javax.swing.JButton btnCancelar) {
-        this.btnCancelar = btnCancelar;
-    }
-
-    
-    public javax.swing.JButton getBtnGuradar() {
-        return btnGuradar;
-    }
-
-   
-    public void setBtnGuradar(javax.swing.JButton btnGuradar) {
-        this.btnGuradar = btnGuradar;
-    }
-
-   
-    public javax.swing.JSpinner getCampoCantidadUnidades() {
-        return campoCantidadUnidades;
-    }
-
-    
-    public void setCampoCantidadUnidades(javax.swing.JSpinner campoCantidadUnidades) {
-        this.campoCantidadUnidades = campoCantidadUnidades;
-    }
-
-   
-    public javax.swing.JTextField getCampoMarca() {
-        return campoMarca;
-    }
-
-   
-    public void setCampoMarca(javax.swing.JTextField campoMarca) {
-        this.campoMarca = campoMarca;
-    }
-
-    
-    public javax.swing.JTextField getCampoModelo() {
-        return campoModelo;
-    }
-
-   
-    public void setCampoModelo(javax.swing.JTextField campoModelo) {
-        this.campoModelo = campoModelo;
-    }
-
-    
-    public javax.swing.JTextField getCampoPrecioUnitario() {
-        return campoPrecioUnitario;
-    }
-
-    
-    public void setCampoPrecioUnitario(javax.swing.JTextField campoPrecioUnitario) {
-        this.campoPrecioUnitario = campoPrecioUnitario;
-    }
-
-    
-    public javax.swing.JTextField getCampoSerial() {
-        return campoSerial;
-    }
-
-   
-    public void setCampoSerial(javax.swing.JTextField campoSerial) {
-        this.campoSerial = campoSerial;
-    }
-
-    
-    public javax.swing.JTextField getTextMarca() {
-        return getCampoMarca();
-    }
-
-    
-    public void setTextMarca(javax.swing.JTextField textMarca) {
-        this.setCampoMarca(textMarca);
-    }
-
-   
-    public javax.swing.JTextField getTextModelo() {
-        return getCampoModelo();
-    }
-
-    
-    public void setTextModelo(javax.swing.JTextField textModelo) {
-        this.setCampoModelo(textModelo);
-    }
-
-   
-    public javax.swing.JTextField getTextPrecioU() {
-        return getCampoPrecioUnitario();
-    }
-
-    
-    public void setTextPrecioU(javax.swing.JTextField textPrecioU) {
-        this.setCampoPrecioUnitario(textPrecioU);
-    }
-
-    
-    public javax.swing.JTextField getTextSerial() {
-        return getCampoSerial();
-    }
-
-    
-    public void setTextSerial(javax.swing.JTextField textSerial) {
-        this.setCampoSerial(textSerial);
-    }
-
-    
-    public javax.swing.JSpinner getCantidadUnidades() {
-        return getCampoCantidadUnidades();
-    }
-
-  
-    public void setCantidadUnidades(javax.swing.JSpinner cantidadUnidades) {
-        this.setCampoCantidadUnidades(cantidadUnidades);
-    }
-
- 
     public VistaBien() {
         initComponents();
         this.setLocationRelativeTo(null);
     }
 
-  
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         label1 = new java.awt.Label();
         jLabel7 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        campoMarca = new javax.swing.JTextField();
-        campoModelo = new javax.swing.JTextField();
-        campoSerial = new javax.swing.JTextField();
-        campoPrecioUnitario = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
-        btnGuradar = new javax.swing.JButton();
-        btnCancelar = new javax.swing.JButton();
-        jSeparator1 = new javax.swing.JSeparator();
-        campoCantidadUnidades = new javax.swing.JSpinner();
-        jLabel8 = new javax.swing.JLabel();
-        campoDescripcion = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        jbCancelar = new javax.swing.JButton();
+        jbLimpiar = new javax.swing.JButton();
+        btnInsertar = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jtfSerial = new javax.swing.JTextField();
+        jtfDescripcion = new javax.swing.JTextField();
+        jtfMarca = new javax.swing.JTextField();
+        jtfModelo = new javax.swing.JTextField();
+        jtfPrecio = new javax.swing.JTextField();
+        jLabel15 = new javax.swing.JLabel();
+        jtfCantidadUnidades = new javax.swing.JSpinner();
 
         label1.setText("label1");
 
@@ -187,35 +57,103 @@ public class VistaBien extends javax.swing.JFrame implements Observer {
         setResizable(false);
         setType(java.awt.Window.Type.POPUP);
 
-        jLabel1.setText("Modelo");
+        jLabel9.setFont(new java.awt.Font("Comic Sans MS", 2, 26)); // NOI18N
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel9.setText("Bien Mueble");
 
-        jLabel2.setText("Serial");
+        jbCancelar.setText("Cancelar");
+        jbCancelar.setName("cancelar"); // NOI18N
 
-        jLabel3.setText("Marca");
+        jbLimpiar.setText("Limpiar");
+        jbLimpiar.setName("limpiar"); // NOI18N
 
-        jLabel4.setText("Precio Unitario");
+        btnInsertar.setText("Agregar");
+        btnInsertar.setName("agregarBien"); // NOI18N
 
-        jLabel5.setText("Cantidad Unidades");
+        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jLabel6.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jLabel6.setText("Ingresando Bienes");
+        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel10.setText("Precio por Unidad:");
 
-        btnGuradar.setText("GUARDAR");
-        btnGuradar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuradarActionPerformed(evt);
-            }
-        });
+        jLabel11.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel11.setText("Modelo:");
 
-        btnCancelar.setText("CANCELAR");
-        btnCancelar.setName(""); // NOI18N
-        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCancelarActionPerformed(evt);
-            }
-        });
+        jLabel12.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel12.setText("Marca:");
 
-        jLabel8.setText("Descripcion");
+        jLabel13.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel13.setText("Serial:");
+
+        jLabel14.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel14.setText("Descripción:");
+
+        jtfSerial.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        jtfDescripcion.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        jtfMarca.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        jtfModelo.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        jtfPrecio.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        jLabel15.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel15.setText("Cantidad de Unidades:");
+
+        jtfCantidadUnidades.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel13)
+                    .addComponent(jLabel14)
+                    .addComponent(jLabel12)
+                    .addComponent(jLabel11)
+                    .addComponent(jLabel10)
+                    .addComponent(jLabel15))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jtfCantidadUnidades)
+                    .addComponent(jtfDescripcion, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jtfMarca, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jtfModelo, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jtfPrecio)
+                    .addComponent(jtfSerial))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel13)
+                    .addComponent(jtfSerial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel14)
+                    .addComponent(jtfDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel12)
+                    .addComponent(jtfMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel11)
+                    .addComponent(jtfModelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(jtfPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel15)
+                    .addComponent(jtfCantidadUnidades, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -224,124 +162,36 @@ public class VistaBien extends javax.swing.JFrame implements Observer {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel5)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(28, 28, 28)
-                                        .addComponent(btnGuradar)))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(campoMarca)
-                                            .addComponent(campoModelo)
-                                            .addComponent(campoSerial)
-                                            .addComponent(campoPrecioUnitario)
-                                            .addComponent(campoDescripcion, javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                .addGap(0, 0, Short.MAX_VALUE)
-                                                .addComponent(campoCantidadUnidades, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(btnCancelar)
-                                        .addGap(12, 12, 12))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jLabel3))
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addGap(47, 47, 47))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jSeparator1)
-                        .addGap(154, 154, 154))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel8)
-                        .addContainerGap(286, Short.MAX_VALUE))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel6)
-                .addGap(97, 97, 97))
+                        .addGap(0, 500, Short.MAX_VALUE)
+                        .addComponent(jbLimpiar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jbCancelar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnInsertar)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jLabel6)
-                .addGap(9, 9, 9)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
+                .addContainerGap()
+                .addComponent(jLabel9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(campoDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(campoMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(campoModelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(campoSerial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(21, 21, 21)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(campoPrecioUnitario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(campoCantidadUnidades, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnGuradar)
-                    .addComponent(btnCancelar))
-                .addGap(35, 35, 35))
+                    .addComponent(btnInsertar)
+                    .addComponent(jbLimpiar)
+                    .addComponent(jbCancelar))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnGuradarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuradarActionPerformed
-     }//GEN-LAST:event_btnGuradarActionPerformed
-
-    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-     }//GEN-LAST:event_btnCancelarActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(VistaBien.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(VistaBien.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(VistaBien.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(VistaBien.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new VistaBien().setVisible(true);
@@ -350,50 +200,61 @@ public class VistaBien extends javax.swing.JFrame implements Observer {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCancelar;
-    private javax.swing.JButton btnGuradar;
-    private javax.swing.JSpinner campoCantidadUnidades;
-    private javax.swing.JTextField campoDescripcion;
-    private javax.swing.JTextField campoMarca;
-    private javax.swing.JTextField campoModelo;
-    private javax.swing.JTextField campoPrecioUnitario;
-    private javax.swing.JTextField campoSerial;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
+    private javax.swing.JButton btnInsertar;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
+    public javax.swing.JButton jbCancelar;
+    public javax.swing.JButton jbLimpiar;
+    public javax.swing.JSpinner jtfCantidadUnidades;
+    public javax.swing.JTextField jtfDescripcion;
+    public javax.swing.JTextField jtfMarca;
+    public javax.swing.JTextField jtfModelo;
+    public javax.swing.JTextField jtfPrecio;
+    public javax.swing.JTextField jtfSerial;
     private java.awt.Label label1;
     // End of variables declaration//GEN-END:variables
 
+    private AbstractController controlador;
 
-    
-    Bien modelo;
-    ControllerBien controlBien;
-    
-    public void setModel(Bien model)
-    {
-        this.modelo=model;
-        //model.addObserver(this);
-    }    
+    public void setControlador(AbstractController controlador) {
+        this.controlador = controlador;
+        btnInsertar.addActionListener(controlador);
+        jbCancelar.addActionListener(controlador);
+        jbLimpiar.addActionListener(controlador);
+    }
 
-    
-public void setController(ControllerBien controlBien){
-    this.controlBien = controlBien;
-    btnGuradar.addActionListener(controlBien);
-    btnCancelar.addActionListener(controlBien);
-}
+    public void limpiarTodosEspacios() {
+        jtfCantidadUnidades.getModel().setValue(0);
+        jtfDescripcion.setText("");
+        jtfMarca.setText("");
+        jtfModelo.setText("");
+        jtfPrecio.setText("");
+        jtfSerial.setText("");
+        btnInsertar.setName("agregarbien");
+        btnInsertar.setText("Agregar");
+    }
 
-    @Override
-    public void update(Observable updatedModel,Object param){
-        
-    }            
+    public void cargarDatos(Bien bien) {
+        jtfCantidadUnidades.getModel().setValue(bien.getCantidad());
+        jtfDescripcion.setText(bien.getDescripcion());
+        jtfMarca.setText(bien.getMarca());
+        jtfModelo.setText(bien.getModelo());
+        jtfPrecio.setText(String.valueOf(bien.getPrecio()));
+        jtfSerial.setText(bien.getSerial());
 
-    public void campoVacio(String campo) {
-     }
+        jbLimpiar.setEnabled(false);
+        btnInsertar.setName("modificarbien");
+        btnInsertar.setText("Modificar");
+    }
 
+    public void mostrarMensaje(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje);
+    }
 }

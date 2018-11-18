@@ -5,6 +5,7 @@
  */
 package accesoADatos;
 
+import Logic.Funcionario;
 import Logic.Transferencia;
 
 import java.sql.CallableStatement;
@@ -19,15 +20,16 @@ import oracle.jdbc.OracleTypes;
  */
 public class ServicioTransferencia extends Servicio {
 
-    private static final String INSERTARTRANSFERENCIA = "{call insertarTransferencia(?,?,?,?,?,?)}";
+    private static final String INSERTARTRANSFERENCIA = "{call insertarTransferencia(?,?,?,?,?,?,?)}";
     private static final String ELIMINARTRANSFERENCIA = "{call eliminarTransferencia(?)}";
     private static final String MODIFICARTRANSFERENCIA = "{call modificarTransferencia(?,?,?,?,?,?)}";
     private static final String LISTARTRANSFERENCIA = "{?=call listarTransferencia}";
     private static final String CONSULTARTRANSFERENCIA = "{?=call buscarTransferencia(?)}";
+    private static final String CONSULTARTRANSFERENCIAADMINISTRADOR = "{?=call buscarTransferenciaAdministrador(?)}";
     
     private static ServicioTransferencia servicioTransferencia = new ServicioTransferencia();
 
-    public void insertarTransferencia(Transferencia laTransferencia) throws GlobalException, NoDataException {
+    public void insertarTransferencia(Transferencia laTransferencia, Funcionario elAdministrador) throws GlobalException, NoDataException {
         try {
             conectar();
         } catch (ClassNotFoundException e) {
@@ -46,6 +48,7 @@ public class ServicioTransferencia extends Servicio {
             pstmt.setString(4, laTransferencia.getUbicacion());
             pstmt.setString(5, laTransferencia.getFuncionario().getId());
             pstmt.setString(6, laTransferencia.getAutorizacion());
+            pstmt.setString(7, elAdministrador.getId());
             
             boolean resultado = pstmt.execute();
             if (resultado == true) {
@@ -249,6 +252,49 @@ public class ServicioTransferencia extends Servicio {
             throw new NoDataException("No existe una transferencia con este número");
         }
         return laTransferencia;
+    }
+    
+    public Funcionario buscarFuncionarioAdministrador(int numero) throws GlobalException, NoDataException, SQLException {
+
+        try {
+            conectar();
+        } catch (ClassNotFoundException e) {
+            throw new GlobalException("No se ha localizado el driver");
+        } catch (SQLException e) {
+            throw new NoDataException("La base de datos no se encuentra disponible");
+        }
+        ResultSet rs = null;
+        Funcionario elFuncionario = null;
+
+        CallableStatement pstmt = null;
+        try {
+            pstmt = conexion.prepareCall(CONSULTARTRANSFERENCIAADMINISTRADOR);
+            pstmt.registerOutParameter(1, OracleTypes.CURSOR);
+            pstmt.setInt(2, numero);
+            pstmt.execute();
+
+            rs = (ResultSet) pstmt.getObject(1);
+            while (rs.next()) {
+                elFuncionario = ServicioFuncionario.getServicioFuncionario().consultarFuncionario(rs.getString("administrador"));
+                break;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new GlobalException("Sentencia no valida");
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+                desconectar();
+            } catch (SQLException e) {
+                throw new GlobalException("Estatutos invalidos o nulos");
+            }
+        }
+        return elFuncionario;
     }
 
     public static ServicioTransferencia getServicioTransferencia() {

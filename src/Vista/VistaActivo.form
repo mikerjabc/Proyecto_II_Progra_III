@@ -28,7 +28,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jPanel1" max="32767" attributes="0"/>
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace min="0" pref="508" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="500" max="32767" attributes="0"/>
                       <Component id="jbLimpiar" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jbCancelar" min="-2" max="-2" attributes="0"/>
@@ -98,7 +98,7 @@
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jtfUbicacion" alignment="1" pref="630" max="32767" attributes="0"/>
+                      <Component id="jtfUbicacion" alignment="1" pref="622" max="32767" attributes="0"/>
                       <Component id="jtfDescripcion" alignment="0" max="32767" attributes="0"/>
                       <Component id="jtfBien" max="32767" attributes="0"/>
                       <Component id="jtfCodigo" alignment="0" max="32767" attributes="0"/>

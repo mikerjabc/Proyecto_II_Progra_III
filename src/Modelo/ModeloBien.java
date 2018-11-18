@@ -11,6 +11,6 @@ import java.util.Observable;
  *
  * @author MikerJABC
  */
-public class ModeloBienes extends Observable{
+public class ModeloBien extends Observable{
     
 }

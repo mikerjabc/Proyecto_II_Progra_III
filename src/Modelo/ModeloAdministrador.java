@@ -1,6 +1,7 @@
 package Modelo;
 
 import Logic.Bien;
+import Logic.Dependencia;
 import Logic.Funcionario;
 import Logic.Solicitud;
 import Logic.Transferencia;
@@ -109,15 +110,25 @@ public class ModeloAdministrador extends Observable {
         return aux;
     }
     
-    public void AsignarRegistradorASolicitud(String numero, Funcionario registrador) throws Exception {
+    public void crearSolicitud(String numero, String fecha, String tipo, String estado) throws Exception {
         try {
             if (numero.equals("")) {
-                throw (new Exception("numero invalido"));
+                throw (new Exception("Número invalido"));
             }
-            if (registrador == null) {
-                throw (new Exception("Registrador invalido"));
+            if (fecha.equals("")) {
+                throw (new Exception("Fecha invalida"));
             }
-            servicioSolicitud.asignarSolicitud(solicitud, registrador);
+            if (tipo.equals("")) {
+                throw (new Exception("Tipo invalido"));
+            }
+            if (estado.equals("")) {
+                throw (new Exception("Estado invalido"));
+            }
+            if (funcionario == null) {
+                throw (new Exception("Administrador invalido"));
+            }
+            solicitud = new Solicitud(Integer.valueOf(numero),fecha,tipo,estado);
+            servicioSolicitud.insertarSolicitud(solicitud, funcionario);
             solicitud = null;
             this.setChanged();
             this.notifyObservers();
@@ -126,18 +137,104 @@ public class ModeloAdministrador extends Observable {
         }
     }
     
-    public void AutorizarTransferencia(String estado, String detalle) throws Exception {
+    public void modificarSolicitud(String numero, String fecha, String tipo, String estado) throws Exception {
         try {
-            if (transferencia == null) {
-                throw (new Exception("Transferencia invalida invalido"));
+            if (numero.equals("")) {
+                throw (new Exception("Número invalido"));
             }
-            if (!detalle.equals("")) {
-                String aux = estado + '(' + detalle + ')';
-                transferencia.setAutorizacion(aux);
-            } else {
-                transferencia.setAutorizacion(estado);
+            if (fecha.equals("")) {
+                throw (new Exception("Fecha invalida"));
             }
+            if (tipo.equals("")) {
+                throw (new Exception("Tipo invalido"));
+            }
+            if (estado.equals("")) {
+                throw (new Exception("Estado invalido"));
+            }
+            solicitud = new Solicitud(Integer.valueOf(numero),fecha,tipo,estado);
+            servicioSolicitud.modificarSolicitud(solicitud);
+            solicitud = null;
+            this.setChanged();
+            this.notifyObservers();
+        } catch (Exception ex) {
+            throw (new Exception(ex.getMessage()));
+        }
+    }
+    
+    public void eliminarSolicitud(String numero) throws Exception {
+        try {
+            if (numero.equals("")) {
+                throw (new Exception("Número invalido"));
+            }
+            servicioSolicitud.eliminarSolicitud(Integer.valueOf(numero));
+            solicitud = null;
+            this.setChanged();
+            this.notifyObservers();
+        } catch (Exception ex) {
+            throw (new Exception(ex.getMessage()));
+        }
+    }
+    
+    public void crearTransferencia(String numero, Dependencia origen, Dependencia destino, String ubicacion, Funcionario funcionario) throws Exception {
+        try {
+            if (numero.equals("")) {
+                throw (new Exception("Número invalido"));
+            }
+            if (origen == null) {
+                throw (new Exception("Dependencia de origen invalida"));
+            }
+            if (destino == null || origen.getCodigo() == destino.getCodigo()) {
+                throw (new Exception("Dependencia de destino invalida"));
+            }
+            if (ubicacion.equals("")) {
+                throw (new Exception("Ubicación invalida"));
+            }
+            if (funcionario == null) {
+                throw (new Exception("Funcionario invalido"));
+            }
+            transferencia = new Transferencia(Integer.valueOf(numero),origen,destino,ubicacion,funcionario);
+            servicioTransferencia.insertarTransferencia(transferencia, this.funcionario);
+            transferencia = null;
+            this.setChanged();
+            this.notifyObservers();
+        } catch (Exception ex) {
+            throw (new Exception(ex.getMessage()));
+        }
+    }
+    
+    public void modificarTransferencia(String numero, Dependencia origen, Dependencia destino, String ubicacion, Funcionario funcionario) throws Exception {
+        try {
+            if (numero.equals("")) {
+                throw (new Exception("Número invalido"));
+            }
+            if (origen == null) {
+                throw (new Exception("Dependencia de origen invalida"));
+            }
+            if (destino == null || origen.getCodigo() == destino.getCodigo()) {
+                throw (new Exception("Dependencia de destino invalida"));
+            }
+            if (ubicacion.equals("")) {
+                throw (new Exception("Ubicación invalida"));
+            }
+            if (funcionario == null) {
+                throw (new Exception("Funcionario invalido"));
+            }
+            transferencia = new Transferencia(Integer.valueOf(numero),origen,destino,ubicacion,funcionario);
             servicioTransferencia.modificarTransferencia(transferencia);
+            transferencia = null;
+            this.setChanged();
+            this.notifyObservers();
+        } catch (Exception ex) {
+            throw (new Exception(ex.getMessage()));
+        }
+    }
+    
+    public void eliminarTransferencia(String numero) throws Exception {
+        try {
+            if (numero.equals("")) {
+                throw (new Exception("Número invalido"));
+            }
+            servicioTransferencia.eliminarTransferencia(Integer.valueOf(numero));
             transferencia = null;
             this.setChanged();
             this.notifyObservers();

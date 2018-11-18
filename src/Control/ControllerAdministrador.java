@@ -9,6 +9,7 @@ import Modelo.ModeloAdministrador;
 import Modelo.ModeloSolicitud;
 import Modelo.ModeloTransferencia;
 import Vista.VistaAdministrador;
+import Vista.VistaBien;
 import Vista.VistaSolicitud;
 import Vista.VistaTransferencia;
 import accesoADatos.GlobalException;
@@ -38,6 +39,7 @@ public class ControllerAdministrador extends AbstractController implements ItemL
     private VistaTransferencia vistaTrasferencia;
     private ModeloSolicitud modeloSolicitud;
     private ModeloTransferencia modeloTrasferencia;
+    private VistaBien vistaBien;
 
     public ControllerAdministrador(ModeloAdministrador modelo, VistaAdministrador vista) {
         this.modelo = modelo;
@@ -77,6 +79,8 @@ public class ControllerAdministrador extends AbstractController implements ItemL
         vistaTrasferencia.setModelo(modeloTrasferencia);
         vistaSolicitud.addWindowListener(this);
         vistaTrasferencia.addWindowListener(this);
+        vistaBien = new VistaBien();
+        vistaBien.setControlador(this);
     }
 
     @Override
@@ -161,24 +165,80 @@ public class ControllerAdministrador extends AbstractController implements ItemL
             switch (x.toLowerCase()) {
                 case "agregar": {
                     if (modelo.getTipo().equalsIgnoreCase(modelo.tiposSolicitud[0])) {
-                        modelo.AsignarRegistradorASolicitud(vistaSolicitud.jtfNumero.getText(), modeloSolicitud.getRegistrador());
+                        modelo.crearSolicitud(vistaSolicitud.jtfNumero.getText(),
+                                vistaSolicitud.jtfFecha.getText(),
+                                vistaSolicitud.jcbTipo.getModel().getSelectedItem().toString(),
+                                vistaSolicitud.jcbEstado.getModel().getSelectedItem().toString()
+                        );
                         vistaSolicitud.setVisible(false);
-                        vistaSolicitud.mostrarMensaje("Se asigno un registrador a la solicitud");
+                        vistaSolicitud.mostrarMensaje("Se guardo la solicitud");
                         vistaSolicitud.limpiarTodosEspacios();
                         vistaSolicitud.dispose();
                     } else if (modelo.getTipo().equalsIgnoreCase(modelo.tiposSolicitud[1])) {
-                        String aux = "";
-                        if (vistaTrasferencia.jcbEstado.getModel().getSelectedItem().toString().equals("Rechazada")) {
-                            aux = vistaSolicitud.preguntarDetalle("Al estar la transferencia en estado Rechazada debe ingresar un detalle del rechazo.");
-                        }
-                        if (aux != null || vistaTrasferencia.jcbEstado.getModel().getSelectedItem().toString().equals("Recibida")) {
-                            modelo.AutorizarTransferencia(vistaTrasferencia.jcbEstado.getModel().getSelectedItem().toString(),aux);
-                            vistaTrasferencia.mostrarMensaje("Se guardo el cambio en el estado de la trasferencia");
-                            vistaTrasferencia.setVisible(false);
-                            vistaTrasferencia.limpiarTodosEspacios();
-                            vistaTrasferencia.dispose();
-                        }
+                        modelo.crearTransferencia(vistaTrasferencia.jtfNumero.getText(),
+                                modeloTrasferencia.getOrigen(),
+                                modeloTrasferencia.getDestino(),
+                                vistaTrasferencia.jtfUbicacion.getText(),
+                                modeloTrasferencia.getResponsable()
+                        );
+                        vistaSolicitud.setVisible(false);
+                        vistaSolicitud.mostrarMensaje("Se guardo la solicitud");
+                        vistaSolicitud.limpiarTodosEspacios();
+                        vistaSolicitud.dispose(); vistaTrasferencia.dispose();
                     }
+                }
+                break;
+                case "agregarbien": {
+                        modeloSolicitud.agregarBien(vistaBien.jtfSerial.getText(),
+                                vistaBien.jtfDescripcion.getText(),
+                                vistaBien.jtfMarca.getText(),
+                                vistaBien.jtfModelo.getText(),
+                                vistaBien.jtfPrecio.getText(),
+                                vistaBien.jtfCantidadUnidades.getModel().getValue().toString()
+                        );
+                        vistaBien.setVisible(false);
+                        vistaBien.mostrarMensaje("Se guardo la solicitud");
+                        vistaBien.limpiarTodosEspacios();
+                        vistaBien.dispose();
+                }
+                break;
+                case "modificar": {
+                    if (modelo.getTipo().equalsIgnoreCase(modelo.tiposSolicitud[0])) {
+                        modelo.modificarSolicitud(vistaSolicitud.jtfNumero.getText(),
+                                vistaSolicitud.jtfFecha.getText(),
+                                vistaSolicitud.jcbTipo.getModel().getSelectedItem().toString(),
+                                vistaSolicitud.jcbEstado.getModel().getSelectedItem().toString()
+                        );
+                        vistaSolicitud.setVisible(false);
+                        vistaSolicitud.mostrarMensaje("Se guardo la solicitud");
+                        vistaSolicitud.limpiarTodosEspacios();
+                        vistaSolicitud.dispose();
+                    } else if (modelo.getTipo().equalsIgnoreCase(modelo.tiposSolicitud[1])) {
+                        modelo.modificarTransferencia(vistaTrasferencia.jtfNumero.getText(),
+                                modeloTrasferencia.getOrigen(),
+                                modeloTrasferencia.getDestino(),
+                                vistaTrasferencia.jtfUbicacion.getText(),
+                                modeloTrasferencia.getResponsable()
+                        );
+                        vistaSolicitud.setVisible(false);
+                        vistaSolicitud.mostrarMensaje("Se guardo la solicitud");
+                        vistaSolicitud.limpiarTodosEspacios();
+                        vistaSolicitud.dispose(); vistaTrasferencia.dispose();
+                    }
+                }
+                break;
+                case "modificarbien": {
+                    modeloSolicitud.modificarBien(vistaBien.jtfSerial.getText(),
+                                vistaBien.jtfDescripcion.getText(),
+                                vistaBien.jtfMarca.getText(),
+                                vistaBien.jtfModelo.getText(),
+                                vistaBien.jtfPrecio.getText(),
+                                vistaBien.jtfCantidadUnidades.getModel().getValue().toString()
+                        );
+                        vistaBien.setVisible(false);
+                        vistaBien.mostrarMensaje("Se guardo la solicitud");
+                        vistaBien.limpiarTodosEspacios();
+                        vistaBien.dispose();
                 }
                 break;
                 case "buscar": {
@@ -206,12 +266,38 @@ public class ControllerAdministrador extends AbstractController implements ItemL
                     }
                 }
                 break;
-                case "buscarregistrador": {
+                case "buscarbien": {
                     try{
-                    modeloSolicitud.buscarRegistrador(vistaSolicitud.jtfRegistrador.getText());
-                    vistaSolicitud.mostrarMensaje("¡Registrador encontrado!");
+                    modeloSolicitud.buscarBien(vistaSolicitud.jtfIdBuscar.getText());
                     }catch(Exception ex){
                         vistaSolicitud.mostrarMensaje(ex.getMessage());
+                    }
+                }
+                break;
+                case "buscarresponsable": {
+                    try{
+                    modeloTrasferencia.buscarResponsable(vistaTrasferencia.jtfFuncionario.getText());
+                    vistaTrasferencia.mostrarMensaje("¡Responsable encontrado!");
+                    }catch(Exception ex){
+                        vistaTrasferencia.mostrarMensaje(ex.getMessage());
+                    }
+                }
+                break;
+                case "buscarorigen": {
+                    try{
+                    modeloTrasferencia.buscarOrigen(vistaTrasferencia.jtfOrigen.getText());
+                    vistaTrasferencia.mostrarMensaje("¡Dependencia de origen encontrada!");
+                    }catch(Exception ex){
+                        vistaTrasferencia.mostrarMensaje(ex.getMessage());
+                    }
+                }
+                break;
+                case "buscardestino": {
+                    try{
+                    modeloTrasferencia.buscarDestino(vistaTrasferencia.jtfDestino.getText());
+                    vistaTrasferencia.mostrarMensaje("¡Dependencia de destino encontrada!");
+                    }catch(Exception ex){
+                        vistaTrasferencia.mostrarMensaje(ex.getMessage());
                     }
                 }
                 break;
@@ -219,7 +305,6 @@ public class ControllerAdministrador extends AbstractController implements ItemL
                     if (modelo.getTipo().equalsIgnoreCase(modelo.tiposSolicitud[0])) {
                         vistaSolicitud.limpiarTodosEspacios();
                     } else {
-                        modelo.AutorizarTransferencia(vistaTrasferencia.jtfNumero.getText(), vistaTrasferencia.jtfCodigoBuscar.getText());
                         vistaTrasferencia.limpiarTodosEspacios();
                     }
                 }

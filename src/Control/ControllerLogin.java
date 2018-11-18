@@ -99,12 +99,8 @@ public class ControllerLogin implements MouseListener, ActionListener, KeyListen
                 break;
                 case "administrador": {
                     VistaAdministrador aux = new VistaAdministrador();
-                    aux.setNombreUsuario(funcionario.getNombre());
-                    
                     aux.addWindowListener(this);
-                    ModeloAdministrador modelo  = new ModeloAdministrador();
-                    modelo.setElFuncionario(funcionario);
-                    controlador = new ControllerAdministrador(modelo, aux);
+                    controlador = new ControllerAdministrador(new ModeloAdministrador(funcionario), aux);
                     this.vista.setVisible(false);
                     controlador.mostrarVista();
                 }

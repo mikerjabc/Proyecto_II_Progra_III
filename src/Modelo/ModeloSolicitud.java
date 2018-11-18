@@ -54,10 +54,9 @@ public class ModeloSolicitud extends Observable {
             if (precio.equals("")) {
                 throw (new Exception("Precio invalido"));
             }
-            if (cantidad.equals("")) {
-                throw (new Exception("Cantidad invalida"));
-            }
-            listaBienes.add(new Bien(serial, descripcion, modelo, marca, Integer.valueOf(precio), Integer.valueOf(cantidad)));
+            bien = new Bien(serial, descripcion, modelo, marca, Integer.valueOf(precio), Integer.valueOf(cantidad));
+            listaBienes.add(bien);
+            bien = null;
             this.notifyObservers();
         } catch (Exception ex) {
             throw (new Exception(ex.getMessage()));
@@ -117,8 +116,10 @@ public class ModeloSolicitud extends Observable {
             Iterator<Bien> ite = listaBienes.iterator();
             while (ite.hasNext()) {
                 Bien d = ite.next();
-                bien = d;
-                break;
+                if (d.getSerial().equals(serial)) {
+                    bien = d;
+                     break;
+                }
             }
             this.notifyObservers();
         } catch (Exception ex) {

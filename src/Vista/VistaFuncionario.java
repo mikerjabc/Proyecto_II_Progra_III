@@ -266,8 +266,4 @@ public class VistaFuncionario extends javax.swing.JFrame {
     public void mostrarMensaje(String mensaje){
         JOptionPane.showMessageDialog(this, mensaje);
     }
-    
-    public void setNombreUsuario(String nombre){
-        jlfFuncionario.setText(nombre);
-    }
 }

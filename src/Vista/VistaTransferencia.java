@@ -69,6 +69,9 @@ public class VistaTransferencia extends javax.swing.JFrame implements Observer {
         jtfOrigen = new javax.swing.JTextField();
         jtfDestino = new javax.swing.JTextField();
         jtfFuncionario = new javax.swing.JTextField();
+        jbBuscarFuncionario = new javax.swing.JButton();
+        jbBuscarDestino = new javax.swing.JButton();
+        jbBuscarOrigen = new javax.swing.JButton();
         jbLimpiar = new javax.swing.JButton();
         jbCancelar = new javax.swing.JButton();
         jbAgregar = new javax.swing.JButton();
@@ -125,6 +128,15 @@ public class VistaTransferencia extends javax.swing.JFrame implements Observer {
         jtfFuncionario.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jtfFuncionario.setName("jtfNumero"); // NOI18N
 
+        jbBuscarFuncionario.setText("Buscar");
+        jbBuscarFuncionario.setName("buscarRegistrador"); // NOI18N
+
+        jbBuscarDestino.setText("Buscar");
+        jbBuscarDestino.setName("buscarRegistrador"); // NOI18N
+
+        jbBuscarOrigen.setText("Buscar");
+        jbBuscarOrigen.setName("buscarRegistrador"); // NOI18N
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -139,9 +151,15 @@ public class VistaTransferencia extends javax.swing.JFrame implements Observer {
                             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING))
                         .addGap(38, 38, 38)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jtfOrigen, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jtfNumero, javax.swing.GroupLayout.DEFAULT_SIZE, 536, Short.MAX_VALUE)
-                            .addComponent(jtfDestino)))
+                            .addComponent(jtfNumero)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jtfDestino)
+                                    .addComponent(jtfOrigen))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jbBuscarOrigen, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jbBuscarDestino, javax.swing.GroupLayout.Alignment.TRAILING)))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel4)
@@ -150,8 +168,11 @@ public class VistaTransferencia extends javax.swing.JFrame implements Observer {
                         .addGap(9, 9, 9)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jtfUbicacion)
-                            .addComponent(jtfFuncionario)
-                            .addComponent(jcbEstado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(jcbEstado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jtfFuncionario, javax.swing.GroupLayout.PREFERRED_SIZE, 460, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jbBuscarFuncionario)))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -162,13 +183,17 @@ public class VistaTransferencia extends javax.swing.JFrame implements Observer {
                     .addComponent(jLabel8)
                     .addComponent(jtfNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jtfOrigen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel3)
+                        .addComponent(jtfOrigen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jbBuscarOrigen, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel1)
-                    .addComponent(jtfDestino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jtfDestino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jbBuscarDestino)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -176,7 +201,8 @@ public class VistaTransferencia extends javax.swing.JFrame implements Observer {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jtfFuncionario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jtfFuncionario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbBuscarFuncionario))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
@@ -230,7 +256,7 @@ public class VistaTransferencia extends javax.swing.JFrame implements Observer {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 737, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -317,6 +343,9 @@ public class VistaTransferencia extends javax.swing.JFrame implements Observer {
     public javax.swing.JButton jbAgregar;
     public javax.swing.JButton jbAgregarBien;
     public javax.swing.JButton jbBuscar;
+    public javax.swing.JButton jbBuscarDestino;
+    public javax.swing.JButton jbBuscarFuncionario;
+    public javax.swing.JButton jbBuscarOrigen;
     public javax.swing.JButton jbCancelar;
     public javax.swing.JButton jbLimpiar;
     public javax.swing.JComboBox<String> jcbEstado;
@@ -326,7 +355,7 @@ public class VistaTransferencia extends javax.swing.JFrame implements Observer {
     public javax.swing.JTextField jtfFuncionario;
     public javax.swing.JTextField jtfNumero;
     public javax.swing.JTextField jtfOrigen;
-    private javax.swing.JTextField jtfUbicacion;
+    public javax.swing.JTextField jtfUbicacion;
     // End of variables declaration//GEN-END:variables
 
     private ModeloTransferencia modelo;

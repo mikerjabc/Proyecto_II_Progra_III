@@ -6,9 +6,11 @@
 package Modelo;
 
 import Logic.Activo;
+import Logic.Dependencia;
 import Logic.Funcionario;
 import accesoADatos.ServicioActivo;
 import accesoADatos.ServicioBien;
+import accesoADatos.ServicioDependencia;
 import accesoADatos.ServicioFuncionario;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -20,13 +22,20 @@ public class ModeloTransferencia extends Observable {
     private Activo activo;
     public final String[] tiposEstadoTransferencia = {"Recibida", "Aceptada", "Rechazada"};
     public ServicioActivo servicioActivo;
+    public ServicioDependencia servicioDependencia;
     private ServicioFuncionario servicioFuncionario;
     private ServicioBien servicioBien;
     private Funcionario funcionario;
+    private Funcionario responsable;
+    private Dependencia origen;
+    private Dependencia destino;
 
     public ModeloTransferencia(Funcionario funcionario) {
         this.funcionario = funcionario;
         listaActivos = new ArrayList();
+        responsable = null;
+        origen = null;
+        destino = null;
     }
     
     public void setServicioActivo(ServicioActivo servicioActivo){
@@ -37,7 +46,11 @@ public class ModeloTransferencia extends Observable {
         this.servicioFuncionario = servicioFuncionario;
     }
     
-    public void setServicioBien(ServicioBien servicioBien) {
+    public void setServicioBien(ServicioDependencia servicioDependencia) {
+        this.servicioDependencia = servicioDependencia;
+    }
+    
+    public void setServicioDependencia(ServicioBien servicioBien) {
         this.servicioBien = servicioBien;
     }
 
@@ -65,6 +78,43 @@ public class ModeloTransferencia extends Observable {
                 }
             }
             this.setChanged();
+            this.notifyObservers();
+        } catch (Exception ex) {
+            throw (new Exception(ex.getMessage()));
+        }
+    }
+    
+    public void buscarResponsable(String id) throws Exception {
+        try {
+            if (id.equals("")) {
+                throw (new Exception("ID invalido"));
+            }
+            Funcionario aux = servicioFuncionario.consultarFuncionario_Nombre_ID(id);
+            responsable = aux;
+            this.notifyObservers();
+        } catch (Exception ex) {
+            throw (new Exception(ex.getMessage()));
+        }
+    }
+    
+    public void buscarOrigen(String numero) throws Exception {
+        try {
+            if (numero.equals("")) {
+                throw (new Exception("ID invalido"));
+            }
+            origen = servicioDependencia.buscarDependencia(Integer.valueOf(numero));
+            this.notifyObservers();
+        } catch (Exception ex) {
+            throw (new Exception(ex.getMessage()));
+        }
+    }
+    
+    public void buscarDestino(String numero) throws Exception {
+        try {
+            if (numero.equals("")) {
+                throw (new Exception("ID invalido"));
+            }
+            destino = servicioDependencia.buscarDependencia(Integer.valueOf(numero));
             this.notifyObservers();
         } catch (Exception ex) {
             throw (new Exception(ex.getMessage()));
@@ -101,6 +151,30 @@ public class ModeloTransferencia extends Observable {
         return activo;
     }
 
+    public Funcionario getResponsable() {
+        return responsable;
+    }
+
+    public void setResponsable(Funcionario responsable) {
+        this.responsable = responsable;
+    }
+
+    public Dependencia getOrigen() {
+        return origen;
+    }
+
+    public void setOrigen(Dependencia origen) {
+        this.origen = origen;
+    }
+
+    public Dependencia getDestino() {
+        return destino;
+    }
+
+    public void setDestino(Dependencia destino) {
+        this.destino = destino;
+    }
+
     @Override
     public void notifyObservers() {
         super.notifyObservers(getListaActivo());
@@ -112,6 +186,9 @@ public class ModeloTransferencia extends Observable {
     
     public void limpiar() {
         activo = null;
+        responsable = null;
+        origen = null;
+        destino = null;
         listaActivos.removeAll(listaActivos);
         this.setChanged();
         this.notifyObservers();
