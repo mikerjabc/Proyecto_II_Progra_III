@@ -62,7 +62,7 @@ public class VistaBien extends javax.swing.JFrame {
         jLabel9.setText("Bien Mueble");
 
         jbCancelar.setText("Cancelar");
-        jbCancelar.setName("cancelar"); // NOI18N
+        jbCancelar.setName("cancelarbien"); // NOI18N
 
         jbLimpiar.setText("Limpiar");
         jbLimpiar.setName("limpiar"); // NOI18N

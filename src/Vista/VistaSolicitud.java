@@ -28,7 +28,7 @@ public class VistaSolicitud extends javax.swing.JFrame implements Observer {
 
     private void initLocal() {
         model = (DefaultTableModel) jtBienes.getModel();
-        setTitle("Jefe");
+        setTitle("Solicitud");
         setLocationRelativeTo(null);
         DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
         tcr.setHorizontalAlignment(SwingConstants.LEFT);
@@ -241,7 +241,7 @@ public class VistaSolicitud extends javax.swing.JFrame implements Observer {
         jScrollPane3.setViewportView(jtBienes);
 
         jbAgregarBien.setText("Agregar");
-        jbAgregarBien.setName("agregarBien"); // NOI18N
+        jbAgregarBien.setName("insertar"); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -361,6 +361,7 @@ public class VistaSolicitud extends javax.swing.JFrame implements Observer {
     public void setModelo(ModeloSolicitud modelo){
         this.modelo = modelo;
         modelo.addObserver(this);
+        ajustatVistaParaFuncionario();
     }
     
     public void setControlador(AbstractController controlador){
@@ -385,7 +386,10 @@ public class VistaSolicitud extends javax.swing.JFrame implements Observer {
                 jcbTipo.addItem(modelo.tiposBien[0]);
                 jcbTipo.addItem(modelo.tiposBien[1]);
                 jcbTipo.addItem(modelo.tiposBien[2]);
+                jcbEstado.addItem(modelo.tiposEstadoSolicitud[0]);
                 jcbEstado.setEnabled(false);
+                jtfNumero.setText(String.valueOf(modelo.getNumeroSolicitud()));
+                jtfNumero.setEditable(false);
                 jbBuscarRegistrador.setEnabled(false);
                 jtfRegistrador.setEnabled(false);
             }
@@ -393,6 +397,7 @@ public class VistaSolicitud extends javax.swing.JFrame implements Observer {
             case "secretaria": {
                 jcbEstado.addItem(modelo.tiposEstadoSolicitud[1]);
                 jcbEstado.addItem(modelo.tiposEstadoSolicitud[2]);
+                jtfNumero.setEditable(false);
                 jcbTipo.setEnabled(false);
                 
                 jtfRegistrador.setEditable(false);
@@ -401,7 +406,6 @@ public class VistaSolicitud extends javax.swing.JFrame implements Observer {
                 jbLimpiar.setEnabled(false);
                 jtBienes.setEnabled(false);
                 jtfCantidadBienes.setEditable(false);
-                jtfNumero.setEditable(false);
                 jtfMontoTotal.setEditable(false);
                 jcbTipo.setEnabled(false);
                 jtfFecha.setEditable(false);
@@ -443,9 +447,9 @@ public class VistaSolicitud extends javax.swing.JFrame implements Observer {
         jtfIdBuscar.setText("");
         jcbEstado.getModel().setSelectedItem(modelo.tiposEstadoSolicitud[0]);
         jcbTipo.getModel().setSelectedItem(modelo.tiposBien[0]);
+        modelo.limpiar();
         jtfMontoTotal.setText("");
         jtfFecha.setText("");
-        modelo.limpiar();
     }
     
     public void cargarDatos(Solicitud solicitud) {

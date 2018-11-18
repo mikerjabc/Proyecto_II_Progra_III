@@ -455,7 +455,7 @@
         <Component class="javax.swing.JButton" name="jbAgregarBien">
           <Properties>
             <Property name="text" type="java.lang.String" value="Agregar"/>
-            <Property name="name" type="java.lang.String" value="agregarBien" noResource="true"/>
+            <Property name="name" type="java.lang.String" value="insertar" noResource="true"/>
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>

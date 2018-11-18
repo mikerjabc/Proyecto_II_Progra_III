@@ -172,9 +172,20 @@ public class ControllerAdministrador extends AbstractController implements ItemL
             switch (x.toLowerCase()) {
                 case "insertar": {
                     if (modelo.getTipo().equalsIgnoreCase(modelo.tiposSolicitud[0])) {
-                        vistaSolicitud.setVisible(true);
+                        if(modeloSolicitud == null){
+                            modeloSolicitud = new ModeloSolicitud(modelo.getFuncionario());
+                            vistaSolicitud.setModelo(modeloSolicitud);
+                            vistaSolicitud.setVisible(true);
+                        }else{
+                            vistaBien.setVisible(true);
+                        }
+                        
                     } else if (modelo.getTipo().equalsIgnoreCase(modelo.tiposSolicitud[1])) {
-                        vistaTrasferencia.setVisible(true);
+                        if(modelo.getTransferencia() == null){
+                            vistaTrasferencia.setVisible(true);
+                        } else{
+                            
+                        }
                     }
                 }
                 break;
@@ -204,17 +215,21 @@ public class ControllerAdministrador extends AbstractController implements ItemL
                 }
                 break;
                 case "agregarbien": {
-                        modeloSolicitud.agregarBien(vistaBien.jtfSerial.getText(),
-                                vistaBien.jtfDescripcion.getText(),
-                                vistaBien.jtfMarca.getText(),
-                                vistaBien.jtfModelo.getText(),
-                                vistaBien.jtfPrecio.getText(),
-                                vistaBien.jtfCantidadUnidades.getModel().getValue().toString()
-                        );
-                        vistaBien.setVisible(false);
-                        vistaBien.mostrarMensaje("Se guardo la solicitud");
-                        vistaBien.limpiarTodosEspacios();
-                        vistaBien.dispose();
+                    try{
+                    modeloSolicitud.agregarBien(vistaBien.jtfSerial.getText(),
+                            vistaBien.jtfDescripcion.getText(),
+                            vistaBien.jtfMarca.getText(),
+                            vistaBien.jtfModelo.getText(),
+                            vistaBien.jtfPrecio.getText(),
+                            vistaBien.jtfCantidadUnidades.getModel().getValue().toString()
+                    );
+                    vistaBien.setVisible(false);
+                    vistaBien.mostrarMensaje("Se guardo la solicitud");
+                    vistaBien.limpiarTodosEspacios();
+                    vistaBien.dispose();
+                    }catch(Exception ex){
+                        vistaBien.mostrarMensaje(ex.getMessage());
+                    }
                 }
                 break;
                 case "modificar": {
@@ -324,15 +339,23 @@ public class ControllerAdministrador extends AbstractController implements ItemL
                     }
                 }
                 break;
+                case "cancelarbien": {
+                    vistaBien.mostrarMensaje("No se realizó ningún cambio");
+                    vistaBien.setVisible(false);
+                    vistaBien.limpiarTodosEspacios();
+                    vistaBien.dispose();
+
+                }
+                break;
                 case "cancelar": {
                     if (modelo.getTipo().equalsIgnoreCase(modelo.tiposSolicitud[0])) {
-                        vistaSolicitud.mostrarMensaje("No se realizo ningun cambio");
+                        vistaSolicitud.mostrarMensaje("No se realizó ningún cambio");
                         vistaSolicitud.setVisible(false);
                         vistaSolicitud.limpiarTodosEspacios();
                         vistaSolicitud.dispose();
+                        modeloSolicitud = null;
                         modelo.limpiar();
-                        
-                    } else {
+                    } else if (modelo.getTipo().equalsIgnoreCase(modelo.tiposSolicitud[1])) {
                         vistaSolicitud.mostrarMensaje("No se realizo ningun cambio");
                         vistaTrasferencia.setVisible(false);
                         vistaTrasferencia.limpiarTodosEspacios();
@@ -387,6 +410,7 @@ public class ControllerAdministrador extends AbstractController implements ItemL
     @Override
     public void windowClosed(WindowEvent we) {
         vista.setEnabled(true);
+        vista.toFront();
     }
 
     @Override

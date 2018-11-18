@@ -8,6 +8,7 @@ package Modelo;
 import Logic.Bien;
 import Logic.Funcionario;
 import accesoADatos.ServicioFuncionario;
+import accesoADatos.ServicioSolicitud;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.ListIterator;
@@ -179,11 +180,6 @@ public class ModeloSolicitud extends Observable {
     public void setRegistrador(Funcionario registrador) {
         this.registrador = registrador;
     }
-    
-    @Override
-    protected synchronized void setChanged() {
-        super.setChanged();
-    }
 
     @Override
     public void notifyObservers() {
@@ -201,5 +197,15 @@ public class ModeloSolicitud extends Observable {
         listaBienes.removeAll(listaBienes);
         this.setChanged();
         this.notifyObservers();
+    }
+
+    public int getNumeroSolicitud() {
+        int aux = 0;
+        try{
+           aux = ServicioSolicitud.getServicioSolicitud().listarSolicitudes().size();
+        }catch(Exception ex){
+            
+        }
+        return aux + 1;
     }
 }

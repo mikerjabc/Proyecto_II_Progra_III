@@ -194,9 +194,6 @@ public class ServicioFuncionario extends Servicio {
                 throw new GlobalException("Estatutos invalidos o nulos");
             }
         }
-        if (elFuncionario == null) {
-            throw new NoDataException("El funcionario no existe en la base de datos");
-        }
 
         return elFuncionario;
     }
