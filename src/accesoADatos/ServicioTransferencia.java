@@ -170,10 +170,10 @@ public class ServicioTransferencia extends Servicio {
                         ServicioDependencia.getServicioDependencia().buscarDependencia(rs.getInt("origen")),
                         ServicioDependencia.getServicioDependencia().buscarDependencia(rs.getInt("origen")),
                         rs.getString("ubicacion"),
-                        ServicioFuncionario.getServicioFuncionario().buscarFuncionarioPorTransferencia(rs.getInt("numero"))
+                        ServicioFuncionario.getServicioFuncionario().consultarFuncionario(rs.getString("funcionario"))
                 );
                 laTransferencia.setListaBienes(ServicioBien.getServicioBien().buscarBienPorTransferencia(rs.getInt("numero")));
-                laTransferencia.setAutorizacion(rs.getString("estado"));
+                laTransferencia.setAutorizacion(rs.getString("autorizacion"));
                 coleccion.add(laTransferencia);
             }
         } catch (SQLException e) {
@@ -223,10 +223,10 @@ public class ServicioTransferencia extends Servicio {
                         ServicioDependencia.getServicioDependencia().buscarDependencia(rs.getInt("origen")),
                         ServicioDependencia.getServicioDependencia().buscarDependencia(rs.getInt("origen")),
                         rs.getString("ubicacion"),
-                        ServicioFuncionario.getServicioFuncionario().buscarFuncionarioPorTransferencia(rs.getInt("numero"))
+                        ServicioFuncionario.getServicioFuncionario().consultarFuncionario(rs.getString("funcionario"))
                 );
                 laTransferencia.setListaBienes(ServicioBien.getServicioBien().buscarBienPorTransferencia(rs.getInt("numero")));
-                laTransferencia.setAutorizacion(rs.getString("estado"));
+                laTransferencia.setAutorizacion(rs.getString("autorizacion"));
                 break;
              }
         } catch (SQLException e) {

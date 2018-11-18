@@ -28,7 +28,6 @@ public class ServicioFuncionario extends Servicio {
     private static final String CONSULTARFUNCIONARIO = "{?=call buscarFuncionario(?)}";
     private static final String CONSULTARFUNCIONARIOIDNOMBRE = "{?=call buscarFuncionarioidNombre(?)}";
     private static final String CONSULTARFUNCIONARIOPORDEPENDENCIA = "{?=call buscarPorDependencia(?)}";
-    private static final String CONSULTARFUNCIONARIOPORTRANSFERENCIA = "{?=call buscarFuncionarioPorTransferencia(?)}";
     private static final String CONSULTARDEPENDENCIAPORFUNCIONARIO= "{?=call buscarDependenciaFuncionario(?)}";
 
     private static ServicioFuncionario servicioFuncionario = new ServicioFuncionario();
@@ -406,63 +405,7 @@ public class ServicioFuncionario extends Servicio {
 
         return coleccion;
     }
-
-    public Funcionario buscarFuncionarioPorTransferencia(int numeroTrasferencia) throws GlobalException, NoDataException {
-        try {
-            conectar();
-        } catch (ClassNotFoundException e) {
-            throw new GlobalException("No se ha localizado el driver");
-        } catch (SQLException e) {
-            throw new NoDataException("La base de datos no se encuentra disponible");
-        }
-
-        ResultSet rs = null;
-        CallableStatement pstmt = null;
-        Funcionario elFuncionario = null;
-        try {
-            pstmt = conexion.prepareCall(CONSULTARFUNCIONARIOPORDEPENDENCIA);
-            pstmt.registerOutParameter(1, OracleTypes.CURSOR);
-            pstmt.setInt(2, numeroTrasferencia);
-            pstmt.execute();
-            rs = (ResultSet) pstmt.getObject(1);
-
-            while (rs.next()) {
-
-                if (rs.getInt("numeroTrasferencia") == numeroTrasferencia) {
-                    elFuncionario = new Funcionario(rs.getString("id"),
-                            rs.getString("nombre"),
-                            rs.getString("puesto"),
-                            rs.getString("password")
-                    );
-                    break;
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-
-            throw new GlobalException("Sentencia no valida");
-        } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (pstmt != null) {
-                    pstmt.close();
-                }
-                desconectar();
-            } catch (SQLException e) {
-                throw new GlobalException("Estatutos invalidos o nulos");
-            }
-        }
-        if (elFuncionario == null) {
-            throw new NoDataException("No existe una transferencia con este número");
-        }
-        if (elFuncionario == null) {
-            throw new NoDataException("El funcionario no existe en la base de datos");
-        }
-        return elFuncionario;
-    }
-
+    
     public static ServicioFuncionario getServicioFuncionario() {
         return servicioFuncionario;
     }

@@ -113,7 +113,7 @@ public class ControllerLogin implements MouseListener, ActionListener, KeyListen
                     VistaSecretaria aux = new VistaSecretaria();
                     aux.setNombreUsuario(funcionario.getNombre());
                     aux.addWindowListener(this);
-                    controlador = new ControllerSecretaria(new ModeloSecretaria(), aux);
+                    controlador = new ControllerSecretaria(new ModeloSecretaria(funcionario), aux);
                     this.vista.setVisible(false);
                     controlador.mostrarVista();
                 }

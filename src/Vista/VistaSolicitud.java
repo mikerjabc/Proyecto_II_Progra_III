@@ -385,17 +385,17 @@ public class VistaSolicitud extends javax.swing.JFrame implements Observer {
                 jcbTipo.addItem(modelo.tiposBien[0]);
                 jcbTipo.addItem(modelo.tiposBien[1]);
                 jcbTipo.addItem(modelo.tiposBien[2]);
-                jcbEstado.addItem(modelo.tiposEstadoSolicitud[0]);
+                jcbEstado.setEnabled(false);
                 jbBuscarRegistrador.setEnabled(false);
                 jtfRegistrador.setEnabled(false);
             }
             break;
             case "secretaria": {
-                jcbEstado.addItem(modelo.tiposEstadoSolicitud[0]);
                 jcbEstado.addItem(modelo.tiposEstadoSolicitud[1]);
                 jcbEstado.addItem(modelo.tiposEstadoSolicitud[2]);
                 jcbTipo.setEnabled(false);
                 
+                jtfRegistrador.setEditable(false);
                 jbBuscarRegistrador.setEnabled(false);
                 jbAgregarBien.setEnabled(false);
                 jbLimpiar.setEnabled(false);
@@ -456,12 +456,20 @@ public class VistaSolicitud extends javax.swing.JFrame implements Observer {
         jcbTipo.getModel().setSelectedItem(solicitud.getTipo());
         jtfCantidadBienes.setText(String.valueOf(solicitud.getCantiadadBienes()));
         modelo.setListaBienes(solicitud.getListaBienes());
-        jtfRegistrador.setText(modelo.getFuncionario().getNombre());
+        if(modelo.getFuncionario().getPuesto().equals("Registrador")){
+            jtfRegistrador.setText(modelo.getFuncionario().getNombre());
+        }
         ajustatVistaParaFuncionario();
     }
     
     public void mostrarMensaje(String mensaje){
         JOptionPane.showMessageDialog(this, mensaje);
+    }
+
+    public String preguntarDetalle(String pregunta) {
+        String aux;
+        aux = JOptionPane.showInputDialog(pregunta);
+        return aux;
     }
     
     @Override

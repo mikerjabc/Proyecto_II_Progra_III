@@ -95,7 +95,7 @@ public class ControllerJefe extends AbstractController implements ItemListener {
                         break;
                         case MouseEvent.BUTTON1: {//Click izquierdo
                             if (modelo.getTipo().equalsIgnoreCase(modelo.tiposSolicitud[0])) {
-                                modeloSolicitud = new ModeloSolicitud(modelo.getFuncionario());
+                                modeloSolicitud = new ModeloSolicitud(modelo.funcionarioAsociado());
                                 modeloSolicitud.setServicioFuncionario(ServicioFuncionario.getServicioFuncionario());
                                 vistaSolicitud.setModelo(modeloSolicitud);
                                 vistaSolicitud.cargarDatos(modelo.getSolicitud());
@@ -175,12 +175,27 @@ public class ControllerJefe extends AbstractController implements ItemListener {
                 }
                 break;
                 case "buscar": {
+                    modeloTrasferencia.limpiar();
+                    if(modeloSolicitud != null){
+                        modeloSolicitud.limpiar();
+                    }
+                    modelo.limpiar();
                     if (modelo.getTipo().equalsIgnoreCase(modelo.tiposSolicitud[0])) {
-                        modelo.buscarBien(vistaSolicitud.jtfNumero.getText(), vistaSolicitud.jtfIdBuscar.getText());
-                        vistaSolicitud.mostrarMensaje("Se encontro el bien");
+                        if(modelo.getSolicitud() == null){
+                            modelo.buscarSolicitud(vista.jtIdBuscar.getText());
+                            vista.mostrarMensaje("Se encontro la solicitud");
+                        }else{
+                            modeloSolicitud.buscarBien(vistaSolicitud.jtfIdBuscar.getText());
+                            vistaSolicitud.mostrarMensaje("Se encontro el bien");
+                        }
                     } else {
-                        modelo.AutorizarTransferencia(vistaTrasferencia.jtfNumero.getText(), vistaTrasferencia.jtfCodigoBuscar.getText());
-                        vistaTrasferencia.mostrarMensaje("Se encontro el bien");
+                        if(modelo.getTransferencia()== null){
+                            modelo.buscarSolicitud(vista.jtIdBuscar.getText());
+                            vista.mostrarMensaje("Se encontro la transferencia");
+                        }else{
+                            modeloTrasferencia.buscarActivo(vistaTrasferencia.jtfCodigoBuscar.getText());
+                            vistaTrasferencia.mostrarMensaje("Se encontro el activo");
+                        }
                     }
                 }
                 break;

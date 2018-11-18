@@ -326,12 +326,12 @@ public class ServicioBien extends Servicio {
             rs = (ResultSet) pstmt.getObject(1);
             while (rs.next()) {
                 elBien = new Bien(
-                        rs.getString("SERIAL"),
-                        rs.getString("DESCRIPCION"),
-                        rs.getString("MARCA"),
-                        rs.getString("MODELO"),
-                        rs.getInt("PRECIOUNITARIO"),
-                        rs.getInt("CANTIDAD")
+                        rs.getString("serial"),
+                        rs.getString("descripcion"),
+                        rs.getString("marca"),
+                        rs.getString("modelo"),
+                        rs.getInt("precio"),
+                        rs.getInt("cantidad")
                 );
                 coleccion.add(elBien);
             }

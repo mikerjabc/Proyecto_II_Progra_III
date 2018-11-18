@@ -26,7 +26,6 @@ public class VistaFuncionario extends javax.swing.JFrame {
         jLabel13 = new javax.swing.JLabel();
         jtfId = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
-        jtfContrasenna = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel6 = new javax.swing.JLabel();
         jtfNombre = new javax.swing.JTextField();
@@ -34,6 +33,7 @@ public class VistaFuncionario extends javax.swing.JFrame {
         jcbPuesto = new javax.swing.JComboBox<>();
         jcbDependencia = new javax.swing.JComboBox<>();
         jLabel15 = new javax.swing.JLabel();
+        jtfContrasenna = new javax.swing.JPasswordField();
         jlfFuncionario = new javax.swing.JLabel();
         jbtnGuardar = new javax.swing.JButton();
         jbtnLimpiar = new javax.swing.JButton();
@@ -51,9 +51,6 @@ public class VistaFuncionario extends javax.swing.JFrame {
 
         jLabel14.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel14.setText("Contraseña:");
-
-        jtfContrasenna.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jtfContrasenna.setName("contrasenna"); // NOI18N
 
         jSeparator1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
@@ -75,6 +72,8 @@ public class VistaFuncionario extends javax.swing.JFrame {
         jLabel15.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel15.setText("Dependencia:");
 
+        jtfContrasenna.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -88,9 +87,9 @@ public class VistaFuncionario extends javax.swing.JFrame {
                             .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)
                             .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jtfId, javax.swing.GroupLayout.PREFERRED_SIZE, 469, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jtfContrasenna, javax.swing.GroupLayout.PREFERRED_SIZE, 469, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jtfId, javax.swing.GroupLayout.DEFAULT_SIZE, 469, Short.MAX_VALUE)
+                            .addComponent(jtfContrasenna))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -127,8 +126,8 @@ public class VistaFuncionario extends javax.swing.JFrame {
                     .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jtfContrasenna, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel14))
+                    .addComponent(jLabel14)
+                    .addComponent(jtfContrasenna, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -206,7 +205,7 @@ public class VistaFuncionario extends javax.swing.JFrame {
     public javax.swing.JComboBox<String> jcbDependencia;
     public javax.swing.JComboBox<String> jcbPuesto;
     private javax.swing.JLabel jlfFuncionario;
-    public javax.swing.JTextField jtfContrasenna;
+    public javax.swing.JPasswordField jtfContrasenna;
     public javax.swing.JTextField jtfId;
     public javax.swing.JTextField jtfNombre;
     // End of variables declaration//GEN-END:variables

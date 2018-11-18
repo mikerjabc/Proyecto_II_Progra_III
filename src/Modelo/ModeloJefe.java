@@ -64,9 +64,17 @@ public class ModeloJefe extends Observable {
             if(tipo.equalsIgnoreCase(tiposSolicitud[0])){
                 solicitud = servicioSolicitud.buscarSolicitud(Integer.valueOf(numero));
                 transferencia = null;
+                if(!solicitud.getEstado().equals("Por verificar")){
+                    solicitud = null;
+                    throw (new Exception("No se encontro la solicitud"));
+                }
             }else{
                 transferencia = servicioTransferencia.buscarTransferencia(Integer.valueOf(numero));
                 solicitud = null;
+                if(!transferencia.getAutorizacion().equals("Recibida")){
+                    transferencia = null;
+                    throw (new Exception("No se encontro la transferencia"));
+                }
             }
             this.setChanged();
             this.notifyObservers();
@@ -75,17 +83,14 @@ public class ModeloJefe extends Observable {
         }
     }
     
-    public Bien buscarBien(String numero, String serial) throws Exception {
+    public Bien buscarBien(String serial) throws Exception {
         Bien aux = null;
         try {
-            if (numero.equals("")) {
-                throw (new Exception("numero invalido"));
-            }
             if (serial.equals("")) {
                 throw (new Exception("ID invalido"));
             }
             if(tipo.equalsIgnoreCase(tiposSolicitud[0])){
-                Iterator<Bien> ite = servicioSolicitud.buscarSolicitud(Integer.valueOf(numero)).getListaBienes().iterator();
+                Iterator<Bien> ite = solicitud.getListaBienes().iterator();
                 while (ite.hasNext()) {
                     Bien d = ite.next();
                     if (d.getSerial().equalsIgnoreCase(serial)) {
@@ -94,7 +99,7 @@ public class ModeloJefe extends Observable {
                     }
                 }
             }else{
-                Iterator<Bien> ite = servicioTransferencia.buscarTransferencia(Integer.valueOf(numero)).getListaBienes().iterator();
+                Iterator<Bien> ite = transferencia.getListaBienes().iterator();
                 while (ite.hasNext()) {
                     Bien d = ite.next();
                     if (d.getSerial().equalsIgnoreCase(serial)) {
@@ -149,7 +154,6 @@ public class ModeloJefe extends Observable {
                 throw (new Exception("Debe ingresar un codigo"));
             }
             this.tipo = tipo;
-            
             this.setChanged();
             this.notifyObservers();
         } catch (Exception ex) {
@@ -161,36 +165,56 @@ public class ModeloJefe extends Observable {
         ArrayList<Object> list = new ArrayList();
         try {
             if (tipo.equals(tiposSolicitud[0])) {
-                Iterator<Solicitud> ite = servicioSolicitud.listarSolicitudes().iterator();
-                while (ite.hasNext()) {
-                    Solicitud d = ite.next();
-                    if (d.getEstado().equalsIgnoreCase("por verificar") && servicioSolicitud.buscarFuncionarioAsignadoSolicitud(d.getNumeroSolicitud()) == null) {
-                        Object[] fila = new Object[6];
-                        fila[0] = d.getNumeroSolicitud();
-                        fila[1] = d.getFecha();
-                        fila[2] = d.getTipo();
-                        fila[3] = d.getEstado();
-                        fila[4] = d.getCantiadadBienes();
-                        fila[5] = d.getMontoTotal();
-                        
-                        list.add(fila);
+                if (solicitud == null) {
+                    Iterator<Solicitud> ite = servicioSolicitud.listarSolicitudes().iterator();
+                    while (ite.hasNext()) {
+                        Solicitud solicitud = ite.next();
+                        if (solicitud.getEstado().equalsIgnoreCase("por verificar") && servicioSolicitud.buscarFuncionarioAsignadoSolicitud(solicitud.getNumeroSolicitud()) == null) {
+                            Object[] fila = new Object[6];
+                            fila[0] = solicitud.getNumeroSolicitud();
+                            fila[1] = solicitud.getFecha();
+                            fila[2] = solicitud.getTipo();
+                            fila[3] = solicitud.getEstado();
+                            fila[4] = solicitud.getCantiadadBienes();
+                            fila[5] = solicitud.getMontoTotal();
+                            list.add(fila);
+                        }
                     }
+                } else {
+                    Object[] fila = new Object[6];
+                    fila[0] = solicitud.getNumeroSolicitud();
+                    fila[1] = solicitud.getFecha();
+                    fila[2] = solicitud.getTipo();
+                    fila[3] = solicitud.getEstado();
+                    fila[4] = solicitud.getCantiadadBienes();
+                    fila[5] = solicitud.getMontoTotal();
+                    list.add(fila);
                 }
-            } else {
-                Iterator<Transferencia> ite = servicioTransferencia.listarTransferencia().iterator();
-                while (ite.hasNext()) {
-                    Transferencia t = ite.next();
-                    if (t.getAutorizacion().equalsIgnoreCase("Recibida") ) {
-                        Object[] fila = new Object[6];
-                        fila[0] = t.getNumero();
-                        fila[1] = t.getOrigen().getNombre();
-                        fila[2] = t.getDestino().getNombre();
-                        fila[3] = t.getUbicacion();
-                        fila[4] = t.getFuncionario();
-                        fila[5] = t.getAutorizacion();
-                        
-                        list.add(fila);
+            } else if (tipo.equals(tiposSolicitud[1])) {
+                if (transferencia == null) {
+                    Iterator<Transferencia> ite = servicioTransferencia.listarTransferencia().iterator();
+                    while (ite.hasNext()) {
+                        Transferencia transferencia = ite.next();
+                        if (transferencia.getAutorizacion().equalsIgnoreCase("Recibida")) {
+                            Object[] fila = new Object[6];
+                            fila[0] = transferencia.getNumero();
+                            fila[1] = transferencia.getOrigen().getNombre();
+                            fila[2] = transferencia.getDestino().getNombre();
+                            fila[3] = transferencia.getUbicacion();
+                            fila[4] = transferencia.getFuncionario().getNombre();
+                            fila[5] = transferencia.getAutorizacion();
+                            list.add(fila);
+                        }
                     }
+                } else {
+                    Object[] fila = new Object[6];
+                    fila[0] = transferencia.getNumero();
+                    fila[1] = transferencia.getOrigen().getNombre();
+                    fila[2] = transferencia.getDestino().getNombre();
+                    fila[3] = transferencia.getUbicacion();
+                    fila[4] = transferencia.getFuncionario().getNombre();
+                    fila[5] = transferencia.getAutorizacion();
+                    list.add(fila);
                 }
             }
         } catch (GlobalException | NoDataException ex) {
@@ -218,6 +242,16 @@ public class ModeloJefe extends Observable {
 
     public Funcionario getFuncionario() {
         return funcionario;
+    }
+    
+    public Funcionario funcionarioAsociado() throws Exception {
+        Funcionario aux = null;
+        try{
+            aux = servicioSolicitud.buscarFuncionarioAsignadoSolicitud(solicitud.getNumeroSolicitud());
+        }catch(Exception ex){
+            throw(new Exception(ex.getMessage()));
+        }
+        return aux;
     }
     
     @Override
