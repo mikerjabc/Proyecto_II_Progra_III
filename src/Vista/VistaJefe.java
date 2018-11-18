@@ -127,7 +127,7 @@ public class VistaJefe extends javax.swing.JFrame implements Observer {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jlNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE)
+                .addComponent(jlNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -147,11 +147,13 @@ public class VistaJefe extends javax.swing.JFrame implements Observer {
         jmOpciones.add(jSeparator1);
 
         jmiSalir.setText("Salir");
+        jmiSalir.setName("salir"); // NOI18N
         jmOpciones.add(jmiSalir);
 
         jMenuBar1.add(jmOpciones);
 
         jmAyuda.setText("Ayuda");
+        jmAyuda.setName("ayuda"); // NOI18N
         jMenuBar1.add(jmAyuda);
 
         setJMenuBar(jMenuBar1);
@@ -226,6 +228,7 @@ public class VistaJefe extends javax.swing.JFrame implements Observer {
         modelo.addObserver(this);
         jcbBuscar.addItem(modelo.tiposSolicitud[0]);
         jcbBuscar.addItem(modelo.tiposSolicitud[1]);
+        jlNombre.setText(modelo.getFuncionario().getNombre());
     }
 
     public void setControlador(ControllerJefe controlador) {
@@ -240,10 +243,6 @@ public class VistaJefe extends javax.swing.JFrame implements Observer {
 
     public void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje);
-    }
-
-    public void setNombreUsuario(String nombre) {
-        jlNombre.setText(nombre);
     }
 
     public void limpiarTodosEspacios() {

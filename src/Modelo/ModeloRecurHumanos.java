@@ -28,10 +28,12 @@ public class ModeloRecurHumanos extends Observable {
     public final String ALL = "Todas";
     public final String[] tiposSolicitud = {"-","Administrador","Registrador","Jefe","Secretaria","Recursos Humanos"};
     private Funcionario funcionario;
+    private Funcionario recursosHumanos;
     private int codigoDependencia;
     
     
-    public ModeloRecurHumanos(){
+    public ModeloRecurHumanos(Funcionario recursosHumanos){
+        this.recursosHumanos = recursosHumanos;
         funcionario = null;
         codigoDependencia = -1;
     }
@@ -214,6 +216,10 @@ public class ModeloRecurHumanos extends Observable {
 
     public Funcionario getFuncionario() {
         return funcionario;
+    }
+
+    public Funcionario getRecursosHumanos() {
+        return recursosHumanos;
     }
 
     @Override

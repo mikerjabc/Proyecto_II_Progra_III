@@ -104,13 +104,13 @@ public class VistaRecursosHumanos extends javax.swing.JFrame implements Observer
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jcbBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 238, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jtIdBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jbBuscar)
-                .addGap(91, 91, 91)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jbAgregar)
                 .addContainerGap())
         );
@@ -139,7 +139,7 @@ public class VistaRecursosHumanos extends javax.swing.JFrame implements Observer
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jlNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jlNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -159,11 +159,13 @@ public class VistaRecursosHumanos extends javax.swing.JFrame implements Observer
         jmOpciones.add(jSeparator1);
 
         jmiSalir.setText("Salir");
+        jmiSalir.setName("salir"); // NOI18N
         jmOpciones.add(jmiSalir);
 
         jMenuBar1.add(jmOpciones);
 
         jmAyuda.setText("Ayuda");
+        jmAyuda.setName("ayuda"); // NOI18N
         jMenuBar1.add(jmAyuda);
 
         setJMenuBar(jMenuBar1);
@@ -192,8 +194,8 @@ public class VistaRecursosHumanos extends javax.swing.JFrame implements Observer
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addComponent(jScrollPane2)
+                .addContainerGap())
         );
 
         pack();
@@ -238,6 +240,7 @@ public class VistaRecursosHumanos extends javax.swing.JFrame implements Observer
         while (ite.hasNext()) {
             jcbBuscar.addItem(ite.next());
         }
+        jlNombre.setText(modelo.getRecursosHumanos().getNombre());
     }
     
     public void setControlador(ControllerRecurHumanos controlador){
@@ -255,10 +258,6 @@ public class VistaRecursosHumanos extends javax.swing.JFrame implements Observer
     
     public void mostrarMensaje(String mensaje){
         JOptionPane.showMessageDialog(this, mensaje);
-    }
-    
-    public void setNombreUsuario(String nombre){
-        jlNombre.setText(nombre);
     }
     
     public void limpiarTodosEspacios() {

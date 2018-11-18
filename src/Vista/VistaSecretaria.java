@@ -274,6 +274,7 @@ public class VistaSecretaria extends javax.swing.JFrame implements Observer {
     public void setModelo(ModeloSecretaria modelo) {
         this.modelo = modelo;
         modelo.addObserver(this);
+        jlNombre.setText(modelo.getFuncionario().getNombre());
     }
 
     public void setControlador(ControllerSecretaria controlador) {
@@ -287,10 +288,6 @@ public class VistaSecretaria extends javax.swing.JFrame implements Observer {
 
     public void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje);
-    }
-
-    public void setNombreUsuario(String nombre) {
-        jlNombre.setText(nombre);
     }
 
     public void limpiarTodosEspacios() {
