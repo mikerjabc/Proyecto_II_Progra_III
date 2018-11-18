@@ -46,11 +46,11 @@ public class ModeloTransferencia extends Observable {
         this.servicioFuncionario = servicioFuncionario;
     }
     
-    public void setServicioBien(ServicioDependencia servicioDependencia) {
+    public void setServicioDependencia(ServicioDependencia servicioDependencia) {
         this.servicioDependencia = servicioDependencia;
     }
     
-    public void setServicioDependencia(ServicioBien servicioBien) {
+    public void setServicioBien(ServicioBien servicioBien) {
         this.servicioBien = servicioBien;
     }
 

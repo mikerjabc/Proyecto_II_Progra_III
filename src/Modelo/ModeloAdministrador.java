@@ -264,7 +264,10 @@ public class ModeloAdministrador extends Observable {
                     Iterator<Solicitud> ite = servicioSolicitud.listarSolicitudes().iterator();
                     while (ite.hasNext()) {
                         Solicitud solicitud = ite.next();
-                        if (solicitud.getEstado().equalsIgnoreCase("por verificar") && servicioSolicitud.buscarFuncionarioAsignadoSolicitud(solicitud.getNumeroSolicitud()) == null) {
+                        if (solicitud.getEstado().equalsIgnoreCase("por verificar") 
+                                && servicioSolicitud.buscarFuncionarioAsignadoSolicitud(solicitud.getNumeroSolicitud()) == null
+                                && servicioSolicitud.buscarFuncionarioAdministrador(solicitud.getNumeroSolicitud()).getId().equals(funcionario.getId())) 
+                        {
                             Object[] fila = new Object[6];
                             fila[0] = solicitud.getNumeroSolicitud();
                             fila[1] = solicitud.getFecha();
@@ -290,7 +293,9 @@ public class ModeloAdministrador extends Observable {
                     Iterator<Transferencia> ite = servicioTransferencia.listarTransferencia().iterator();
                     while (ite.hasNext()) {
                         Transferencia transferencia = ite.next();
-                        if (transferencia.getAutorizacion().equalsIgnoreCase("Recibida")) {
+                        if (transferencia.getAutorizacion().equalsIgnoreCase("Recibida") 
+                                && servicioTransferencia.buscarFuncionarioAdministrador(transferencia.getNumero()).getId().equals(funcionario.getId())) 
+                        {
                             Object[] fila = new Object[6];
                             fila[0] = transferencia.getNumero();
                             fila[1] = transferencia.getOrigen().getNombre();

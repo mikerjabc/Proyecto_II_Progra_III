@@ -14,6 +14,9 @@ import Vista.VistaSolicitud;
 import Vista.VistaTransferencia;
 import accesoADatos.GlobalException;
 import accesoADatos.NoDataException;
+import accesoADatos.ServicioActivo;
+import accesoADatos.ServicioBien;
+import accesoADatos.ServicioDependencia;
 import accesoADatos.ServicioFuncionario;
 import accesoADatos.ServicioSolicitud;
 import accesoADatos.ServicioTransferencia;
@@ -76,6 +79,10 @@ public class ControllerAdministrador extends AbstractController implements ItemL
         modeloSolicitud = null;
         //modeloSolicitud = new ModeloSolicitud();
         modeloTrasferencia = new ModeloTransferencia(modelo.getFuncionario());
+        modeloTrasferencia.setServicioActivo(ServicioActivo.getServicioActivo());
+        modeloTrasferencia.setServicioBien(ServicioBien.getServicioBien());
+        modeloTrasferencia.setServicioDependencia(ServicioDependencia.getServicioDependencia());
+        modeloTrasferencia.setServicioFuncionario(ServicioFuncionario.getServicioFuncionario());
         vistaTrasferencia.setModelo(modeloTrasferencia);
         vistaSolicitud.addWindowListener(this);
         vistaTrasferencia.addWindowListener(this);
@@ -163,6 +170,14 @@ public class ControllerAdministrador extends AbstractController implements ItemL
     public void instrucciones(String x) throws Exception {
         try {
             switch (x.toLowerCase()) {
+                case "insertar": {
+                    if (modelo.getTipo().equalsIgnoreCase(modelo.tiposSolicitud[0])) {
+                        vistaSolicitud.setVisible(true);
+                    } else if (modelo.getTipo().equalsIgnoreCase(modelo.tiposSolicitud[1])) {
+                        vistaTrasferencia.setVisible(true);
+                    }
+                }
+                break;
                 case "agregar": {
                     if (modelo.getTipo().equalsIgnoreCase(modelo.tiposSolicitud[0])) {
                         modelo.crearSolicitud(vistaSolicitud.jtfNumero.getText(),
