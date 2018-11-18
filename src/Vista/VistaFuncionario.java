@@ -214,7 +214,7 @@ public class VistaFuncionario extends javax.swing.JFrame {
     
     public void setModelo(ModeloRecurHumanos modelo) {
         this.modelo = modelo;
-        Iterator<String> ite = modelo.getNombresDependencias().iterator();
+        Iterator<String> ite = modelo.getListaNombresDependencias().iterator();
         ite.next();
         jcbDependencia.addItem("-");
         while (ite.hasNext()) {

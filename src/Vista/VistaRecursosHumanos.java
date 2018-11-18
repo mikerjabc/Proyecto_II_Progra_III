@@ -232,15 +232,15 @@ public class VistaRecursosHumanos extends javax.swing.JFrame implements Observer
     
     private ModeloRecurHumanos modelo;
     private ControllerRecurHumanos controlador;
-    
     public void setModelo(ModeloRecurHumanos modelo) {
         this.modelo = modelo;
         modelo.addObserver(this);
-        Iterator<String> ite = modelo.getNombresDependencias().iterator();
+        Iterator<String> ite = modelo.getListaNombresDependencias().iterator();
         while (ite.hasNext()) {
             jcbBuscar.addItem(ite.next());
         }
         jlNombre.setText(modelo.getRecursosHumanos().getNombre());
+        modelo.notifyObservers();
     }
     
     public void setControlador(ControllerRecurHumanos controlador){

@@ -18,15 +18,12 @@ import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author MikerJABC
- */
 public class ModeloRecurHumanos extends Observable {
     private ServicioDependencia servicioDependencia;
     private ServicioFuncionario servicioFuncionario;
     public final String ALL = "Todas";
     public final String[] tiposSolicitud = {"-","Administrador","Registrador","Jefe","Secretaria","Recursos Humanos"};
+    private ArrayList<String> listaNombresDependencias;
     private Funcionario funcionario;
     private Funcionario recursosHumanos;
     private int codigoDependencia;
@@ -36,10 +33,20 @@ public class ModeloRecurHumanos extends Observable {
         this.recursosHumanos = recursosHumanos;
         funcionario = null;
         codigoDependencia = -1;
+        listaNombresDependencias = new ArrayList();
     }
 
     public void setServicioDependencia(ServicioDependencia servicioDependencia) {
         this.servicioDependencia = servicioDependencia;
+        listaNombresDependencias.add(ALL);
+        try {
+            Iterator<Dependencia> ite = servicioDependencia.listarDependencia().iterator();
+            while (ite.hasNext()) {
+                listaNombresDependencias.add(ite.next().getNombre());
+            }
+        } catch (GlobalException | NoDataException ex) {} catch (SQLException ex) {
+            Logger.getLogger(ModeloRecurHumanos.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public void setServicioFuncionario(ServicioFuncionario servicioFuncionario) {
@@ -176,23 +183,6 @@ public class ModeloRecurHumanos extends Observable {
         }
         return list;
     }
-
-    public ArrayList<String> getNombresDependencias() {
-        ArrayList<String> list = new ArrayList();
-        list.add(ALL);
-        try {
-            if(servicioDependencia.listarDependencia() != null){
-            Iterator<Dependencia> ite = servicioDependencia.listarDependencia().iterator();
-                while (ite.hasNext()) {
-                    list.add(ite.next().getNombre());
-                }
-            }
-            this.notifyObservers();
-        } catch (GlobalException | NoDataException ex) {} catch (SQLException ex) {
-            Logger.getLogger(ModeloRecurHumanos.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return list;
-    }
     
     public int getCodigoDependencia(String nombre) {
         int codigo = -1;
@@ -220,6 +210,10 @@ public class ModeloRecurHumanos extends Observable {
 
     public Funcionario getRecursosHumanos() {
         return recursosHumanos;
+    }
+
+    public ArrayList<String> getListaNombresDependencias() {
+        return listaNombresDependencias;
     }
 
     @Override
