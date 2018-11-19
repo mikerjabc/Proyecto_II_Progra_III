@@ -16,10 +16,6 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author Fernando
- */
 public class VistaRecursosHumanos extends javax.swing.JFrame implements Observer {
     
     private DefaultTableModel model;

@@ -40,6 +40,7 @@ public class ModeloRegistrador extends Observable {
     public void setServicioFuncionario(ServicioFuncionario servicioFuncionario) {
         this.servicioFuncionario = servicioFuncionario;
     }
+    
     public void setServicioActivo(ServicioActivo servicioActivo) {
         this.servicioActivo = servicioActivo;
     }
@@ -94,8 +95,11 @@ public class ModeloRegistrador extends Observable {
         }
     }
     
-    public void eliminarActivo() throws Exception {
+    public void eliminarActivo(boolean condicion) throws Exception {
         try {
+            if (condicion) {
+                throw (new Exception("Eliminación cancelada"));
+            }
             servicioActivo.eliminarActivo(activo.getCodigoActivo());
             this.notifyObservers();
         } catch (Exception ex) {

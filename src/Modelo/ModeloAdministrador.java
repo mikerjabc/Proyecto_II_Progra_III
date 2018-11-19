@@ -8,7 +8,6 @@ import Logic.Solicitud;
 import Logic.Transferencia;
 import accesoADatos.GlobalException;
 import accesoADatos.NoDataException;
-import accesoADatos.ServicioFuncionario;
 import accesoADatos.ServicioSolicitud;
 import accesoADatos.ServicioTransferencia;
 import java.sql.SQLException;
@@ -21,7 +20,6 @@ import java.util.logging.Logger;
 public class ModeloAdministrador extends Observable {
     private ServicioSolicitud servicioSolicitud;
     private ServicioTransferencia servicioTransferencia;
-    private ServicioFuncionario servicioFuncionario;
     public final String[] tiposSolicitud = {"Incorporación","Traslado"};
     public final String[] tiposBienes = {"Compra","Donación","Producción institucional"};
     public final Object[] VARIABLESTABLA = {"Número","Fecha","Tipo","Estado","Cantidad de Bienes","Monto Total","Origen","Destino","Ubicación","Funcionario","Autorización"};
@@ -41,10 +39,6 @@ public class ModeloAdministrador extends Observable {
     
     public void setServicioTransferencia(ServicioTransferencia servicioTransferencia) {
         this.servicioTransferencia = servicioTransferencia;
-    }
-    
-    public void setServicioFuncionario(ServicioFuncionario servicioFuncionario) {
-        this.servicioFuncionario = servicioFuncionario;
     }
     
     public void buscarSolicitud(String numero) throws Exception {
@@ -140,10 +134,15 @@ public class ModeloAdministrador extends Observable {
         }
     }
     
-    public void eliminarSolicitud() throws Exception {
+    public void eliminarSolicitud(boolean condicion) throws Exception {
         try {
             if (solicitud == null) {
                 throw (new Exception("Número invalido"));
+            }
+            if (condicion || !solicitud.getEstado().equals("Recibida")
+                    || !(servicioSolicitud.buscarFuncionarioAsignadoSolicitud(solicitud.getNumeroSolicitud()) == null)
+                    || !servicioSolicitud.buscarFuncionarioAdministrador(solicitud.getNumeroSolicitud()).getId().equals(funcionario.getId())) {
+                throw (new Exception("Eliminación cancelada"));
             }
             servicioSolicitud.eliminarSolicitud(solicitud.getNumeroSolicitud());
             solicitud = null;
@@ -205,7 +204,7 @@ public class ModeloAdministrador extends Observable {
                 throw (new Exception("Lista de activos invalida"));
             }
             if (!transferencia.getAutorizacion().equals("Recibida")
-                    || !servicioSolicitud.buscarFuncionarioAdministrador(Integer.valueOf(numero)).getId().equals(funcionario.getNombre())) {
+                    || !servicioTransferencia.buscarFuncionarioAdministrador(Integer.valueOf(numero)).getId().equals(funcionario.getNombre())) {
                 solicitud = null;
                 throw (new Exception("Esta solicitud no puede ser modificada"));
             }
@@ -219,10 +218,14 @@ public class ModeloAdministrador extends Observable {
         }
     }
     
-    public void eliminarTransferencia() throws Exception {
+    public void eliminarTransferencia(boolean condicion) throws Exception {
         try {
             if (transferencia == null) {
                 throw (new Exception("Número invalido"));
+            }
+            if (condicion || !transferencia.getAutorizacion().equals("Recibida")
+                    || !servicioTransferencia.buscarFuncionarioAdministrador(transferencia.getNumero()).getId().equals(funcionario.getNombre())) {
+                throw (new Exception("Eliminación cancelada"));
             }
             servicioTransferencia.eliminarTransferencia(transferencia.getNumero());
             transferencia = null;

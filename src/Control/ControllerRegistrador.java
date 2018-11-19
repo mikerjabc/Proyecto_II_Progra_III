@@ -231,7 +231,7 @@ public final class ControllerRegistrador extends AbstractController implements I
                 break;
                  case "eliminar": {
                     if (modelo.getTipo().equalsIgnoreCase(modelo.tiposSolicitud[1])) {
-                        modelo.eliminarActivo();
+                        modelo.eliminarActivo(vistaSolicitud.confirmacionDeAccion("¿Desea eliminar este bien?"));
                     }
                 }
                 break;

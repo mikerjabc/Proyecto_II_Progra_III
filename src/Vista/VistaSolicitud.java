@@ -475,6 +475,15 @@ public class VistaSolicitud extends javax.swing.JFrame implements Observer {
         return aux;
     }
     
+    public boolean confirmacionDeAccion(String mensaje) {
+        boolean respuesta = false;
+        int option = JOptionPane.showConfirmDialog(this, mensaje, "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+        if (JOptionPane.OK_OPTION == option) {
+            respuesta = true;
+        }
+        return respuesta;
+    }
+    
     @Override
     public void update(Observable o, Object o1) {
         if (o1 != null) {

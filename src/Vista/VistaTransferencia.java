@@ -17,10 +17,6 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author Fernando
- */
 public class VistaTransferencia extends javax.swing.JFrame implements Observer {
 
     private DefaultTableModel model;
@@ -449,6 +445,15 @@ public class VistaTransferencia extends javax.swing.JFrame implements Observer {
     
     public void mostrarMensaje(String mensaje){
         JOptionPane.showMessageDialog(this, mensaje);
+    }
+    
+    public boolean confirmacionDeAccion(String mensaje) {
+        boolean respuesta = false;
+        int option = JOptionPane.showConfirmDialog(this, mensaje, "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+        if (JOptionPane.OK_OPTION == option) {
+            respuesta = true;
+        }
+        return respuesta;
     }
 
     @Override

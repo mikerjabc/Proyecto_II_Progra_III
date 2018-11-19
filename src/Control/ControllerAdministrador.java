@@ -45,7 +45,6 @@ public class ControllerAdministrador extends AbstractController implements ItemL
         this.vista = vista;
         modelo.setServicioSolicitud(ServicioSolicitud.getServicioSolicitud());
         modelo.setServicioTransferencia(ServicioTransferencia.getServicioTransferencia());
-        modelo.setServicioFuncionario(ServicioFuncionario.getServicioFuncionario());
         vista.setModelo(modelo);
         vista.setControlador(this);
         ajustarVista();
@@ -114,6 +113,7 @@ public class ControllerAdministrador extends AbstractController implements ItemL
                                     modeloSolicitud = new ModeloSolicitud(modelo.getFuncionario());
                                     modeloSolicitud.setRegistrador(modelo.funcionarioAsociado());
                                     modeloSolicitud.setServicioFuncionario(ServicioFuncionario.getServicioFuncionario());
+                                    modeloSolicitud.setServicioBien(ServicioBien.getServicioBien());
                                     vistaSolicitud.setModelo(modeloSolicitud);
                                     vistaSolicitud.cargarDatos(modelo.getSolicitud());
                                     vistaSolicitud.setVisible(true);
@@ -184,6 +184,8 @@ public class ControllerAdministrador extends AbstractController implements ItemL
                     if (modelo.getTipo().equalsIgnoreCase(modelo.tiposSolicitud[0])) {
                         if (modeloSolicitud == null) {
                             modeloSolicitud = new ModeloSolicitud(modelo.getFuncionario());
+                            modeloSolicitud.setServicioFuncionario(ServicioFuncionario.getServicioFuncionario());
+                            modeloSolicitud.setServicioBien(ServicioBien.getServicioBien());
                             vistaSolicitud.setModelo(modeloSolicitud);
                             vistaSolicitud.setVisible(true);
                         } else {
@@ -403,15 +405,15 @@ public class ControllerAdministrador extends AbstractController implements ItemL
                 case "eliminar": {
                     if (modelo.getTipo().equalsIgnoreCase(modelo.tiposSolicitud[0])) {
                         if (modeloSolicitud != null) {
-                            modeloSolicitud.eliminarBien();
+                            modeloSolicitud.eliminarBien(vistaSolicitud.confirmacionDeAccion("¿Desea eliminar este bien?"));
                         } else {
-                            modelo.eliminarSolicitud();
+                            modelo.eliminarSolicitud(vista.confirmacionDeAccion("¿Desea eliminar esta solicitud?"));
                         }
                     } else if (modelo.getTipo().equalsIgnoreCase(modelo.tiposSolicitud[1])) {
                         if (modeloTrasferencia.getActivo() != null) {
-                            modeloTrasferencia.eliminarActivo();
+                            modeloTrasferencia.eliminarActivo(vistaTrasferencia.confirmacionDeAccion("¿Desea eliminar este activo?"));
                         } else {
-                            modelo.eliminarTransferencia();
+                            modelo.eliminarTransferencia(vista.confirmacionDeAccion("¿Desea eliminar esta transferencia?"));
                         }
                     }
                 }

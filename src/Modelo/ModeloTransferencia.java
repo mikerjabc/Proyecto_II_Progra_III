@@ -54,12 +54,16 @@ public class ModeloTransferencia extends Observable {
         this.servicioBien = servicioBien;
     }
 
-    public void eliminarActivo() throws Exception {
+    public void eliminarActivo(boolean condicion) throws Exception {
         try {
             if (activo == null) {
                 throw (new Exception("Código invalido"));
             }
+            if (condicion) {
+                throw (new Exception("Eliminación cancelada"));
+            }
             listaActivos.remove(activo);
+            servicioActivo.eliminarActivo(activo.getCodigoActivo());
             activo = null;
             this.notifyObservers();
         } catch (Exception ex) {

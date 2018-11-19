@@ -7,6 +7,7 @@ package Modelo;
 
 import Logic.Bien;
 import Logic.Funcionario;
+import accesoADatos.ServicioBien;
 import accesoADatos.ServicioFuncionario;
 import accesoADatos.ServicioSolicitud;
 import java.util.ArrayList;
@@ -14,13 +15,10 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Observable;
 
-/**
- *
- * @author MikerJABC
- */
 public class ModeloSolicitud extends Observable {
 
     private ServicioFuncionario servicioFuncionario;
+    private ServicioBien servicioBien;
     private ArrayList<Bien> listaBienes;
     private Bien bien;
     public final String[] tiposBien = {"Compra", "Donación", "Producción institucional"};
@@ -38,6 +36,10 @@ public class ModeloSolicitud extends Observable {
     
     public void setServicioFuncionario(ServicioFuncionario servicioFuncionario) {
         this.servicioFuncionario = servicioFuncionario;
+    }
+    
+    public void setServicioBien(ServicioBien servicioBien) {
+        this.servicioBien = servicioBien;
     }
     
     public void agregarBien(String serial, String descripcion, String modelo, String marca, String precio, String cantidad) throws Exception {
@@ -67,12 +69,16 @@ public class ModeloSolicitud extends Observable {
         }
     }
 
-    public void eliminarBien() throws Exception {
+    public void eliminarBien(boolean condicion) throws Exception {
         try {
             if (bien == null) {
                 throw (new Exception("Serial invalido"));
             }
+            if (condicion) {
+                throw (new Exception("Eliminación cancelada"));
+            }
             listaBienes.remove(bien);
+            servicioBien.eliminarBien(bien.getSerial());
             bien = null;
             this.cantidadymonto();
             this.setChanged();
