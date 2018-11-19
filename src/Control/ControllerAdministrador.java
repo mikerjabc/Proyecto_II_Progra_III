@@ -92,8 +92,8 @@ public class ControllerAdministrador extends AbstractController implements ItemL
         try {
             if (ae.getSource().getClass() == JTable.class) {
                 JTable tabla = (JTable) ae.getSource();
-                numero = tabla.getValueAt(tabla.getSelectedRow(), 0).toString();
-                tabla.changeSelection(tabla.getSelectedRow(), 0, false, true);
+                numero = tabla.getValueAt(tabla.rowAtPoint(ae.getPoint()), 0).toString();
+                tabla.changeSelection(tabla.rowAtPoint(ae.getPoint()), 0, false, true);
                 if (modeloSolicitud != null) {
                     modeloSolicitud.buscarBien(numero);
                 } else {
@@ -101,8 +101,8 @@ public class ControllerAdministrador extends AbstractController implements ItemL
                 }
                 if (ae.getClickCount() == 1) {
                     switch (ae.getButton()) {
-                        case MouseEvent.BUTTON2: {//Click derecho
-                            //instrucciones("eliminar");
+                        case MouseEvent.BUTTON3: {//Click derecho
+                            instrucciones("eliminar");
                         }
                         break;
                         case MouseEvent.BUTTON1: {//Click izquierdo
@@ -124,12 +124,17 @@ public class ControllerAdministrador extends AbstractController implements ItemL
                             }
                         }
                         break;
+                        default:
+                        {
+                        }
+                        break;
                     }
                 }
             }
         } catch (GlobalException | NoDataException ex) {
             vista.mostrarMensaje(ex.getMessage());
         } catch (Exception ex1) {
+            
             vista.mostrarMensaje(ex1.getMessage());
         }
     }
@@ -207,18 +212,28 @@ public class ControllerAdministrador extends AbstractController implements ItemL
                         vistaSolicitud.limpiarTodosEspacios();
                         vistaSolicitud.dispose();
                         modeloSolicitud = null;
+                        modelo.setSolicitud(null);
                     } else if (modelo.getTipo().equalsIgnoreCase(modelo.tiposSolicitud[1])) {
                         modelo.crearTransferencia(vistaTrasferencia.jtfNumero.getText(),
                                 modeloTrasferencia.getOrigen(),
                                 modeloTrasferencia.getDestino(),
                                 vistaTrasferencia.jtfUbicacion.getText(),
-                                modeloTrasferencia.getResponsable()
+                                modeloTrasferencia.getResponsable(),
+                                modeloTrasferencia.getListaActivos()
                         );
                         vistaTrasferencia.setVisible(false);
                         vistaTrasferencia.mostrarMensaje("Se agrego la transferencia");
                         vistaTrasferencia.limpiarTodosEspacios();
                         vistaTrasferencia.dispose();
-                        vistaTrasferencia.dispose();
+                        modelo.setTransferencia(null);
+                    }
+                }
+                break;
+                case "agregaractivo": {
+                    try {
+                        modeloTrasferencia.insertarActivo(vistaTrasferencia.jtfCodigoAgregar.getText());
+                    } catch (Exception ex) {
+                        vistaTrasferencia.mostrarMensaje(ex.getMessage());
                     }
                 }
                 break;
@@ -258,7 +273,8 @@ public class ControllerAdministrador extends AbstractController implements ItemL
                                 modeloTrasferencia.getOrigen(),
                                 modeloTrasferencia.getDestino(),
                                 vistaTrasferencia.jtfUbicacion.getText(),
-                                modeloTrasferencia.getResponsable()
+                                modeloTrasferencia.getResponsable(),
+                                modeloTrasferencia.getListaActivos()
                         );
                         vistaSolicitud.setVisible(false);
                         vistaSolicitud.mostrarMensaje("Se guardo el cambio en la transferencia");
@@ -382,6 +398,22 @@ public class ControllerAdministrador extends AbstractController implements ItemL
                 break;
                 case "salir": {
                     System.exit(0);
+                }
+                break;
+                case "eliminar": {
+                    if (modelo.getTipo().equalsIgnoreCase(modelo.tiposSolicitud[0])) {
+                        if (modeloSolicitud != null) {
+                            modeloSolicitud.eliminarBien();
+                        } else {
+                            modelo.eliminarSolicitud();
+                        }
+                    } else if (modelo.getTipo().equalsIgnoreCase(modelo.tiposSolicitud[1])) {
+                        if (modeloTrasferencia.getActivo() != null) {
+                            modeloTrasferencia.eliminarActivo();
+                        } else {
+                            modelo.eliminarTransferencia();
+                        }
+                    }
                 }
                 break;
                 default: {

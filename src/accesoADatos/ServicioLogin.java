@@ -1,32 +1,17 @@
-/*
- * ServicioLogueo.java
- *
- * Created on 8 de junio de 2007, 22:53
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
- */
 
 package accesoADatos;
 
 import Logic.Funcionario;
 import java.sql.CallableStatement;
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import oracle.jdbc.internal.OracleTypes;
-
-/**
- *
- * @author Administrador
- */
 
 public class ServicioLogin extends Servicio {
     private static final String login = "{?=call login(?,?)}";
     private static ServicioLogin servicioLogin = new ServicioLogin();
 
    
-    /** Creates a new instance of ServicioLogueo */
     public ServicioLogin() {
         super();
     }

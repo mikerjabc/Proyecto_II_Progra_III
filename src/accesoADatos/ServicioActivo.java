@@ -1,12 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package accesoADatos;
 
 import Logic.Activo;
 import Logic.Bien;
+import Logic.Transferencia;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,7 +18,9 @@ public class ServicioActivo extends Servicio {
     private static final String LISTARACTIVO = "{?=call listarActivo}";
     private static final String CONSULTARACTIVO = "{?=call buscarActivo(?)}";    
     private static final String BUSCARACTIVOPORDEPENDENCIA = "{?=call buscarActivoPorDependencia(?)}";
+    private static final String BUSCARACTIVOPORTRANSFERENCIA = "{?=call buscarActivoPorTransferencia(?)}";
     private static final String BUSCARACTIVOPORBIEN = "{?=call buscarActivoPorBien(?)}";
+    private static final String ASIGNARTRANSFERENCIA = "{call asiganarTrasferenciaActivo(?,?)}";
 
     
     private static ServicioActivo servicioActivo = new ServicioActivo();
@@ -66,7 +65,7 @@ public class ServicioActivo extends Servicio {
         }
     }
 
-    public void eliminarBien(String elCodigo) throws GlobalException, NoDataException {
+    public void eliminarActivo(int elCodigo) throws GlobalException, NoDataException {
         try {
             conectar();
         } catch (ClassNotFoundException e) {
@@ -80,7 +79,7 @@ public class ServicioActivo extends Servicio {
 
         try {
             pstmt = conexion.prepareCall(ELIMINARACTIVO);
-            pstmt.setString(1, elCodigo);
+            pstmt.setInt(1, elCodigo);
             pstmt.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -324,7 +323,7 @@ public class ServicioActivo extends Servicio {
                             rs.getString("descripcion"),
                             ServicioFuncionario.getServicioFuncionario().consultarFuncionario(rs.getString("funcionario")),
                             rs.getString("ubicacion")
-                    );
+                );
                  coleccion.add(elActivo);
             }
         } catch (SQLException e) {
@@ -353,6 +352,85 @@ public class ServicioActivo extends Servicio {
         return servicioActivo;
     }
 
-    
-    
+    public void asignarTransferenciaActivo(Activo elActivo, Transferencia laTransferencia) throws GlobalException, NoDataException {
+        try {
+            conectar();
+        } catch (ClassNotFoundException e) {
+            throw new GlobalException("No se ha localizado el driver");
+        } catch (SQLException e) {
+            throw new NoDataException("La base de datos no se encuentra disponible");
+        }
+        CallableStatement pstmt = null;
+
+        try {
+            pstmt = conexion.prepareCall(ASIGNARTRANSFERENCIA);
+            pstmt.setInt(1, elActivo.getCodigoActivo());
+            pstmt.setInt(2, laTransferencia.getNumero());
+
+            boolean resultado = pstmt.execute();
+
+            if (resultado == true) {
+                throw new NoDataException("No se realizo la modificacion");
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new GlobalException("-------------Llave no existe");
+        } finally {
+            try {
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+                desconectar();
+            } catch (SQLException e) {
+                throw new GlobalException("Estatutos invalidos o nulos");
+            }
+        }
+    }
+
+    public ArrayList<Activo> buscarActivosAsignadosTransferencia(int numero) throws GlobalException, NoDataException, SQLException {
+        try {
+            conectar();
+        } catch (ClassNotFoundException e) {
+            throw new GlobalException("No se ha localizado el driver");
+        } catch (SQLException e) {
+            throw new NoDataException("La base de datos no se encuentra disponible");
+        }
+        ResultSet rs = null;
+        Activo elActivo = null;
+        ArrayList<Activo> coleccion = new ArrayList();
+        CallableStatement pstmt = null;
+        try {
+            pstmt = conexion.prepareCall(BUSCARACTIVOPORTRANSFERENCIA);
+            pstmt.registerOutParameter(1, OracleTypes.CURSOR);	
+            pstmt.setInt(2,numero);
+            pstmt.execute();
+            rs = (ResultSet) pstmt.getObject(1);
+            while (rs.next()) {
+                elActivo = new Activo(rs.getInt("codigoactivo"),
+                            ServicioBien.getServicioBien().buscarBien(rs.getString("bien")),
+                            rs.getString("descripcion"),
+                            ServicioFuncionario.getServicioFuncionario().consultarFuncionario(rs.getString("funcionario")),
+                            rs.getString("ubicacion")
+                );
+                 coleccion.add(elActivo);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new GlobalException("Sentencia no valida");
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+                desconectar();
+            } catch (SQLException e) {
+                throw new GlobalException("Estatutos invalidos o nulos");
+            }
+        }
+        return coleccion;
+    }
 }

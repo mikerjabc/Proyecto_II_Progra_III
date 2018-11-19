@@ -15,10 +15,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import oracle.jdbc.OracleTypes;
 
-/**
- *
- * @author Fernando
- */
 public class ServicioSolicitud extends Servicio {
 
     private static final String INSERTARSOLICITUD = "{call insertarSolicitud(?,?,?,?,?)}";
@@ -55,7 +51,6 @@ public class ServicioSolicitud extends Servicio {
                 ServicioBien.getServicioBien().insertarBien(ite.next(), laSolicitud.getNumeroSolicitud());
             }
             
-            
             if (resultado == true) {
                 throw new NoDataException("No se realizo la insercion");
             }
@@ -90,6 +85,12 @@ public class ServicioSolicitud extends Servicio {
         try {
             pstmt = conexion.prepareCall(ELIMINARSOLICITUD);
             pstmt.setInt(1, elNumero);
+            
+            Iterator<Bien> ite = this.buscarSolicitud(elNumero).getListaBienes().iterator();
+            while(ite.hasNext()){
+                ServicioBien.getServicioBien().eliminarBien(ite.next().getSerial());
+            }
+            
             pstmt.execute();
 
         } catch (SQLException e) {

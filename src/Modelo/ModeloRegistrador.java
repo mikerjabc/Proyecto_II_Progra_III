@@ -94,9 +94,9 @@ public class ModeloRegistrador extends Observable {
         }
     }
     
-    public void eliminarActivo(String codigo) throws Exception {
+    public void eliminarActivo() throws Exception {
         try {
-            servicioActivo.eliminarBien(codigo);
+            servicioActivo.eliminarActivo(activo.getCodigoActivo());
             this.notifyObservers();
         } catch (Exception ex) {
             throw (new Exception(ex.getMessage()));

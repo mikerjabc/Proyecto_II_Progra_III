@@ -67,9 +67,13 @@ public class ModeloSolicitud extends Observable {
         }
     }
 
-    public void eliminarBien(Bien bien) throws Exception {
+    public void eliminarBien() throws Exception {
         try {
+            if (bien == null) {
+                throw (new Exception("Serial invalido"));
+            }
             listaBienes.remove(bien);
+            bien = null;
             this.cantidadymonto();
             this.setChanged();
             this.notifyObservers();

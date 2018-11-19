@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package accesoADatos;
 
 import Logic.Bien;
@@ -12,10 +8,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import oracle.jdbc.OracleTypes;
 
-/**
- *
- * @author Fernando
- */
 public class ServicioBien extends Servicio {
 
     private static final String INSERTARBIEN = "{call insertarBienMueble(?,?,?,?,?,?,?)}";
@@ -87,6 +79,10 @@ public class ServicioBien extends Servicio {
         try {
             pstmt = conexion.prepareCall(ELIMINARBIEN);
             pstmt.setString(1, serial);
+            
+            ServicioActivo aux = ServicioActivo.getServicioActivo();
+            aux.eliminarActivo(aux.buscarActivoPorBien(serial).getCodigoActivo());
+            
             pstmt.execute();
         } catch (SQLException e) {
             e.printStackTrace();

@@ -79,37 +79,6 @@ public class ModeloJefe extends Observable {
         }
     }
     
-    public Bien buscarBien(String serial) throws Exception {
-        Bien aux = null;
-        try {
-            if (serial.equals("")) {
-                throw (new Exception("ID invalido"));
-            }
-            if(tipo.equalsIgnoreCase(tiposSolicitud[0])){
-                Iterator<Bien> ite = solicitud.getListaBienes().iterator();
-                while (ite.hasNext()) {
-                    Bien d = ite.next();
-                    if (d.getSerial().equalsIgnoreCase(serial)) {
-                        aux = d;
-                        break;
-                    }
-                }
-            }else{
-                Iterator<Bien> ite = transferencia.getListaBienes().iterator();
-                while (ite.hasNext()) {
-                    Bien d = ite.next();
-                    if (d.getSerial().equalsIgnoreCase(serial)) {
-                        aux = d;
-                        break;
-                    }
-                }
-            }
-        } catch (Exception ex) {
-            throw (new Exception(ex.getMessage()));
-        }
-        return aux;
-    }
-    
     public void AsignarRegistradorASolicitud(String numero, Funcionario registrador) throws Exception {
         try {
             if (numero.equals("")) {

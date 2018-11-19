@@ -1,5 +1,6 @@
 package Modelo;
 
+import Logic.Activo;
 import Logic.Bien;
 import Logic.Dependencia;
 import Logic.Funcionario;
@@ -74,37 +75,6 @@ public class ModeloAdministrador extends Observable {
         }
     }
     
-    public Bien buscarBien(String serial) throws Exception {
-        Bien aux = null;
-        try {
-            if (serial.equals("")) {
-                throw (new Exception("ID invalido"));
-            }
-            if(tipo.equalsIgnoreCase(tiposSolicitud[0])){
-                Iterator<Bien> ite = solicitud.getListaBienes().iterator();
-                while (ite.hasNext()) {
-                    Bien d = ite.next();
-                    if (d.getSerial().equalsIgnoreCase(serial)) {
-                        aux = d;
-                        break;
-                    }
-                }
-            }else{
-                Iterator<Bien> ite = transferencia.getListaBienes().iterator();
-                while (ite.hasNext()) {
-                    Bien d = ite.next();
-                    if (d.getSerial().equalsIgnoreCase(serial)) {
-                        aux = d;
-                        break;
-                    }
-                }
-            }
-        } catch (Exception ex) {
-            throw (new Exception(ex.getMessage()));
-        }
-        return aux;
-    }
-    
     public void crearSolicitud(String numero, String fecha, String tipo, String estado, ArrayList<Bien> lista) throws Exception {
         try {
             if (numero.equals("")) {
@@ -170,12 +140,12 @@ public class ModeloAdministrador extends Observable {
         }
     }
     
-    public void eliminarSolicitud(String numero) throws Exception {
+    public void eliminarSolicitud() throws Exception {
         try {
-            if (numero.equals("")) {
+            if (solicitud == null) {
                 throw (new Exception("Número invalido"));
             }
-            servicioSolicitud.eliminarSolicitud(Integer.valueOf(numero));
+            servicioSolicitud.eliminarSolicitud(solicitud.getNumeroSolicitud());
             solicitud = null;
             this.setChanged();
             this.notifyObservers();
@@ -184,7 +154,7 @@ public class ModeloAdministrador extends Observable {
         }
     }
     
-    public void crearTransferencia(String numero, Dependencia origen, Dependencia destino, String ubicacion, Funcionario funcionario) throws Exception {
+    public void crearTransferencia(String numero, Dependencia origen, Dependencia destino, String ubicacion, Funcionario funcionario, ArrayList<Activo> lista) throws Exception {
         try {
             if (numero.equals("")) {
                 throw (new Exception("Número invalido"));
@@ -200,6 +170,9 @@ public class ModeloAdministrador extends Observable {
             }
             if (funcionario == null) {
                 throw (new Exception("Funcionario invalido"));
+            }
+            if (lista == null) {
+                throw (new Exception("Lista de activos invalida"));
             }
             transferencia = new Transferencia(Integer.valueOf(numero),origen,destino,ubicacion,funcionario);
             servicioTransferencia.insertarTransferencia(transferencia, this.funcionario);
@@ -211,7 +184,7 @@ public class ModeloAdministrador extends Observable {
         }
     }
     
-    public void modificarTransferencia(String numero, Dependencia origen, Dependencia destino, String ubicacion, Funcionario funcionario) throws Exception {
+    public void modificarTransferencia(String numero, Dependencia origen, Dependencia destino, String ubicacion, Funcionario funcionario, ArrayList<Activo> lista) throws Exception {
         try {
             if (numero.equals("")) {
                 throw (new Exception("Número invalido"));
@@ -227,6 +200,9 @@ public class ModeloAdministrador extends Observable {
             }
             if (funcionario == null) {
                 throw (new Exception("Funcionario invalido"));
+            }
+            if (lista == null) {
+                throw (new Exception("Lista de activos invalida"));
             }
             if (!transferencia.getAutorizacion().equals("Recibida")
                     || !servicioSolicitud.buscarFuncionarioAdministrador(Integer.valueOf(numero)).getId().equals(funcionario.getNombre())) {
@@ -243,12 +219,12 @@ public class ModeloAdministrador extends Observable {
         }
     }
     
-    public void eliminarTransferencia(String numero) throws Exception {
+    public void eliminarTransferencia() throws Exception {
         try {
-            if (numero.equals("")) {
+            if (transferencia == null) {
                 throw (new Exception("Número invalido"));
             }
-            servicioTransferencia.eliminarTransferencia(Integer.valueOf(numero));
+            servicioTransferencia.eliminarTransferencia(transferencia.getNumero());
             transferencia = null;
             this.notifyObservers();
         } catch (Exception ex) {
@@ -349,6 +325,16 @@ public class ModeloAdministrador extends Observable {
 
     public Funcionario getFuncionario() {
         return funcionario;
+    }
+
+    public void setSolicitud(Solicitud solicitud) {
+        this.solicitud = solicitud;
+        this.notifyObservers();
+    }
+
+    public void setTransferencia(Transferencia transferencia) {
+        this.transferencia = transferencia;
+        this.notifyObservers();
     }
     
     public Funcionario funcionarioAsociado() throws Exception {

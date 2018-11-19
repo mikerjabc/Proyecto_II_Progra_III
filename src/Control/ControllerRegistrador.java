@@ -77,8 +77,8 @@ public final class ControllerRegistrador extends AbstractController implements I
         try {
             if (ae.getSource().getClass() == JTable.class) {
                 JTable tabla = (JTable) ae.getSource();
-                numero = tabla.getValueAt(tabla.getSelectedRow(), 0).toString();
-                tabla.changeSelection(tabla.getSelectedRow(), 0, false, true);
+                numero = tabla.getValueAt(tabla.rowAtPoint(ae.getPoint()), 0).toString();
+                tabla.changeSelection(tabla.rowAtPoint(ae.getPoint()), 0, false, true);
                 if (modelo.getTipo().equalsIgnoreCase(modelo.tiposSolicitud[0]) && modelo.getSolicitud() != null) {
                     modeloSolicitud.buscarBien(numero);
                 } else if (modelo.getTipo().equalsIgnoreCase(modelo.tiposSolicitud[0]) && modelo.getSolicitud() == null) {
@@ -89,7 +89,7 @@ public final class ControllerRegistrador extends AbstractController implements I
                 
                 if (ae.getClickCount() == 1) {
                     switch (ae.getButton()) {
-                        case MouseEvent.BUTTON2: {//Click derecho
+                        case MouseEvent.BUTTON3: {//Click derecho
                             instrucciones("eliminar");
                         }
                         break;
@@ -229,9 +229,9 @@ public final class ControllerRegistrador extends AbstractController implements I
                     }
                 }
                 break;
-                case "eliminar": {
-                    if (modelo.getTipo().equalsIgnoreCase(modelo.tiposSolicitud[0])) {
-                        //
+                 case "eliminar": {
+                    if (modelo.getTipo().equalsIgnoreCase(modelo.tiposSolicitud[1])) {
+                        modelo.eliminarActivo();
                     }
                 }
                 break;

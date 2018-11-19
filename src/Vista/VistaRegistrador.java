@@ -55,7 +55,6 @@ public class VistaRegistrador extends javax.swing.JFrame implements Observer {
         jmOpciones = new javax.swing.JMenu();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         jmiCambiarUsuario = new javax.swing.JMenuItem();
-        jmiCambiarUsuario1 = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         jmiSalir = new javax.swing.JMenuItem();
         jmAyuda = new javax.swing.JMenu();
@@ -143,10 +142,6 @@ public class VistaRegistrador extends javax.swing.JFrame implements Observer {
         jmiCambiarUsuario.setText("Cambiar de Usuario");
         jmiCambiarUsuario.setName("cambiar"); // NOI18N
         jmOpciones.add(jmiCambiarUsuario);
-
-        jmiCambiarUsuario1.setText("Catálogo");
-        jmiCambiarUsuario1.setName("cambiar"); // NOI18N
-        jmOpciones.add(jmiCambiarUsuario1);
         jmOpciones.add(jSeparator1);
 
         jmiSalir.setText("Salir");
@@ -223,7 +218,6 @@ public class VistaRegistrador extends javax.swing.JFrame implements Observer {
     public javax.swing.JMenu jmAyuda;
     public javax.swing.JMenu jmOpciones;
     public javax.swing.JMenuItem jmiCambiarUsuario;
-    public javax.swing.JMenuItem jmiCambiarUsuario1;
     public javax.swing.JMenuItem jmiSalir;
     public javax.swing.JTable jtFuncionarios;
     public javax.swing.JTextField jtNumeroBuscar;

@@ -15,7 +15,7 @@ public class Transferencia {
     private int numero;
     private Dependencia origen;
     private Dependencia destino;
-    private ArrayList<Bien> listaBienes;
+    private ArrayList<Activo> listaActivos;
     private String ubicacion;
     private Funcionario funcionario;
     private String autorizacion;
@@ -25,7 +25,7 @@ public class Transferencia {
         this.numero = numero;
         this.origen = origen;
         this.destino = destino;
-        this.listaBienes = new ArrayList();
+        this.listaActivos = new ArrayList();
         this.ubicacion = ubicacion;
         this.funcionario = funcionario;
         this.autorizacion = ESTADOINICIAL;
@@ -55,12 +55,12 @@ public class Transferencia {
         this.destino = destino;
     }
 
-    public ArrayList<Bien> getListaBienes() {
-        return listaBienes;
+    public ArrayList<Activo> getListaActivos() {
+        return listaActivos;
     }
 
-    public void setListaBienes(ArrayList<Bien> listaBienes) {
-        this.listaBienes = listaBienes;
+    public void setListaActivos(ArrayList<Activo> listaActivos) {
+        this.listaActivos = listaActivos;
     }
 
     public String getUbicacion() {

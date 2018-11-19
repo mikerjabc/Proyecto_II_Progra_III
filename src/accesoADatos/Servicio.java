@@ -1,11 +1,3 @@
-/*
- * Servicio.java
- *
- * Created on 25 de abril de 2007, 03:45 PM
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
- */
 
 package accesoADatos;
 import java.sql.Connection;

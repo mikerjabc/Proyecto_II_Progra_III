@@ -5,6 +5,8 @@
  */
 package accesoADatos;
 
+import Logic.Activo;
+import Logic.Bien;
 import Logic.Funcionario;
 import Logic.Transferencia;
 
@@ -12,12 +14,9 @@ import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import oracle.jdbc.OracleTypes;
 
-/**
- *
- * @author Fernando
- */
 public class ServicioTransferencia extends Servicio {
 
     private static final String INSERTARTRANSFERENCIA = "{call insertarTransferencia(?,?,?,?,?,?,?)}";
@@ -51,6 +50,12 @@ public class ServicioTransferencia extends Servicio {
             pstmt.setString(7, elAdministrador.getId());
             
             boolean resultado = pstmt.execute();
+            
+            Iterator<Activo> ite = laTransferencia.getListaActivos().iterator();
+            while(ite.hasNext()){
+                ServicioActivo.getServicioActivo().asignarTransferenciaActivo(ite.next(), laTransferencia);
+            }
+            
             if (resultado == true) {
                 throw new NoDataException("No se realizo la insercion");
             }
@@ -128,6 +133,11 @@ public class ServicioTransferencia extends Servicio {
 
             boolean resultado = pstmt.execute();
 
+            Iterator<Activo> ite = laTransferencia.getListaActivos().iterator();
+            while(ite.hasNext()){
+                ServicioActivo.getServicioActivo().asignarTransferenciaActivo(ite.next(), laTransferencia);
+            }
+            
             if (resultado == true) {
                 throw new NoDataException("No se realizo la modificacion");
 
@@ -175,7 +185,7 @@ public class ServicioTransferencia extends Servicio {
                         rs.getString("ubicacion"),
                         ServicioFuncionario.getServicioFuncionario().consultarFuncionario(rs.getString("funcionario"))
                 );
-                laTransferencia.setListaBienes(ServicioBien.getServicioBien().buscarBienPorTransferencia(rs.getInt("numero")));
+                laTransferencia.setListaActivos(ServicioActivo.getServicioActivo().buscarActivosAsignadosTransferencia(rs.getInt("numero")));
                 laTransferencia.setAutorizacion(rs.getString("autorizacion"));
                 coleccion.add(laTransferencia);
             }
@@ -228,7 +238,7 @@ public class ServicioTransferencia extends Servicio {
                         rs.getString("ubicacion"),
                         ServicioFuncionario.getServicioFuncionario().consultarFuncionario(rs.getString("funcionario"))
                 );
-                laTransferencia.setListaBienes(ServicioBien.getServicioBien().buscarBienPorTransferencia(rs.getInt("numero")));
+                laTransferencia.setListaActivos(ServicioActivo.getServicioActivo().buscarActivosAsignadosTransferencia(rs.getInt("numero")));
                 laTransferencia.setAutorizacion(rs.getString("autorizacion"));
                 break;
              }

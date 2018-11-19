@@ -81,7 +81,9 @@ public class VistaTransferencia extends javax.swing.JFrame implements Observer {
         jLabel7 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jtActivos = new javax.swing.JTable();
-        jbAgregarBien = new javax.swing.JButton();
+        jbAgregarActivo = new javax.swing.JButton();
+        jtfCodigoAgregar = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -246,8 +248,12 @@ public class VistaTransferencia extends javax.swing.JFrame implements Observer {
         });
         jScrollPane3.setViewportView(jtActivos);
 
-        jbAgregarBien.setText("Agregar");
-        jbAgregarBien.setName("agregarBien"); // NOI18N
+        jbAgregarActivo.setText("Agregar");
+        jbAgregarActivo.setName("agregaractivo"); // NOI18N
+
+        jtfCodigoAgregar.setName("idBuscar"); // NOI18N
+
+        jLabel9.setText("Código:");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -264,18 +270,26 @@ public class VistaTransferencia extends javax.swing.JFrame implements Observer {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jbBuscar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jbAgregarBien)))
+                        .addComponent(jLabel9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jtfCodigoAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jbAgregarActivo)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jtfCodigoBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jbBuscar)
-                    .addComponent(jLabel7)
-                    .addComponent(jbAgregarBien))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jtfCodigoAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel9))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jtfCodigoBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jbBuscar)
+                        .addComponent(jLabel7)
+                        .addComponent(jbAgregarActivo)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -337,11 +351,12 @@ public class VistaTransferencia extends javax.swing.JFrame implements Observer {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane3;
     public javax.swing.JButton jbAgregar;
-    public javax.swing.JButton jbAgregarBien;
+    public javax.swing.JButton jbAgregarActivo;
     public javax.swing.JButton jbBuscar;
     public javax.swing.JButton jbBuscarDestino;
     public javax.swing.JButton jbBuscarFuncionario;
@@ -350,6 +365,7 @@ public class VistaTransferencia extends javax.swing.JFrame implements Observer {
     public javax.swing.JButton jbLimpiar;
     public javax.swing.JComboBox<String> jcbEstado;
     public javax.swing.JTable jtActivos;
+    public javax.swing.JTextField jtfCodigoAgregar;
     public javax.swing.JTextField jtfCodigoBuscar;
     public javax.swing.JTextField jtfDestino;
     public javax.swing.JTextField jtfFuncionario;
@@ -370,7 +386,7 @@ public class VistaTransferencia extends javax.swing.JFrame implements Observer {
     public void setControlador(AbstractController controlador) {
         this.controlador = controlador;
         jbAgregar.addActionListener(controlador);
-        jbAgregarBien.addActionListener(controlador);
+        jbAgregarActivo.addActionListener(controlador);
         jbCancelar.addActionListener(controlador);
         jbBuscar.addActionListener(controlador);
         jbLimpiar.addActionListener(controlador);
@@ -391,8 +407,7 @@ public class VistaTransferencia extends javax.swing.JFrame implements Observer {
                 jcbEstado.addItem(modelo.tiposEstadoTransferencia[1]);
                 jcbEstado.addItem(modelo.tiposEstadoTransferencia[2]);
                 jtActivos.setEnabled(false);
-                
-                jbAgregarBien.setEnabled(false);
+                jbAgregarActivo.setEnabled(false);
                 jbBuscarOrigen.setEnabled(false);
                 jbBuscarDestino.setEnabled(false);
                 jbBuscarFuncionario.setEnabled(false);
@@ -423,12 +438,13 @@ public class VistaTransferencia extends javax.swing.JFrame implements Observer {
     public void cargarDatos(Transferencia transferencia) {
         jbAgregar.setText("Modificar");
         jbAgregar.setName("modificar");
-        jtfOrigen.setText(transferencia.getOrigen().getNombre());
-        jtfDestino.setText(transferencia.getDestino().getNombre());
-        jtfFuncionario.setText(transferencia.getFuncionario().getNombre());
         jtfUbicacion.setText(transferencia.getUbicacion());
         jtfNumero.setText(String.valueOf(transferencia.getNumero()));
         jcbEstado.getModel().setSelectedItem(transferencia.getAutorizacion());
+        modelo.setOrigen(transferencia.getOrigen());
+        modelo.setDestino(transferencia.getDestino());
+        modelo.setResponsable(transferencia.getFuncionario());
+        modelo.setListaActivos(transferencia.getListaActivos());
     }
     
     public void mostrarMensaje(String mensaje){

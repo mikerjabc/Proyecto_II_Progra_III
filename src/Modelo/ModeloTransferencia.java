@@ -54,10 +54,30 @@ public class ModeloTransferencia extends Observable {
         this.servicioBien = servicioBien;
     }
 
-    public void eliminarActivo(Activo activo) throws Exception {
+    public void eliminarActivo() throws Exception {
         try {
+            if (activo == null) {
+                throw (new Exception("Código invalido"));
+            }
             listaActivos.remove(activo);
-            this.setChanged();
+            activo = null;
+            this.notifyObservers();
+        } catch (Exception ex) {
+            throw (new Exception(ex.getMessage()));
+        }
+    }
+    
+     public void insertarActivo(String codigo) throws Exception {
+        try {
+            if (codigo.equals("")) {
+                throw (new Exception("Código invalido"));
+            }
+            activo = servicioActivo.buscarActivo(Integer.valueOf(codigo));
+            if (activo == null) {
+                throw (new Exception("Código no encontrado"));
+            }
+            listaActivos.add(activo);
+            activo = null;
             this.notifyObservers();
         } catch (Exception ex) {
             throw (new Exception(ex.getMessage()));
@@ -67,7 +87,7 @@ public class ModeloTransferencia extends Observable {
     public void buscarActivo(String codigo) throws Exception {
         try {
             if (codigo.equals("")) {
-                throw (new Exception("Serial invalido"));
+                throw (new Exception("Código invalido"));
             }
             Iterator<Activo> ite = listaActivos.iterator();
             while (ite.hasNext()) {
@@ -77,7 +97,6 @@ public class ModeloTransferencia extends Observable {
                   break;
                 }
             }
-            this.setChanged();
             this.notifyObservers();
         } catch (Exception ex) {
             throw (new Exception(ex.getMessage()));
@@ -124,13 +143,13 @@ public class ModeloTransferencia extends Observable {
     private ArrayList<Object> getListaActivo() {
         ArrayList<Object> list = new ArrayList();
         if (activo != null) {
-            Object[] fila = {activo.getCodigoActivo(), activo.getBien().getDescripcion(), activo.getFuncionario(), activo.getUbicacion()};
+            Object[] fila = {activo.getCodigoActivo(), activo.getBien().getDescripcion(), activo.getFuncionario().getNombre(), activo.getUbicacion()};
             list.add(fila);
         } else {
             Iterator<Activo> ite = listaActivos.iterator();
             while (ite.hasNext()) {
                 Activo activo = ite.next();
-                Object[] fila = {activo.getCodigoActivo(), activo.getBien().getDescripcion(), activo.getFuncionario(), activo.getUbicacion()};
+                Object[] fila = {activo.getCodigoActivo(), activo.getBien().getDescripcion(), activo.getFuncionario().getNombre(), activo.getUbicacion()};
                 list.add(fila);
             }
         }
@@ -143,7 +162,6 @@ public class ModeloTransferencia extends Observable {
 
     public void setListaActivos(ArrayList<Activo> listaActivos) {
         this.listaActivos = listaActivos;
-        this.setChanged();
         this.notifyObservers();
     }
 
@@ -157,6 +175,7 @@ public class ModeloTransferencia extends Observable {
 
     public void setResponsable(Funcionario responsable) {
         this.responsable = responsable;
+        this.notifyObservers();
     }
 
     public Dependencia getOrigen() {
@@ -165,6 +184,7 @@ public class ModeloTransferencia extends Observable {
 
     public void setOrigen(Dependencia origen) {
         this.origen = origen;
+        this.notifyObservers();
     }
 
     public Dependencia getDestino() {
@@ -173,6 +193,7 @@ public class ModeloTransferencia extends Observable {
 
     public void setDestino(Dependencia destino) {
         this.destino = destino;
+        this.notifyObservers();
     }
 
     @Override
