@@ -37,12 +37,12 @@ public final class ControllerRegistrador extends AbstractController implements I
     public ControllerRegistrador(ModeloRegistrador modelo, VistaRegistrador vista) {
         this.modelo = modelo;
         this.vista = vista;
-        vista.setModelo(modelo);
-        vista.setControlador(this);
-        this.ajustarVista();
         modelo.setServicioSolicitud(ServicioSolicitud.getServicioSolicitud());
         modelo.setServicioFuncionario(ServicioFuncionario.getServicioFuncionario());
         modelo.setServicioActivo(ServicioActivo.getServicioActivo());
+        vista.setModelo(modelo);
+        vista.setControlador(this);
+        this.ajustarVista();
     }
 
     @Override
@@ -57,6 +57,7 @@ public final class ControllerRegistrador extends AbstractController implements I
                 instrucciones(button.getName());
             }
         } catch (Exception ex) {
+            modelo.limpiar();
             vista.mostrarMensaje(ex.getMessage());
         }
     }
@@ -206,10 +207,19 @@ public final class ControllerRegistrador extends AbstractController implements I
                 break;
                 case "buscar": {
                     if (modelo.getTipo().equalsIgnoreCase(modelo.tiposSolicitud[0]) && modelo.getSolicitud() != null) {
-                        modeloSolicitud.buscarBien(vistaSolicitud.jtfIdBuscar.getText());
-                    }else{
-                       modelo.buscarSolicitud_Activo(vista.jtIdBuscar.getText()); 
+                        try{
+                            modeloSolicitud.buscarBien(vistaSolicitud.jtfIdBuscar.getText());
+                            vistaSolicitud.mostrarMensaje("¡Bien encontrado!");
+                        }catch(Exception ex){
+                            modelo.limpiar();
+                            vistaSolicitud.mostrarMensaje(ex.getMessage());
+                        }
                     }
+                }
+                break;
+                 case "buscarsolicitud": {
+                        modelo.buscarSolicitud_Activo(vista.jtNumeroBuscar.getText());
+                        vista.mostrarMensaje("¡Solicitud encontrada!");
                 }
                 break;
                 case "buscarregistrador": {

@@ -8,7 +8,6 @@ import Logic.Solicitud;
 import accesoADatos.GlobalException;
 import accesoADatos.NoDataException;
 import accesoADatos.ServicioActivo;
-import accesoADatos.ServicioBien;
 import accesoADatos.ServicioFuncionario;
 import accesoADatos.ServicioSolicitud;
 import java.sql.SQLException;
@@ -36,19 +35,13 @@ public class ModeloRegistrador extends Observable {
     
     public void setServicioSolicitud(ServicioSolicitud servicioDependencia) {
         this.servicioSolicitud = servicioDependencia;
-        this.setChanged();
-        this.notifyObservers();
     }
     
     public void setServicioFuncionario(ServicioFuncionario servicioFuncionario) {
         this.servicioFuncionario = servicioFuncionario;
-        this.setChanged();
-        this.notifyObservers();
     }
     public void setServicioActivo(ServicioActivo servicioActivo) {
         this.servicioActivo = servicioActivo;
-        this.setChanged();
-        this.notifyObservers();
     }
     
     public void agregarActivo(int codigo, Bien bien, String descripcion, Funcionario funcionario, String ubicacion) throws Exception {
@@ -70,7 +63,6 @@ public class ModeloRegistrador extends Observable {
             }
             Activo activo = new Activo(codigo, bien, descripcion, funcionario, ubicacion);
             servicioActivo.insertarActivo(activo, servicioFuncionario.consultarDependenciaPorFuncionario(funcionario.getId()).getCodigo());
-            this.setChanged();
             this.notifyObservers();
         } catch (Exception ex) {
             throw (new Exception(ex.getMessage()));
@@ -96,7 +88,6 @@ public class ModeloRegistrador extends Observable {
             }
             Activo activo = new Activo(codigo, bien, descripcion, funcionario, ubicacion);
             servicioActivo.modificarActivo(activo);
-            this.setChanged();
             this.notifyObservers();
         } catch (Exception ex) {
             throw (new Exception(ex.getMessage()));
@@ -106,7 +97,6 @@ public class ModeloRegistrador extends Observable {
     public void eliminarActivo(String codigo) throws Exception {
         try {
             servicioActivo.eliminarBien(codigo);
-            this.setChanged();
             this.notifyObservers();
         } catch (Exception ex) {
             throw (new Exception(ex.getMessage()));
@@ -120,12 +110,17 @@ public class ModeloRegistrador extends Observable {
             }
             if (tipo.equalsIgnoreCase(tiposSolicitud[0])) {
                 solicitud = servicioSolicitud.buscarSolicitud(Integer.valueOf(numero));
-                activo = null;
+                if(!solicitud.getEstado().equals("Por verificar") || !(servicioSolicitud.buscarFuncionarioAsignadoSolicitud(solicitud.getNumeroSolicitud()) == null)){
+                    activo = null;
+                    solicitud = null;
+                    notifyObservers();
+                    throw (new Exception("No existe la solicitud"));
+                }
+                
             }else{
                 activo = servicioActivo.buscarActivo(Integer.valueOf(numero));
                 solicitud = null;
             }
-            this.setChanged();
             this.notifyObservers();
         } catch (Exception ex) {
             throw (new Exception(ex.getMessage()));
@@ -149,7 +144,6 @@ public class ModeloRegistrador extends Observable {
             }
             solicitud.setEstado("Procesada");
             servicioSolicitud.modificarSolicitud(solicitud);
-            this.setChanged();
             this.notifyObservers();
         } catch (Exception ex) {
             throw (new Exception(ex.getMessage()));
@@ -164,7 +158,6 @@ public class ModeloRegistrador extends Observable {
             this.tipo = tipo;
             solicitud = null;
             activo = null;
-            this.setChanged();
             this.notifyObservers();
         } catch (Exception ex) {
             throw (new Exception(ex.getMessage()));
@@ -174,11 +167,11 @@ public class ModeloRegistrador extends Observable {
     public ArrayList<Object> getListaSolicitudes() {
         ArrayList<Object> list = new ArrayList();
         try {
-            if (tipo.equals(tiposSolicitud[0])) {
+            if (tipo.equals(tiposSolicitud[0]) && solicitud == null) {
                 Iterator<Solicitud> ite = servicioSolicitud.listarSolicitudes().iterator();
                 while (ite.hasNext()) {
                     Solicitud solicitud = ite.next();
-                    if (solicitud.getEstado().equalsIgnoreCase("por verificar") && servicioSolicitud.buscarFuncionarioAsignadoSolicitud(solicitud.getNumeroSolicitud()) != null) {
+                    if (solicitud.getEstado().equalsIgnoreCase("por verificar") && servicioSolicitud.buscarFuncionarioAsignadoSolicitud(solicitud.getNumeroSolicitud()) == null) {
                         Object[] fila = {solicitud.getNumeroSolicitud(),
                             solicitud.getFecha(),
                             solicitud.getTipo(),
@@ -189,7 +182,7 @@ public class ModeloRegistrador extends Observable {
                         list.add(fila);
                     }
                 }
-            } else if (tipo.equals(tiposSolicitud[1])) {
+            } else if (tipo.equals(tiposSolicitud[1]) && activo == null) {
                 Iterator<Activo> ite = servicioActivo.listarActivo().iterator();
                 while (ite.hasNext()) {
                     Activo activo = ite.next();
@@ -253,15 +246,25 @@ public class ModeloRegistrador extends Observable {
     
     @Override
     public void notifyObservers() {
+        this.setChanged();
         super.notifyObservers(getListaSolicitudes());
     }
 
     public Funcionario getFuncionario() {
         return funcionario;
     }
+
+    public void setSolicitud(Solicitud solicitud) {
+        this.solicitud = solicitud;
+    }
+
+    public void setActivo(Activo activo) {
+        this.activo = activo;
+    }
     
     public void limpiar() {
         solicitud = null;
+        activo = null;
         this.setChanged();
         this.notifyObservers();
     }

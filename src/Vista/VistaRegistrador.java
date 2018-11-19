@@ -44,7 +44,7 @@ public class VistaRegistrador extends javax.swing.JFrame implements Observer {
         jScrollPane2 = new javax.swing.JScrollPane();
         jtFuncionarios = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
-        jtIdBuscar = new javax.swing.JTextField();
+        jtNumeroBuscar = new javax.swing.JTextField();
         jbBuscar = new javax.swing.JButton();
         jcbBuscar = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
@@ -74,12 +74,13 @@ public class VistaRegistrador extends javax.swing.JFrame implements Observer {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jtIdBuscar.setName("idBuscar"); // NOI18N
+        jtNumeroBuscar.setName("idBuscar"); // NOI18N
 
         jbBuscar.setText("Buscar");
-        jbBuscar.setName("buscar"); // NOI18N
+        jbBuscar.setName("buscarSolicitud"); // NOI18N
 
-        jLabel2.setText("ID:");
+        jLabel2.setText("Número:");
+        jLabel2.setName(""); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -88,10 +89,10 @@ public class VistaRegistrador extends javax.swing.JFrame implements Observer {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jcbBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 273, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 256, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jtIdBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jtNumeroBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jbBuscar)
                 .addContainerGap())
@@ -101,7 +102,7 @@ public class VistaRegistrador extends javax.swing.JFrame implements Observer {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jtIdBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtNumeroBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jbBuscar)
                     .addComponent(jcbBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
@@ -120,7 +121,7 @@ public class VistaRegistrador extends javax.swing.JFrame implements Observer {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jlNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
+                .addComponent(jlNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -225,7 +226,7 @@ public class VistaRegistrador extends javax.swing.JFrame implements Observer {
     public javax.swing.JMenuItem jmiCambiarUsuario1;
     public javax.swing.JMenuItem jmiSalir;
     public javax.swing.JTable jtFuncionarios;
-    public javax.swing.JTextField jtIdBuscar;
+    public javax.swing.JTextField jtNumeroBuscar;
     // End of variables declaration//GEN-END:variables
     
    private ModeloRegistrador modelo;
@@ -237,7 +238,7 @@ public class VistaRegistrador extends javax.swing.JFrame implements Observer {
         jcbBuscar.addItem(modelo.tiposSolicitud[0]);
         jcbBuscar.addItem(modelo.tiposSolicitud[1]);
         jlNombre.setText(modelo.getFuncionario().getNombre());
-        
+        modelo.notifyObservers();
     }
     
     public void setControlador(ControllerRegistrador controlador){
@@ -248,7 +249,7 @@ public class VistaRegistrador extends javax.swing.JFrame implements Observer {
         jmAyuda.addActionListener(controlador);
         jmiCambiarUsuario.addActionListener(controlador);
         jmiSalir.addActionListener(controlador);
-        jtIdBuscar.addActionListener(controlador);
+        jtNumeroBuscar.addActionListener(controlador);
         jtFuncionarios.addMouseListener(controlador);
     }
     
@@ -257,7 +258,7 @@ public class VistaRegistrador extends javax.swing.JFrame implements Observer {
     }
 
     public void limpiarTodosEspacios() {
-        jtIdBuscar.setText("");
+        jtNumeroBuscar.setText("");
         jcbBuscar.getModel().setSelectedItem(modelo.tiposSolicitud[0]);
     }
 
