@@ -381,10 +381,11 @@ public class VistaSolicitud extends javax.swing.JFrame implements Observer {
     }
     
     public void ajustatVistaParaFuncionario() {
-        jtfNumero.setEditable(false);
         jtfCantidadBienes.setEditable(false);
         jtfNumero.setEditable(false);
-                
+        jtfMontoTotal.setEditable(false);
+        jcbTipo.removeAllItems();
+        
         switch (modelo.getFuncionario().getPuesto().toLowerCase()) {
             case "administrador": {
                 jcbTipo.addItem(modelo.tiposBien[0]);
@@ -457,7 +458,6 @@ public class VistaSolicitud extends javax.swing.JFrame implements Observer {
         if(modelo.getRegistrador() != null){
             jtfRegistrador.setText(modelo.getRegistrador().getNombre());
         }
-        ajustatVistaParaFuncionario();
     }
     
     public void mostrarMensaje(String mensaje){
@@ -483,6 +483,8 @@ public class VistaSolicitud extends javax.swing.JFrame implements Observer {
                 while (ite.hasNext()) {
                     model.addRow(ite.next());
                 }
+                this.jtfMontoTotal.setText(String.valueOf(modelo.getMonto()));
+                this.jtfCantidadBienes.setText(String.valueOf(modelo.getCantidad()));
                 if(modelo.getRegistrador()!= null){
                     jtfRegistrador.setText(modelo.getRegistrador().getNombre());
                 }

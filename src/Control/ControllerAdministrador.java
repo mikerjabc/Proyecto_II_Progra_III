@@ -98,7 +98,11 @@ public class ControllerAdministrador extends AbstractController implements ItemL
                 JTable tabla = (JTable) ae.getSource();
                 numero = tabla.getValueAt(tabla.getSelectedRow(), 0).toString();
                 tabla.changeSelection(tabla.getSelectedRow(), 0, false, true);
-                modelo.buscarSolicitud(numero);
+                if(modeloSolicitud != null){
+                    modeloSolicitud.buscarBien(numero);
+                }else{
+                    modelo.buscarSolicitud(numero);
+                }
                 if (ae.getClickCount() == 1) {
                     switch (ae.getButton()) {
                         case MouseEvent.BUTTON2: {//Click derecho
@@ -107,12 +111,17 @@ public class ControllerAdministrador extends AbstractController implements ItemL
                         break;
                         case MouseEvent.BUTTON1: {//Click izquierdo
                             if (modelo.getTipo().equalsIgnoreCase(modelo.tiposSolicitud[0])) {
-                                modeloSolicitud = new ModeloSolicitud(modelo.getFuncionario());
-                                modeloSolicitud.setRegistrador(modelo.funcionarioAsociado());
-                                modeloSolicitud.setServicioFuncionario(ServicioFuncionario.getServicioFuncionario());
-                                vistaSolicitud.setModelo(modeloSolicitud);
-                                vistaSolicitud.cargarDatos(modelo.getSolicitud());
-                                vistaSolicitud.setVisible(true);
+                                if(modeloSolicitud != null){
+                                    vistaBien.cargarDatos(modeloSolicitud.getBien());
+                                    vistaBien.setVisible(true);
+                                } else {
+                                    modeloSolicitud = new ModeloSolicitud(modelo.getFuncionario());
+                                    modeloSolicitud.setRegistrador(modelo.funcionarioAsociado());
+                                    modeloSolicitud.setServicioFuncionario(ServicioFuncionario.getServicioFuncionario());
+                                    vistaSolicitud.setModelo(modeloSolicitud);
+                                    vistaSolicitud.cargarDatos(modelo.getSolicitud());
+                                    vistaSolicitud.setVisible(true);
+                                }
                             } else {
                                 vistaTrasferencia.cargarDatos(modelo.getTransferencia());
                                 vistaTrasferencia.setVisible(true);
