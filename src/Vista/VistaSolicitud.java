@@ -218,7 +218,7 @@ public class VistaSolicitud extends javax.swing.JFrame implements Observer {
         jtfIdBuscar.setName("idBuscar"); // NOI18N
 
         jbBuscar.setText("Buscar");
-        jbBuscar.setName("buscar"); // NOI18N
+        jbBuscar.setName("buscarBien"); // NOI18N
 
         jLabel7.setText("ID:");
 
@@ -446,9 +446,13 @@ public class VistaSolicitud extends javax.swing.JFrame implements Observer {
         modelo.limpiar();
         jtfMontoTotal.setText("");
         jtfFecha.setText("");
+        jbAgregar.setText("Ingresar");
+        jbAgregar.setName("ingresar");
     }
     
     public void cargarDatos(Solicitud solicitud) {
+        jbAgregar.setText("Modificar");
+        jbAgregar.setName("modificar");
         jtfNumero.setText(String.valueOf(solicitud.getNumeroSolicitud()));
         jtfFecha.setText(solicitud.getFecha());
         jcbEstado.getModel().setSelectedItem(solicitud.getEstado());

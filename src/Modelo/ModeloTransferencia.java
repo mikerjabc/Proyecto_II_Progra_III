@@ -177,6 +177,7 @@ public class ModeloTransferencia extends Observable {
 
     @Override
     public void notifyObservers() {
+        this.setChanged();
         super.notifyObservers(getListaActivo());
     }
 

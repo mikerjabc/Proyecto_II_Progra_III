@@ -12,6 +12,7 @@ import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import oracle.jdbc.OracleTypes;
 
 /**
@@ -48,6 +49,13 @@ public class ServicioSolicitud extends Servicio {
             pstmt.setString(4, laSolicitud.getEstado());
             pstmt.setString(5, elFuncionario.getId());
             boolean resultado = pstmt.execute();
+            
+            Iterator<Bien> ite = laSolicitud.getListaBienes().iterator();
+            while(ite.hasNext()){
+                ServicioBien.getServicioBien().insertarBien(ite.next(), laSolicitud.getNumeroSolicitud());
+            }
+            
+            
             if (resultado == true) {
                 throw new NoDataException("No se realizo la insercion");
             }
@@ -120,8 +128,13 @@ public class ServicioSolicitud extends Servicio {
             pstmt.setString(2, laSolicitud.getFecha());
             pstmt.setString(3, laSolicitud.getTipo());
             pstmt.setString(4, laSolicitud.getEstado());
-
             boolean resultado = pstmt.execute();
+            
+            
+            Iterator<Bien> ite = laSolicitud.getListaBienes().iterator();
+            while(ite.hasNext()){
+                ServicioBien.getServicioBien().modificarBien(ite.next());
+            }
 
             if (resultado == true) {
                 throw new NoDataException("No se realizo la modificacion");

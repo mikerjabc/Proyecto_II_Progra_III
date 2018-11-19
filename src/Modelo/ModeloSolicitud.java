@@ -57,7 +57,7 @@ public class ModeloSolicitud extends Observable {
             if (precio.equals("")) {
                 throw (new Exception("Precio invalido"));
             }
-            bien = new Bien(serial, descripcion, modelo, marca, Integer.valueOf(precio), Integer.valueOf(cantidad));
+            bien = new Bien(serial, descripcion, modelo, marca, Float.valueOf(precio), Integer.valueOf(cantidad));
             listaBienes.add(bien);
             bien = null;
             this.cantidadymonto();
@@ -102,7 +102,7 @@ public class ModeloSolicitud extends Observable {
             while (ite.hasNext()) {
                 Bien d = ite.next();
                 if (bien.getSerial().equals(d.getSerial())) {
-                    listaBienes.set(ite.previousIndex(), new Bien(serial, descripcion, modelo, marca, Integer.valueOf(precio), Integer.valueOf(cantidad)));
+                    listaBienes.set(ite.previousIndex(), new Bien(serial, descripcion, modelo, marca, Float.valueOf(precio), Integer.valueOf(cantidad)));
                     break;
                 }
             }
@@ -126,6 +126,9 @@ public class ModeloSolicitud extends Observable {
                     bien = d;
                      break;
                 }
+            }
+            if(bien == null){
+                throw (new Exception("Solicitud no encontrada"));
             }
             this.notifyObservers();
         } catch (Exception ex) {
@@ -239,5 +242,9 @@ public class ModeloSolicitud extends Observable {
             cantidad += item.getCantidad();
             monto += (item.getPrecio() * item.getCantidad());
         }
+    }
+
+    public void setBien() {
+        bien = null;
     }
 }

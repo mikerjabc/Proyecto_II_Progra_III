@@ -54,14 +54,15 @@ public class ModeloAdministrador extends Observable {
             if(tipo.equalsIgnoreCase(tiposSolicitud[0])){
                 solicitud = servicioSolicitud.buscarSolicitud(Integer.valueOf(numero));
                 transferencia = null;
-                if(!solicitud.getEstado().equals("Por verificar")){
+                if(!servicioSolicitud.buscarFuncionarioAdministrador(Integer.valueOf(numero)).getId().equals(funcionario.getId())){
                     solicitud = null;
                     throw (new Exception("No se encontro la solicitud"));
                 }
             }else if(tipo.equalsIgnoreCase(tiposSolicitud[1])){
                 transferencia = servicioTransferencia.buscarTransferencia(Integer.valueOf(numero));
+                
                 solicitud = null;
-                if(!transferencia.getAutorizacion().equals("Recibida")){
+                if(!servicioTransferencia.buscarFuncionarioAdministrador(Integer.valueOf(numero)).getId().equals(funcionario.getId())){
                     transferencia = null;
                     throw (new Exception("No se encontro la transferencia"));
                 }
@@ -104,7 +105,7 @@ public class ModeloAdministrador extends Observable {
         return aux;
     }
     
-    public void crearSolicitud(String numero, String fecha, String tipo, String estado) throws Exception {
+    public void crearSolicitud(String numero, String fecha, String tipo, String estado, ArrayList<Bien> lista) throws Exception {
         try {
             if (numero.equals("")) {
                 throw (new Exception("Número invalido"));
@@ -121,7 +122,11 @@ public class ModeloAdministrador extends Observable {
             if (funcionario == null) {
                 throw (new Exception("Administrador invalido"));
             }
+            if (lista == null) {
+                throw (new Exception("Lista de bienes invalida"));
+            }
             solicitud = new Solicitud(Integer.valueOf(numero),fecha,tipo,estado);
+            solicitud.setListaBienes(lista);
             servicioSolicitud.insertarSolicitud(solicitud, funcionario);
             solicitud = null;
             this.setChanged();
@@ -131,7 +136,7 @@ public class ModeloAdministrador extends Observable {
         }
     }
     
-    public void modificarSolicitud(String numero, String fecha, String tipo, String estado) throws Exception {
+    public void modificarSolicitud(String numero, String fecha, String tipo, String estado, ArrayList<Bien> lista) throws Exception {
         try {
             if (numero.equals("")) {
                 throw (new Exception("Número invalido"));
@@ -145,7 +150,17 @@ public class ModeloAdministrador extends Observable {
             if (estado.equals("")) {
                 throw (new Exception("Estado invalido"));
             }
+            if (lista == null) {
+                throw (new Exception("Lista de bienes invalida"));
+            }
+            if (!solicitud.getEstado().equals("Recibida")
+                    || !(servicioSolicitud.buscarFuncionarioAsignadoSolicitud(solicitud.getNumeroSolicitud()) == null)
+                    || !servicioSolicitud.buscarFuncionarioAdministrador(Integer.valueOf(numero)).getId().equals(funcionario.getId())) {
+                solicitud = null;
+                throw (new Exception("Esta solicitud no puede ser modificada"));
+            }
             solicitud = new Solicitud(Integer.valueOf(numero),fecha,tipo,estado);
+            solicitud.setListaBienes(lista);
             servicioSolicitud.modificarSolicitud(solicitud);
             solicitud = null;
             this.setChanged();
@@ -213,6 +228,11 @@ public class ModeloAdministrador extends Observable {
             if (funcionario == null) {
                 throw (new Exception("Funcionario invalido"));
             }
+            if (!transferencia.getAutorizacion().equals("Recibida")
+                    || !servicioSolicitud.buscarFuncionarioAdministrador(Integer.valueOf(numero)).getId().equals(funcionario.getNombre())) {
+                solicitud = null;
+                throw (new Exception("Esta solicitud no puede ser modificada"));
+            }
             transferencia = new Transferencia(Integer.valueOf(numero),origen,destino,ubicacion,funcionario);
             servicioTransferencia.modificarTransferencia(transferencia);
             transferencia = null;
@@ -256,10 +276,7 @@ public class ModeloAdministrador extends Observable {
                     Iterator<Solicitud> ite = servicioSolicitud.listarSolicitudes().iterator();
                     while (ite.hasNext()) {
                         Solicitud solicitud = ite.next();
-                        if (solicitud.getEstado().equalsIgnoreCase("por verificar") 
-                                && servicioSolicitud.buscarFuncionarioAsignadoSolicitud(solicitud.getNumeroSolicitud()) == null
-                                && servicioSolicitud.buscarFuncionarioAdministrador(solicitud.getNumeroSolicitud()).getId().equals(funcionario.getId())) 
-                        {
+                        if (servicioSolicitud.buscarFuncionarioAdministrador(solicitud.getNumeroSolicitud()).getId().equals(funcionario.getId())){
                             Object[] fila = new Object[6];
                             fila[0] = solicitud.getNumeroSolicitud();
                             fila[1] = solicitud.getFecha();
@@ -285,9 +302,7 @@ public class ModeloAdministrador extends Observable {
                     Iterator<Transferencia> ite = servicioTransferencia.listarTransferencia().iterator();
                     while (ite.hasNext()) {
                         Transferencia transferencia = ite.next();
-                        if (transferencia.getAutorizacion().equalsIgnoreCase("Recibida") 
-                                && servicioTransferencia.buscarFuncionarioAdministrador(transferencia.getNumero()).getId().equals(funcionario.getId())) 
-                        {
+                        if (servicioTransferencia.buscarFuncionarioAdministrador(transferencia.getNumero()).getId().equals(funcionario.getId())) {
                             Object[] fila = new Object[6];
                             fila[0] = transferencia.getNumero();
                             fila[1] = transferencia.getOrigen().getNombre();

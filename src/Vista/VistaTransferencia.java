@@ -32,7 +32,7 @@ public class VistaTransferencia extends javax.swing.JFrame implements Observer {
 
     private void initLocal() {
         model = (DefaultTableModel) jtActivos.getModel();
-        setTitle("Jefe");
+        setTitle("Transferencia");
         setLocationRelativeTo(null);
         DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();
         tcr.setHorizontalAlignment(SwingConstants.LEFT);
@@ -129,13 +129,13 @@ public class VistaTransferencia extends javax.swing.JFrame implements Observer {
         jtfFuncionario.setName("jtfNumero"); // NOI18N
 
         jbBuscarFuncionario.setText("Buscar");
-        jbBuscarFuncionario.setName("buscarRegistrador"); // NOI18N
+        jbBuscarFuncionario.setName("buscarResponsable"); // NOI18N
 
         jbBuscarDestino.setText("Buscar");
-        jbBuscarDestino.setName("buscarRegistrador"); // NOI18N
+        jbBuscarDestino.setName("buscarDestino"); // NOI18N
 
         jbBuscarOrigen.setText("Buscar");
-        jbBuscarOrigen.setName("buscarRegistrador"); // NOI18N
+        jbBuscarOrigen.setName("buscarOrigen"); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -224,7 +224,7 @@ public class VistaTransferencia extends javax.swing.JFrame implements Observer {
         jtfCodigoBuscar.setName("idBuscar"); // NOI18N
 
         jbBuscar.setText("Buscar");
-        jbBuscar.setName("buscar"); // NOI18N
+        jbBuscar.setName("buscarActivo"); // NOI18N
 
         jLabel7.setText("Código:");
 
@@ -376,6 +376,9 @@ public class VistaTransferencia extends javax.swing.JFrame implements Observer {
         jbLimpiar.addActionListener(controlador);
         jtfNumero.addKeyListener(controlador);
         jtfCodigoBuscar.addKeyListener(controlador);
+        jbBuscarOrigen.addActionListener(controlador);
+        jbBuscarDestino.addActionListener(controlador);
+        jbBuscarFuncionario.addActionListener(controlador);
     }
 
     public void ajustatVistaParaFuncionario() {
@@ -387,9 +390,12 @@ public class VistaTransferencia extends javax.swing.JFrame implements Observer {
             case "jefe": {
                 jcbEstado.addItem(modelo.tiposEstadoTransferencia[1]);
                 jcbEstado.addItem(modelo.tiposEstadoTransferencia[2]);
+                jtActivos.setEnabled(false);
                 
                 jbAgregarBien.setEnabled(false);
-                
+                jbBuscarOrigen.setEnabled(false);
+                jbBuscarDestino.setEnabled(false);
+                jbBuscarFuncionario.setEnabled(false);
                 jbLimpiar.setEnabled(false);
                 jtfOrigen.setEditable(false);
                 jtfDestino.setEditable(false);
@@ -410,9 +416,13 @@ public class VistaTransferencia extends javax.swing.JFrame implements Observer {
         jtfFuncionario.setText("");
         jtfUbicacion.setText("");
         modelo.limpiar();
+        jbAgregar.setText("Ingresar");
+        jbAgregar.setName("ingresar");
     }
 
     public void cargarDatos(Transferencia transferencia) {
+        jbAgregar.setText("Modificar");
+        jbAgregar.setName("modificar");
         jtfOrigen.setText(transferencia.getOrigen().getNombre());
         jtfDestino.setText(transferencia.getDestino().getNombre());
         jtfFuncionario.setText(transferencia.getFuncionario().getNombre());
@@ -437,6 +447,15 @@ public class VistaTransferencia extends javax.swing.JFrame implements Observer {
                 Iterator<Object[]> ite = aux.iterator();
                 while (ite.hasNext()) {
                     model.addRow(ite.next());
+                }
+                if(modelo.getOrigen() != null){
+                    jtfOrigen.setText(modelo.getOrigen().getNombre());
+                }
+                if(modelo.getDestino()!= null){
+                    jtfDestino.setText(modelo.getDestino().getNombre());
+                }
+                if(modelo.getResponsable()!= null){
+                    jtfFuncionario.setText(modelo.getResponsable().getNombre());
                 }
             }
         }

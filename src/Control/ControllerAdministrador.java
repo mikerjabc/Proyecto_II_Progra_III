@@ -94,9 +94,9 @@ public class ControllerAdministrador extends AbstractController implements ItemL
                 JTable tabla = (JTable) ae.getSource();
                 numero = tabla.getValueAt(tabla.getSelectedRow(), 0).toString();
                 tabla.changeSelection(tabla.getSelectedRow(), 0, false, true);
-                if(modeloSolicitud != null){
+                if (modeloSolicitud != null) {
                     modeloSolicitud.buscarBien(numero);
-                }else{
+                } else {
                     modelo.buscarSolicitud(numero);
                 }
                 if (ae.getClickCount() == 1) {
@@ -107,7 +107,7 @@ public class ControllerAdministrador extends AbstractController implements ItemL
                         break;
                         case MouseEvent.BUTTON1: {//Click izquierdo
                             if (modelo.getTipo().equalsIgnoreCase(modelo.tiposSolicitud[0])) {
-                                if(modeloSolicitud != null){
+                                if (modeloSolicitud != null) {
                                     vistaBien.cargarDatos(modeloSolicitud.getBien());
                                     vistaBien.setVisible(true);
                                 } else {
@@ -177,19 +177,19 @@ public class ControllerAdministrador extends AbstractController implements ItemL
             switch (x.toLowerCase()) {
                 case "insertar": {
                     if (modelo.getTipo().equalsIgnoreCase(modelo.tiposSolicitud[0])) {
-                        if(modeloSolicitud == null){
+                        if (modeloSolicitud == null) {
                             modeloSolicitud = new ModeloSolicitud(modelo.getFuncionario());
                             vistaSolicitud.setModelo(modeloSolicitud);
                             vistaSolicitud.setVisible(true);
-                        }else{
+                        } else {
                             vistaBien.setVisible(true);
                         }
-                        
+
                     } else if (modelo.getTipo().equalsIgnoreCase(modelo.tiposSolicitud[1])) {
-                        if(modelo.getTransferencia() == null){
+                        if (modelo.getTransferencia() == null) {
                             vistaTrasferencia.setVisible(true);
-                        } else{
-                            
+                        } else {
+
                         }
                     }
                 }
@@ -199,12 +199,14 @@ public class ControllerAdministrador extends AbstractController implements ItemL
                         modelo.crearSolicitud(vistaSolicitud.jtfNumero.getText(),
                                 vistaSolicitud.jtfFecha.getText(),
                                 vistaSolicitud.jcbTipo.getModel().getSelectedItem().toString(),
-                                vistaSolicitud.jcbEstado.getModel().getSelectedItem().toString()
+                                vistaSolicitud.jcbEstado.getModel().getSelectedItem().toString(),
+                                modeloSolicitud.getListaBienes()
                         );
                         vistaSolicitud.setVisible(false);
-                        vistaSolicitud.mostrarMensaje("Se guardo la solicitud");
+                        vistaSolicitud.mostrarMensaje("Se agrego la solicitud");
                         vistaSolicitud.limpiarTodosEspacios();
                         vistaSolicitud.dispose();
+                        modeloSolicitud = null;
                     } else if (modelo.getTipo().equalsIgnoreCase(modelo.tiposSolicitud[1])) {
                         modelo.crearTransferencia(vistaTrasferencia.jtfNumero.getText(),
                                 modeloTrasferencia.getOrigen(),
@@ -212,27 +214,28 @@ public class ControllerAdministrador extends AbstractController implements ItemL
                                 vistaTrasferencia.jtfUbicacion.getText(),
                                 modeloTrasferencia.getResponsable()
                         );
-                        vistaSolicitud.setVisible(false);
-                        vistaSolicitud.mostrarMensaje("Se guardo la solicitud");
-                        vistaSolicitud.limpiarTodosEspacios();
-                        vistaSolicitud.dispose(); vistaTrasferencia.dispose();
+                        vistaTrasferencia.setVisible(false);
+                        vistaTrasferencia.mostrarMensaje("Se agrego la transferencia");
+                        vistaTrasferencia.limpiarTodosEspacios();
+                        vistaTrasferencia.dispose();
+                        vistaTrasferencia.dispose();
                     }
                 }
                 break;
                 case "agregarbien": {
-                    try{
-                    modeloSolicitud.agregarBien(vistaBien.jtfSerial.getText(),
-                            vistaBien.jtfDescripcion.getText(),
-                            vistaBien.jtfMarca.getText(),
-                            vistaBien.jtfModelo.getText(),
-                            vistaBien.jtfPrecio.getText(),
-                            vistaBien.jtfCantidadUnidades.getModel().getValue().toString()
-                    );
-                    vistaBien.setVisible(false);
-                    vistaBien.mostrarMensaje("Se guardo la solicitud");
-                    vistaBien.limpiarTodosEspacios();
-                    vistaBien.dispose();
-                    }catch(Exception ex){
+                    try {
+                        modeloSolicitud.agregarBien(vistaBien.jtfSerial.getText(),
+                                vistaBien.jtfDescripcion.getText(),
+                                vistaBien.jtfMarca.getText(),
+                                vistaBien.jtfModelo.getText(),
+                                vistaBien.jtfPrecio.getText(),
+                                vistaBien.jtfCantidadUnidades.getModel().getValue().toString()
+                        );
+                        vistaBien.setVisible(false);
+                        vistaBien.mostrarMensaje("Se agrego el bien");
+                        vistaBien.limpiarTodosEspacios();
+                        vistaBien.dispose();
+                    } catch (Exception ex) {
                         vistaBien.mostrarMensaje(ex.getMessage());
                     }
                 }
@@ -242,12 +245,14 @@ public class ControllerAdministrador extends AbstractController implements ItemL
                         modelo.modificarSolicitud(vistaSolicitud.jtfNumero.getText(),
                                 vistaSolicitud.jtfFecha.getText(),
                                 vistaSolicitud.jcbTipo.getModel().getSelectedItem().toString(),
-                                vistaSolicitud.jcbEstado.getModel().getSelectedItem().toString()
+                                vistaSolicitud.jcbEstado.getModel().getSelectedItem().toString(),
+                                modeloSolicitud.getListaBienes()
                         );
                         vistaSolicitud.setVisible(false);
-                        vistaSolicitud.mostrarMensaje("Se guardo la solicitud");
+                        vistaSolicitud.mostrarMensaje("Se guardo el cambio en la solicitud");
                         vistaSolicitud.limpiarTodosEspacios();
                         vistaSolicitud.dispose();
+                        modeloSolicitud = null;
                     } else if (modelo.getTipo().equalsIgnoreCase(modelo.tiposSolicitud[1])) {
                         modelo.modificarTransferencia(vistaTrasferencia.jtfNumero.getText(),
                                 modeloTrasferencia.getOrigen(),
@@ -256,82 +261,84 @@ public class ControllerAdministrador extends AbstractController implements ItemL
                                 modeloTrasferencia.getResponsable()
                         );
                         vistaSolicitud.setVisible(false);
-                        vistaSolicitud.mostrarMensaje("Se guardo la solicitud");
+                        vistaSolicitud.mostrarMensaje("Se guardo el cambio en la transferencia");
                         vistaSolicitud.limpiarTodosEspacios();
-                        vistaSolicitud.dispose(); vistaTrasferencia.dispose();
+                        vistaSolicitud.dispose();
+                        vistaTrasferencia.dispose();
                     }
                 }
                 break;
                 case "modificarbien": {
                     modeloSolicitud.modificarBien(vistaBien.jtfSerial.getText(),
-                                vistaBien.jtfDescripcion.getText(),
-                                vistaBien.jtfMarca.getText(),
-                                vistaBien.jtfModelo.getText(),
-                                vistaBien.jtfPrecio.getText(),
-                                vistaBien.jtfCantidadUnidades.getModel().getValue().toString()
-                        );
-                        vistaBien.setVisible(false);
-                        vistaBien.mostrarMensaje("Se guardo la solicitud");
-                        vistaBien.limpiarTodosEspacios();
-                        vistaBien.dispose();
+                            vistaBien.jtfDescripcion.getText(),
+                            vistaBien.jtfMarca.getText(),
+                            vistaBien.jtfModelo.getText(),
+                            vistaBien.jtfPrecio.getText(),
+                            vistaBien.jtfCantidadUnidades.getModel().getValue().toString()
+                    );
+                    vistaBien.setVisible(false);
+                    vistaBien.mostrarMensaje("Se guardo el cambio en el bien");
+                    vistaBien.limpiarTodosEspacios();
+                    vistaBien.dispose();
                 }
                 break;
                 case "buscar": {
                     modeloTrasferencia.limpiar();
-                    if(modeloSolicitud != null){
+                    if (modeloSolicitud != null) {
                         modeloSolicitud.limpiar();
                     }
                     modelo.limpiar();
                     if (modelo.getTipo().equalsIgnoreCase(modelo.tiposSolicitud[0])) {
-                        if(modelo.getSolicitud() == null){
-                            modelo.buscarSolicitud(vista.jtIdBuscar.getText());
-                            vista.mostrarMensaje("Se encontro la solicitud");
-                        }else{
-                            modeloSolicitud.buscarBien(vistaSolicitud.jtfIdBuscar.getText());
-                            vistaSolicitud.mostrarMensaje("Se encontro el bien");
-                        }
+                        modelo.buscarSolicitud(vista.jtIdBuscar.getText());
+                        vista.mostrarMensaje("Se encontro la solicitud");
                     } else {
-                        if(modelo.getTransferencia()== null){
-                            modelo.buscarSolicitud(vista.jtIdBuscar.getText());
-                            vista.mostrarMensaje("Se encontro la transferencia");
-                        }else{
-                            modeloTrasferencia.buscarActivo(vistaTrasferencia.jtfCodigoBuscar.getText());
-                            vistaTrasferencia.mostrarMensaje("Se encontro el activo");
-                        }
+                        modelo.buscarSolicitud(vista.jtIdBuscar.getText());
+                        vista.mostrarMensaje("Se encontro la transferencia");
                     }
                 }
                 break;
                 case "buscarbien": {
-                    try{
-                    modeloSolicitud.buscarBien(vistaSolicitud.jtfIdBuscar.getText());
-                    }catch(Exception ex){
+                    try {
+                        modeloSolicitud.buscarBien(vistaSolicitud.jtfIdBuscar.getText());
+                        vista.mostrarMensaje("¡Bien encontrado!");
+                        modeloSolicitud.setBien();
+                    } catch (Exception ex) {
+                        vistaSolicitud.mostrarMensaje(ex.getMessage());
+                    }
+                }
+                break;
+                case "buscaractivo": {
+                    try {
+                        modeloTrasferencia.buscarActivo(vistaTrasferencia.jtfCodigoBuscar.getText());
+                        vistaTrasferencia.mostrarMensaje("Se encontro el activo");
+                    } catch (Exception ex) {
                         vistaSolicitud.mostrarMensaje(ex.getMessage());
                     }
                 }
                 break;
                 case "buscarresponsable": {
-                    try{
-                    modeloTrasferencia.buscarResponsable(vistaTrasferencia.jtfFuncionario.getText());
-                    vistaTrasferencia.mostrarMensaje("¡Responsable encontrado!");
-                    }catch(Exception ex){
+                    try {
+                        modeloTrasferencia.buscarResponsable(vistaTrasferencia.jtfFuncionario.getText());
+                        vistaTrasferencia.mostrarMensaje("¡Responsable encontrado!");
+                    } catch (Exception ex) {
                         vistaTrasferencia.mostrarMensaje(ex.getMessage());
                     }
                 }
                 break;
                 case "buscarorigen": {
-                    try{
-                    modeloTrasferencia.buscarOrigen(vistaTrasferencia.jtfOrigen.getText());
-                    vistaTrasferencia.mostrarMensaje("¡Dependencia de origen encontrada!");
-                    }catch(Exception ex){
+                    try {
+                        modeloTrasferencia.buscarOrigen(vistaTrasferencia.jtfOrigen.getText());
+                        vistaTrasferencia.mostrarMensaje("¡Dependencia de origen encontrada!");
+                    } catch (Exception ex) {
                         vistaTrasferencia.mostrarMensaje(ex.getMessage());
                     }
                 }
                 break;
                 case "buscardestino": {
-                    try{
-                    modeloTrasferencia.buscarDestino(vistaTrasferencia.jtfDestino.getText());
-                    vistaTrasferencia.mostrarMensaje("¡Dependencia de destino encontrada!");
-                    }catch(Exception ex){
+                    try {
+                        modeloTrasferencia.buscarDestino(vistaTrasferencia.jtfDestino.getText());
+                        vistaTrasferencia.mostrarMensaje("¡Dependencia de destino encontrada!");
+                    } catch (Exception ex) {
                         vistaTrasferencia.mostrarMensaje(ex.getMessage());
                     }
                 }
@@ -397,12 +404,12 @@ public class ControllerAdministrador extends AbstractController implements ItemL
             vista.mostrarMensaje(exception.getMessage());
         }
     }
-    
+
     @Override
     public void cerrarVista() {
         vista.dispose();
     }
-    
+
     @Override
     public void windowOpened(WindowEvent we) {
         vista.setEnabled(false);
@@ -420,21 +427,21 @@ public class ControllerAdministrador extends AbstractController implements ItemL
 
     @Override
     public void windowIconified(WindowEvent we) {
-        
+
     }
 
     @Override
     public void windowDeiconified(WindowEvent we) {
-        
+
     }
 
     @Override
     public void windowActivated(WindowEvent we) {
-        
+
     }
 
     @Override
     public void windowDeactivated(WindowEvent we) {
-        
+
     }
 }

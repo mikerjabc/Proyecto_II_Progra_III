@@ -299,7 +299,7 @@
         <Component class="javax.swing.JButton" name="jbBuscarFuncionario">
           <Properties>
             <Property name="text" type="java.lang.String" value="Buscar"/>
-            <Property name="name" type="java.lang.String" value="buscarRegistrador" noResource="true"/>
+            <Property name="name" type="java.lang.String" value="buscarResponsable" noResource="true"/>
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
@@ -308,7 +308,7 @@
         <Component class="javax.swing.JButton" name="jbBuscarDestino">
           <Properties>
             <Property name="text" type="java.lang.String" value="Buscar"/>
-            <Property name="name" type="java.lang.String" value="buscarRegistrador" noResource="true"/>
+            <Property name="name" type="java.lang.String" value="buscarDestino" noResource="true"/>
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
@@ -317,7 +317,7 @@
         <Component class="javax.swing.JButton" name="jbBuscarOrigen">
           <Properties>
             <Property name="text" type="java.lang.String" value="Buscar"/>
-            <Property name="name" type="java.lang.String" value="buscarRegistrador" noResource="true"/>
+            <Property name="name" type="java.lang.String" value="buscarOrigen" noResource="true"/>
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
@@ -413,7 +413,7 @@
         <Component class="javax.swing.JButton" name="jbBuscar">
           <Properties>
             <Property name="text" type="java.lang.String" value="Buscar"/>
-            <Property name="name" type="java.lang.String" value="buscar" noResource="true"/>
+            <Property name="name" type="java.lang.String" value="buscarActivo" noResource="true"/>
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
