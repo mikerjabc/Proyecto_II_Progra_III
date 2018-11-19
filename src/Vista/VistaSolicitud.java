@@ -385,6 +385,7 @@ public class VistaSolicitud extends javax.swing.JFrame implements Observer {
         jtfNumero.setEditable(false);
         jtfMontoTotal.setEditable(false);
         jcbTipo.removeAllItems();
+        jcbEstado.removeAllItems();
         
         switch (modelo.getFuncionario().getPuesto().toLowerCase()) {
             case "administrador": {

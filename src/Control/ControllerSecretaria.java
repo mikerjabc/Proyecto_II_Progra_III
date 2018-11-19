@@ -21,10 +21,6 @@ import javax.swing.JButton;
 import javax.swing.JMenuItem;
 import javax.swing.JTable;
 
-/**
- *
- * @author Fernando
- */
 public class ControllerSecretaria extends AbstractController{
 
     private ModeloSecretaria modelo;
@@ -208,6 +204,7 @@ public class ControllerSecretaria extends AbstractController{
     @Override
     public void windowClosed(WindowEvent we) {
         vista.setEnabled(true);
+        vista.toFront();
     }
 
     @Override

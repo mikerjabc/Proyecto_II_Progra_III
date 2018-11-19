@@ -21,10 +21,6 @@ import javax.swing.JButton;
 import javax.swing.JMenuItem;
 import javax.swing.JTable;
 
-/**
- *
- * @author Fernando
- */
 public final class ControllerRegistrador extends AbstractController implements ItemListener{
 
     private ModeloRegistrador modelo ;
@@ -312,6 +308,7 @@ public final class ControllerRegistrador extends AbstractController implements I
     @Override
     public void windowClosed(WindowEvent we) {
         vista.setEnabled(true);
+        vista.toFront();
     }
 
     @Override

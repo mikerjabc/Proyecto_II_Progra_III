@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Control;
 
 import Modelo.ModeloRecurHumanos;
@@ -54,6 +50,7 @@ public class ControllerRecurHumanos extends AbstractController implements ItemLi
                 crud(button.getName());
             }
         } catch (Exception ex) {
+            modelo.limpiar();
             vista.mostrarMensaje(ex.getMessage());
         }
     }

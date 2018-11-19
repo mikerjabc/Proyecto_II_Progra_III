@@ -286,6 +286,7 @@ public class ControllerJefe extends AbstractController implements ItemListener {
     @Override
     public void windowClosed(WindowEvent we) {
         vista.setEnabled(true);
+        vista.toFront();
     }
 
     @Override

@@ -30,10 +30,6 @@ import javax.swing.JButton;
 import javax.swing.JMenuItem;
 import javax.swing.JTable;
 
-/**
- *
- * @author Fernando
- */
 public class ControllerAdministrador extends AbstractController implements ItemListener {
 
     private ModeloAdministrador modelo;
