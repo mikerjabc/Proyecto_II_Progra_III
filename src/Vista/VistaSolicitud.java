@@ -450,11 +450,11 @@ public class VistaSolicitud extends javax.swing.JFrame implements Observer {
     
     public void cargarDatos(Solicitud solicitud) {
         jtfNumero.setText(String.valueOf(solicitud.getNumeroSolicitud()));
-        jtfMontoTotal.setText(String.valueOf(solicitud.getMontoTotal()));
         jtfFecha.setText(solicitud.getFecha());
         jcbEstado.getModel().setSelectedItem(solicitud.getEstado());
         jcbTipo.getModel().setSelectedItem(solicitud.getTipo());
-        jtfCantidadBienes.setText(String.valueOf(solicitud.getCantiadadBienes()));
+        modelo.setMonto(solicitud.getMontoTotal());
+        modelo.setCantidad(solicitud.getCantiadadBienes());
         modelo.setListaBienes(solicitud.getListaBienes());
         if(modelo.getRegistrador() != null){
             jtfRegistrador.setText(modelo.getRegistrador().getNombre());

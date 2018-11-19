@@ -194,6 +194,14 @@ public class ModeloSolicitud extends Observable {
         return monto;
     }
 
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public void setMonto(float monto) {
+        this.monto = monto;
+    }
+
     @Override
     public void notifyObservers() {
         setChanged();
